@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 
 var AlumniSchema = new Schema({
   name: { type: String, required: true },
-  picture: {},
+  picture: {data: Buffer, contentType: String},
   year: { type: Number, required: true},
   school: [{ type: Schema.Types.ObjectId, ref: 'School'}],
   reviews: [{type: Schema.Types.ObjectId, ref: 'Review'}],
