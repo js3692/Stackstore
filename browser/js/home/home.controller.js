@@ -1,8 +1,5 @@
-app.controller('HomeCtrl', function($scope, AnimalFactory) { 
-  $scope.submit = function() {
-    console.log("animal is", $scope.animalName);
-    AnimalFactory.findByName($scope.animalName).then(function(animals) {
-      console.log(animals);
-    });
+app.controller('HomeCtrl', function($scope, $state) { 
+  $scope.submit = function() {    
+      $state.go('results', {animalName: $scope.animalName});
   }
 });

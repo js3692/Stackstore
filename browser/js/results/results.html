@@ -10,35 +10,25 @@
 					  	<thead>
 					  		<tr>
 					  			<th></th>
-					  			<th>Language</th>
+					  			<th>Name</th>
 					  			<th>Rating</th>
-					  			<th>Author</th>
+                                <th>Conservation Status</th>
+					  			<th>Price</th>
 					  		</tr>
 					  	</thead>
 					  	<tbody>
-						  	<tr>
-						  		<td></td>
-						  		<td>Ruby</td>
-						  		<td>2.7</td>
-						  		<td>Jonah Hill</td>
-						  	</tr>
-						  	<tr>
-						  		<td></td>
-						  		<td>c++</td>
-						  		<td>5.0</td>
-						  		<td>Rain man</td>
-						  	</tr>
-						  	<tr>
-						  		<td></td>
-						  		<td>Javascript</td>
-						  		<td>1.1</td>
-						  		<td>Bill Gates</td>
-						  	</tr>						  	
+                          <tr ui-sref="product({id: animal._id})" ng-repeat="animal in animals">
+                            <td><figure><img ng-src="{{animal.imageUrl}}"/></figure></td>
+                            <td>{{animal.animalName}}</td>
+                            <td>{{animal.rating}}</td>
+                            <td>{{animal.conservationStatus}}</td>
+                            <td>{{animal.price}}</td>
+                          </tr>
 					  	</tbody>
 				  	</table>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+
 
