@@ -1,4 +1,15 @@
 #results {
- 
+  figure {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+  }
+  
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
 }
 

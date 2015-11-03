@@ -1,5 +1,5 @@
 app.factory('AnimalFactory', function($http) {
-  var baseUrl = '/api/animals';
+  var baseUrl = '/api/animals/';
   
   function toData(response) {
     return response.data; 
