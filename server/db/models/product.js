@@ -3,14 +3,11 @@ var mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
     language: {
-        type: mongoose.Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Language'
     },
     code: {
         type: String
-    },
-    rating: {
-        // A number (rounded to tenth digit) between 1 and 5
-        type: Number
     },
     description: {
         // Description of product
@@ -18,7 +15,8 @@ var schema = new mongoose.Schema({
     },
     review: {
         // Reference to a review
-        type: mongoose.Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Review'
     }
 });
 
