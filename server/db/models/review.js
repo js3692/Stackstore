@@ -12,6 +12,12 @@ var reviewSchema = new mongoose.Schema({
         max: 5,
         required: true
     },
+    dangerLevel: {
+        type: Number,
+        min: 0,
+        max: 10,
+        required: true
+    },
     author: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User'
