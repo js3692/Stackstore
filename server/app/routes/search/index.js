@@ -15,17 +15,18 @@ var Product = mongoose.model('Product');
 //    }
 //};
 
-router.param('id', function(req, res, next, id) {
-   Product.findById(id).then(function(){
-       
-   }).catch(next); 
-});
+// Current URL: '/api/search'
 
-
-//get all products
 router.get('/', function (req, res, next) {
-    Product.find({}).then(function(products) {
-        res.send(products);
-    }).catch(next);
+	if (req.query) {
+		// req.query.name should be a substring of animalName
+		Product.find({ animalName: req.query.name }).then(function (products) {
+			res.json(products);
+		}).catch(next);
+	}
+	else {
+		Product.find().then(function (products) {
+			res.json(products);
+		}).catch(next);
+	}
 });
-

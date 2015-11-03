@@ -11,6 +11,8 @@ var ensureAuthenticated = function (req, res, next) {
     }
 };
 
+// Current URL: '/api/members'
+
 router.get('/secret-stash', ensureAuthenticated, function (req, res) {
 
     var theStash = [
