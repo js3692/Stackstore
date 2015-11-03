@@ -5,7 +5,7 @@ var _ = require('lodash');
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 require('../../../db/models');
-var Product = mongoose.model('Product');
+var Animal = mongoose.model('Animal');
 
 //var ensureAuthenticated = function (req, res, next) {
 //    if (req.isAuthenticated()) {
@@ -18,25 +18,25 @@ var Product = mongoose.model('Product');
 // Current URL: '/api/animals'
 
 router.param('id', function(req, res, next, id) {
-   Product.findById(id).then(function(product){
-       req.product = product;
+   Animal.findById(id).then(function(animal){
+       req.animal = animal;
    }).catch(next); 
 });
 
 router.get('/', function (req, res, next) {
 	if (req.query) {
 		// req.query.name should be a substring of animalName
-		Product.find({ animalName: new RegExp(req.query.name, "i")}).then(function (products) {
-			res.json(products);
+		Animal.find({ animalName: new RegExp(req.query.name, "i")}).then(function (animals) {
+			res.json(animals);
 		}).catch(next);
 	} else {
-		Product.find().then(function (products) {
-			res.json(products);
+		Animal.find().then(function (animals) {
+			res.json(animals);
 		}).catch(next);
 	}
 });
 
-//get all products add to results instead
+//get all animals add to results instead
 router.get('/:id', function (req, res, next) {
-    res.json(product);
+    res.json(req.animal);
 });
