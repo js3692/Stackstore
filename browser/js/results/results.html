@@ -17,7 +17,7 @@
 					  		</tr>
 					  	</thead>
 					  	<tbody>
-                          <tr ui-sref="product({id: animal._id})" ng-repeat="animal in animals">
+                          <tr ui-sref="animal({id: animal._id})" ng-repeat="animal in animals">
                             <td><figure><img ng-src="{{animal.imageUrl}}"/></figure></td>
                             <td>{{animal.animalName}}</td>
                             <td>{{animal.rating}}</td>
