@@ -15,17 +15,28 @@ var Product = mongoose.model('Product');
 //    }
 //};
 
+// Current URL: '/api/animals'
+
 router.param('id', function(req, res, next, id) {
-   Product.findById(id).then(function(){
-       
+   Product.findById(id).then(function(product){
+       req.product = product;
    }).catch(next); 
 });
 
-
-//get all products
 router.get('/', function (req, res, next) {
-    Product.find({}).then(function(products) {
-        res.send(products);
-    }).catch(next);
+	if (req.query) {
+		// req.query.name should be a substring of animalName
+		Product.find({ animalName: new RegExp(req.query.name, "i")}).then(function (products) {
+			res.json(products);
+		}).catch(next);
+	} else {
+		Product.find().then(function (products) {
+			res.json(products);
+		}).catch(next);
+	}
 });
 
+//get all products add to results instead
+router.get('/:id', function (req, res, next) {
+    res.json(product);
+});
