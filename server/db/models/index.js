@@ -4,4 +4,4 @@
 require('./user');
 require('./review');
 require('./cart');
-require('./product');
+require('./animal');

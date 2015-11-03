@@ -1,7 +1,7 @@
 'use strict'
 
 var mongoose = require('mongoose');
-var Product = require('./product.js');
+
 
 var CartSchema = new mongoose.Schema({
 	// user: {
@@ -9,9 +9,9 @@ var CartSchema = new mongoose.Schema({
 	// 	ref: 'User',
 	// 	required: true
 	// },
-	products: {
+	animals: {
 		type: [mongoose.Schema.Types.ObjectId],
-		ref:'Product',
+		ref:'Animal',
 		required: true
 	}
 })

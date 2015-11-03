@@ -70,4 +70,4 @@ schema.methods.getSimilar = function () {
 
 
 
-mongoose.model('Product', schema);
+mongoose.model('Animal', schema);
