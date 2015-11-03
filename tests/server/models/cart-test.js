@@ -27,9 +27,9 @@ describe('Cart model', function () {
 
     describe('on creation', function () {
         
-        var createUser = function () {
-                return User.create({ email: 'batman@gmail.com', password: 'robin' });
-        };
+        // var createUser = function () {
+        //         return User.create({ email: 'batman@gmail.com', password: 'robin' });
+        // };
 
         it('should require a user', function() {
             return Cart.create({ product: 'Batman' }).then(null, function(error) {
@@ -51,7 +51,7 @@ describe('Cart model', function () {
                 expect(error.message).to.equal('Cart validation failed');
             })
         });
-
+ca
     });
 });
 
