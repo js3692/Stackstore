@@ -57,7 +57,6 @@ schema.methods.getSimilar = function () {
         _id: {$ne: this._id},
         category: {$in: myCat}
     });
-    //.exec()
 };
 
 
