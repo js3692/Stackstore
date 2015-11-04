@@ -1,7 +1,7 @@
 'use strict';
 var router = require('express').Router();
 module.exports = router;
-var _ = require('lodash');
+// var _ = require('lodash');
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 require('../../../db/models');
@@ -14,6 +14,9 @@ var Animal = mongoose.model('Animal');
 //        res.status(401).end();
 //    }
 //};
+
+// Current URL: '/api/animals'
+
 router.param('id', function(req, res, next, id) {
    Animal.findById(id).then(function(animal){
        req.animal = animal;
@@ -21,11 +24,6 @@ router.param('id', function(req, res, next, id) {
    }).catch(next);
 });
 
-router.use('/', function(req, res, next) {
-  console.log('here');
-  next();
-});
-// Current URL: '/api/animals'
 router.get('/', function (req, res, next) {
 	if (req.query) {
 		Animal.find({ animalName: new RegExp(req.query.name, "i")}).then(function (animals) {
@@ -46,7 +44,7 @@ router.post('/', function (req, res, next) {
 });
 
 //get all animals add to results instead
-router.get('/:id', function (req, res, next) {
+router.get('/:id', function (req, res) {
     res.json(req.animal);
 });
 
@@ -58,5 +56,11 @@ router.put('/:id', function (req, res, next) {
 });
 
 router.post('/:id/addReview', function (req, res, next) {
-    res.json(req.animal);
+	var animal = req.animal;
+	animal.reviews.push(req.body._id);
+	animal.save()
+	.then(function (animal) {
+		req.animal = animal; // ==> may not be necessary
+		res.send(201).json(req.animal);
+	}).catch(next);
 });
