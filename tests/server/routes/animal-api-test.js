@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 require('../../../server/db/models');
 var Animal = mongoose.model('Animal');
+var Review = mongoose.model('Review');
 
 var expect = require('chai').expect;
 
@@ -12,62 +13,105 @@ var clearDB = require('mocha-mongoose')(dbURI);
 var supertest = require('supertest');
 var app = require('../../../server/app');
 
-xdescribe('Animal Route', function () {
+describe('Animal Route', function () {
+  
+  var agent,
+      baseUrl = '/api/animals/',
+      animalInfo = {
+      animalName: 'Emu',
+      rating: 0.1,
+      description: 'Likes to kick. Is a bird.'
+  };
 
-	beforeEach('Establish DB connection', function (done) {
-		if (mongoose.connection.db) return done();
-		mongoose.connect(dbURI, done);
-	});
+  beforeEach('Establish DB connection', function (done) {
+      if (mongoose.connection.db) return done();
+      mongoose.connect(dbURI, done);
+  });
 
-	afterEach('Clear test database', function (done) {
-		clearDB(done);
-	});
+  beforeEach('Create agent', function (done) {
+      agent = supertest.agent(app);
+      done();
+  });
 
-//	describe('Unauthenticated request', function () {
-//
-//		var guestAgent;
-//
-//		beforeEach('Create guest agent', function () {
-//			guestAgent = supertest.agent(app);
-//		});
-//
-//		it('should get a 401 response', function (done) {
-//			guestAgent.get('/api/members/secret-stash')
-//				.expect(401)
-//				.end(done);
-//		});
-//	});
+  var animal;
+  beforeEach('Create an animal', function () {
+      return Animal.create(animalInfo).then(function(newAnimal) {
+        animal = newAnimal;
+      }).catch(function(error) {
+          console.log(error);
+      });
+  });
 
-	describe('Get all products', function () { 
-		var agent;
+  afterEach('Clear test database', function (done) {
+      clearDB(done);
+  });
 
-		var productInfo = {
-			code: '/[aeiou]/',
-			rating: 0,
-            description: 'Regex for finding vowels'
-		};
+  describe('Get all animals', function () { 
+    
+      it('should get with 200 response with an array as the body', function (done) {
+          agent.get(baseUrl).expect(200).end(function (err, response) {
+              if (err) return done(err);
+              expect(response.body).to.be.an('array');
+              expect(response.body[0].description).to.equal('Likes to kick. Is a bird.');
+              done();
+          });
+      });
 
-		beforeEach('Create a product', function () {
-			return Product.create(productInfo).catch(function(error) {
-                console.log(error);
-            });
-		});
-
-		beforeEach('Create user agent', function (done) {
-			agent = supertest.agent(app);
+  });
+  
+  describe('Create an animal', function() {
+      it('should get a 201 response with an animal as the body', function (done) {
+          agent
+            .post(baseUrl)
+            .send(animalInfo)
+            .expect(201)
+            .end(function (err, response) {
+              if (err) return done(err);
+              expect(response.body).to.be.an('object');
+              expect(response.body.description).to.equal('Likes to kick. Is a bird.');
+              done();
+          });
+      });
+  });
+  
+  describe('Get animal by id', function() {
+      it('should get a 200 response with an animal as the body', function(done) {
+        agent
+          .get(baseUrl + animal._id)
+          .expect(200)
+          .end(function (err, response) {
+            if (err) return done(err);
+            expect(response.body).to.be.an('object');
+            expect(response.body.description).to.equal('Likes to kick. Is a bird.');
             done();
-//			agent.post('/login').send(productInfo).end(done);
-		});
+        });
+      });
+  });
+  
+  describe('Update an animal', function() {
+    it('should get a 200 response with an animal as the body', function(done) {
+      animalInfo.rating = 0.4;
+      animalInfo.price = 2000;
+      agent
+        .put(baseUrl + animal._id)
+        .send(animalInfo)
+        .expect(200)
+        .end(function(err, response) {
+          if (err) return done(err);
+          expect(response.body).to.be.an('object');
+          expect(response.body.rating).to.equal(0.4);
+          expect(response.body.price).to.equal(2000);
+          done();
+      })
+    })
+  
+//    describe('Add a review to animal', function() {
+//      it('should get a 200 response with an a body')
+//    })
+    
+    
+  })
 
-		it('should get with 200 response and with an array as the body', function (done) {
-			agent.get('/api/products').expect(200).end(function (err, response) {
-				if (err) return done(err);
-				expect(response.body).to.be.an('array');
-                expect(response.body[0].code).to.equal('/[aeiou]/');
-				done();
-			});
-		});
-
-	});
-
+    
+    
 });

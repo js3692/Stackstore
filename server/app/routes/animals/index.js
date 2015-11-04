@@ -1,7 +1,7 @@
 'use strict';
 var router = require('express').Router();
 module.exports = router;
-// var _ = require('lodash');
+var _ = require('lodash');
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 require('../../../db/models');
@@ -39,19 +39,20 @@ router.get('/', function (req, res, next) {
 router.post('/', function (req, res, next) {
 	Animal.create(req.body)
 	.then(function (newAnimal) {
-		res.json(newAnimal);
+		res.status(201).json(newAnimal);
 	}).catch(next);
 });
 
 //get all animals add to results instead
 router.get('/:id', function (req, res) {
-    res.json(req.animal);
+    res.status(200).json(req.animal);
 });
 
 router.put('/:id', function (req, res, next) {
-	Animal.update({ _id: req.animal.id }, { $set: req.body })
+    _.extend(req.animal, req.body);
+    req.animal.save()
 	.then(function (updatedAnimal) {
-		res.json(updatedAnimal);
+		res.status(200).json(updatedAnimal);
 	}).catch(next);
 });
 
