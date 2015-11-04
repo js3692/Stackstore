@@ -17,6 +17,7 @@ var Animal = mongoose.model('Animal');
 
 // Current URL: '/api/animals'
 
+// GTND: good good
 router.param('id', function(req, res, next, id) {
    Animal.findById(id).then(function(animal){
        req.animal = animal;
@@ -25,6 +26,7 @@ router.param('id', function(req, res, next, id) {
 });
 
 router.get('/', function (req, res, next) {
+  // GTND: maybe say var query = req.query ? { animalName: new RegExp(req.query.name, "i")} : {}
 	if (req.query) {
 		Animal.find({ animalName: new RegExp(req.query.name, "i")}).then(function (animals) {
 			res.json(animals);
@@ -56,8 +58,10 @@ router.put('/:id', function (req, res, next) {
 	}).catch(next);
 });
 
+// GTND: POST '/animals/:id/reviews' (RESTful)
 router.post('/:id/addReview', function (req, res, next) {
 	var animal = req.animal;
+  // GTND: req.body shouldn't have an id...
 	animal.reviews.push(req.body._id);
 	animal.save()
 	.then(function (savedAnimal) {

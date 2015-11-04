@@ -13,8 +13,10 @@ var clearDB = require('mocha-mongoose')(dbURI);
 var supertest = require('supertest');
 var app = require('../../../server/app');
 
+
+// GTND: cool, good tests here
 describe('Animal Route', function () {
-  
+
   var agent,
       baseUrl = '/api/animals/',
       animalInfo = {
@@ -46,8 +48,8 @@ describe('Animal Route', function () {
       clearDB(done);
   });
 
-  describe('Get all animals', function () { 
-    
+  describe('Get all animals', function () {
+
       it('should get with 200 response with an array as the body', function (done) {
           agent.get(baseUrl).expect(200).end(function (err, response) {
               if (err) return done(err);
@@ -58,7 +60,7 @@ describe('Animal Route', function () {
       });
 
   });
-  
+
   describe('Create an animal', function() {
       it('should get a 201 response with an animal as the body', function (done) {
           agent
@@ -73,7 +75,7 @@ describe('Animal Route', function () {
           });
       });
   });
-  
+
   describe('Get animal by id', function() {
       it('should get a 200 response with an animal as the body', function(done) {
         agent
@@ -87,7 +89,7 @@ describe('Animal Route', function () {
         });
       });
   });
-  
+
   describe('Update an animal', function() {
     it('should get a 200 response with an animal as the body', function(done) {
       animalInfo.rating = 0.4;
@@ -104,14 +106,14 @@ describe('Animal Route', function () {
           done();
       })
     })
-  
+
 //    describe('Add a review to animal', function() {
 //      it('should get a 200 response with an a body')
 //    })
-    
-    
+
+
   })
 
-    
-    
+
+
 });
