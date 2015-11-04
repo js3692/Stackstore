@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 require('../../../db/models');
 var Cart = mongoose.model('Cart');
+
 // var User = mongoose.model('User');
 
 //var ensureAuthenticated = function (req, res, next) {
