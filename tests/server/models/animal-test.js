@@ -19,7 +19,7 @@ describe('Animal model', function () {
         if (mongoose.connection.db) return done();
         mongoose.connect(dbURI, done);
     });
-      
+
     afterEach('Clear test database', function (done) {
         clearDB(done);
     });
@@ -48,7 +48,7 @@ describe('Animal model', function () {
                     animal = createdAnimal;
                 });
         });
-        
+
         afterEach('destroy animal', function () {
             return Animal.remove({ animalName: 'TestReviewsAnimal' });
         });
@@ -64,6 +64,7 @@ describe('Animal model', function () {
                 dangerLevel: 3
             })
             .then(function (newReview) {
+                // GTND: no requests in model tests, you should just test methods/statics/hooks
                 agent
                 .post('/api/animals/' + animal._id + '/addReview')
                 .send(newReview)
@@ -80,9 +81,9 @@ describe('Animal model', function () {
         });
 
     });
-    
+
     describe('Methods', function() {
-        beforeEach('populate Database', function() {        
+        beforeEach('populate Database', function() {
             return Animal.create({
                     animalName: "lemur",
                     category: ["mammal", "madagascar"]

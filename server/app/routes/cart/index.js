@@ -51,23 +51,29 @@ router.use(function (req, res, next) {
 
 // === Below here, all middlewares have a req.session.cart
 
+// GTND: '/me' or something, since '/' means all
 router.get('/', function (req, res) {
 	res.json(req.session.cart);
 });
 
+// GTND: also '/me/items' or something
 router.put('/', function (req, res, next) {
-	Cart.findById(req.session.cart._id)
+	Cart.findById(req.session.cart._id) // GTND: why?
 	.then(function (cart) {
 		return cart.addItem(req.body.animal, req.body.quantity);
 	})
 	.then (function (savedCart) {
+    // GTND: instead update req.session.cart here
 		res.status(201).json(savedCart);
 	}).catch(next);
 });
 
+// GTND: also '/me/items' or something
+// GTND: don't assume req.body for DELETE
 router.delete('/', function (req, res, next) {
 	Cart.findById(req.session.cart._id)
 	.then(function (cart) {
+    // GTND: what if you want to remove every copy of it?
 		return cart.deleteOneItem(req.body.id);
 	})
 	.then(function (updatedCart) {

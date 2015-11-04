@@ -3,6 +3,7 @@ var crypto = require('crypto');
 var mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
+    // GTND: how about a name?
     email: {
         type: String
     },
