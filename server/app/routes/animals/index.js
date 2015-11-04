@@ -20,12 +20,12 @@ var Animal = mongoose.model('Animal');
 router.param('id', function(req, res, next, id) {
    Animal.findById(id).then(function(animal){
        req.animal = animal;
-   }).catch(next); 
+       next();
+   }).catch(next);
 });
 
 router.get('/', function (req, res, next) {
 	if (req.query) {
-		// req.query.name should be a substring of animalName
 		Animal.find({ animalName: new RegExp(req.query.name, "i")}).then(function (animals) {
 			res.json(animals);
 		}).catch(next);

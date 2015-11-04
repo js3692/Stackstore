@@ -61,7 +61,7 @@ describe('Review model', function () {
                     expect(error.message).to.equal('Review validation failed');
                 });
             });
-        })
+        });
     });
 });
 

@@ -51,7 +51,6 @@ describe('Cart model', function () {
                 expect(error.message).to.equal('Cart validation failed');
             })
         });
-ca
     });
 });
 
