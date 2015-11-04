@@ -19,24 +19,32 @@ var Cart = mongoose.model('Cart');
 
 // Current URL: '/api/cart'
 
-function cartInit (req) {
-	Cart.create()
-	.then(function (newCart) {
-		req.session.cart = newCart;
-	});
-}
-
 router.use(function (req, res, next) {
-	if (req.session.cart) next();
+	if (req.session.cart) {
+		next();
+	}
 	else {
 		if (req.user) { // ==> if a user is logged in
 			Cart.find({ user: req.user._id })
 			.then(function (cart) {
-				if (cart) req.session.cart = cart; // Get the "personal" cart and attach it to req.session
-				else cartInit(req); // Create a new cart and attach it to req.session
+				if (cart.length) { // Get the "personal" cart and attach it to req.session
+					req.session.cart = cart;
+					next();
+				}	else { // Create a new cart and attach it to req.session
+					Cart.create({ user: req.user._id })
+					.then(function (newUserCart) {
+						req.session.cart = newUserCart;
+						next();
+					}).catch(next);
+				}
 			});
 		} else { // ==> if a user is not logged in, i.e. guest
-			cartInit(req); // Create a new cart and attach it to req.session
+			// Create a new cart and attach it to req.session
+			Cart.create({})
+				.then(function (newCart) {
+					req.session.cart = newCart;
+					next();
+				}).catch(next);
 		}
 	}
 });
@@ -48,15 +56,21 @@ router.get('/', function (req, res) {
 });
 
 router.put('/', function (req, res, next) {
-	var cart = req.session.cart;
-	cart.animals.push(req.body.animal);
-	// If quantity's >= 2, look inside req.body.quantity and push that many times
-	cart.save()
+	Cart.findById(req.session.cart._id)
+	.then(function (cart) {
+		return cart.addItem(req.body.animal, req.body.quantity);
+	})
 	.then (function (savedCart) {
-		res.json(savedCart);
+		res.status(201).json(savedCart);
 	}).catch(next);
 });
 
-// router.delete('/', function (req, res, next) {
-
-// });
+router.delete('/', function (req, res, next) {
+	Cart.findById(req.session.cart._id)
+	.then(function (cart) {
+		return cart.deleteOneItem(req.body.id);
+	})
+	.then(function (updatedCart) {
+		res.status(200).json(updatedCart);
+	}).catch(next);
+});
