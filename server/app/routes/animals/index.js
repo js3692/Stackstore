@@ -16,19 +16,18 @@ var Animal = mongoose.model('Animal');
 //};
 router.param('id', function(req, res, next, id) {
    Animal.findById(id).then(function(animal){
-      req.animal = animal;
-      next();
-   }).catch(next); 
+       req.animal = animal;
+       next();
+   }).catch(next);
 });
 
 router.use('/', function(req, res, next) {
-  console.log('here')
+  console.log('here');
   next();
-})
+});
 // Current URL: '/api/animals'
 router.get('/', function (req, res, next) {
 	if (req.query) {
-		// req.query.name should be a substring of animalName
 		Animal.find({ animalName: new RegExp(req.query.name, "i")}).then(function (animals) {
 			res.json(animals);
 		}).catch(next);
@@ -41,8 +40,5 @@ router.get('/', function (req, res, next) {
 
 //get all animals add to results instead
 router.get('/:id', function (req, res, next) {
-    res.json(req.animal)
+    res.json(req.animal);
 });
-
-
-

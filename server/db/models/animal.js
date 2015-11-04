@@ -14,7 +14,7 @@ var schema = new mongoose.Schema({
     },
     imageUrl: {
         type: String
-    },  
+    },
     price: {
         type: Number
     },
@@ -32,9 +32,9 @@ var schema = new mongoose.Schema({
         type: String,
         enum: ['Near Threatened', 'Vulnerable', 'Endangered', 'Critically Endangered', 'Extinct in the Wild', 'Extinct']
     },
-    review: {
-        // Reference to a review
-        type: mongoose.Schema.Types.ObjectId,
+    reviews: {
+        // Reference to reviews
+        type: [mongoose.Schema.Types.ObjectId],
         ref: 'Review'
     },
     rating: {
@@ -48,7 +48,7 @@ var schema = new mongoose.Schema({
 schema.statics.findByCat = function (categories) {
     var catArr = categories.split(/[\s,]+/);
     return this.find({category: {$in: catArr}});
-}
+};
 
 schema.methods.getSimilar = function () {
     var myCat = this.category;
@@ -56,18 +56,9 @@ schema.methods.getSimilar = function () {
     .find({
         _id: {$ne: this._id},
         category: {$in: myCat}
-    })
+    });
     //.exec()
-}
-
-
-
-
-
-
-
-
-
+};
 
 
 mongoose.model('Animal', schema);

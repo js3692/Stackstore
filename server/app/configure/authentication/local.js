@@ -39,6 +39,8 @@ module.exports = function (app) {
                 return next(error);
             }
 
+// ================== make user req.session.cart has appropriate user._id ====================
+
             // req.logIn will establish our session.
             req.logIn(user, function (loginErr) {
                 if (loginErr) return next(loginErr);
