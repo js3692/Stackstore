@@ -9,13 +9,17 @@ var CartSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
 	},
-	animals: {
-		type: [mongoose.Schema.Types.ObjectId],
-		ref:'Animal'
-	}
+	animals: [{
+    quantity: Number,
+    price: Number,
+    animal:{
+  		type: [mongoose.Schema.Types.ObjectId],
+  		ref:'Animal'
+    }
+	}]
 });
 
-// GTND: maybe .pull? or _.pull?
+// GTND: maybe .pull? or _.pull? (ok don't do this then)
 CartSchema.methods.deleteOneItem = function(animalId) {
   var index = this.animals.indexOf(animalId);
   if (index > -1) this.animals.splice(index, 1);

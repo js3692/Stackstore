@@ -51,6 +51,9 @@ var schema = new mongoose.Schema({
     }
 });
 
+// GTND: animal.getAllReviews
+// GTND: animal.calculateRating
+
 // GTND: cat? a little misleading
 // GTND: so categories is a string?
 schema.statics.findByCat = function (categories) {

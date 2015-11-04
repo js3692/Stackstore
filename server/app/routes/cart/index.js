@@ -56,7 +56,7 @@ router.get('/', function (req, res) {
 	res.json(req.session.cart);
 });
 
-// GTND: also '/me/items' or something
+// GTND: also POST '/me/items' or something
 router.put('/', function (req, res, next) {
 	Cart.findById(req.session.cart._id) // GTND: why?
 	.then(function (cart) {
@@ -68,7 +68,7 @@ router.put('/', function (req, res, next) {
 	}).catch(next);
 });
 
-// GTND: also '/me/items' or something
+// GTND: also '/me/items/:itemId' or something
 // GTND: don't assume req.body for DELETE
 router.delete('/', function (req, res, next) {
 	Cart.findById(req.session.cart._id)

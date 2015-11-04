@@ -6,6 +6,8 @@ var schema = new mongoose.Schema({
     // GTND: how about a name?
     email: {
         type: String
+        // GTND: guarantee uniqueness?
+        // GTND: email validator mongoose plugin
     },
     password: {
         type: String
