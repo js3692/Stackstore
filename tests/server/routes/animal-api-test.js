@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 require('../../../server/db/models');
-var Product = mongoose.model('Product');
+var Animal = mongoose.model('Animal');
 
 var expect = require('chai').expect;
 
@@ -12,7 +12,7 @@ var clearDB = require('mocha-mongoose')(dbURI);
 var supertest = require('supertest');
 var app = require('../../../server/app');
 
-describe('Product Route', function () {
+describe('Animal Route', function () {
 
 	beforeEach('Establish DB connection', function (done) {
 		if (mongoose.connection.db) return done();
