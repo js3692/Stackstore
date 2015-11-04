@@ -60,8 +60,8 @@ router.post('/:id/addReview', function (req, res, next) {
 	var animal = req.animal;
 	animal.reviews.push(req.body._id);
 	animal.save()
-	.then(function (animal) {
-		req.animal = animal; // ==> may not be necessary
-		res.send(201).json(req.animal);
+	.then(function (savedAnimal) {
+		req.animal = savedAnimal; // ==> may not be necessary
+		res.status(201).json(req.animal);
 	}).catch(next);
 });
