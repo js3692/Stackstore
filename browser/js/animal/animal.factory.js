@@ -13,6 +13,11 @@ app.factory('AnimalFactory', function($http) {
     findById: function(id) {
       return $http.get(baseUrl + id)
         .then(toData);
+    },
+    findAll: function() {
+      return $http.get(baseUrl)
+        .then(toData);
     }
+    
   };
 });
