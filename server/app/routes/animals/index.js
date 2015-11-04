@@ -38,7 +38,25 @@ router.get('/', function (req, res, next) {
 	}
 });
 
+router.post('/', function (req, res, next) {
+	Animal.create(req.body)
+	.then(function (newAnimal) {
+		res.json(newAnimal);
+	}).catch(next);
+});
+
 //get all animals add to results instead
 router.get('/:id', function (req, res, next) {
+    res.json(req.animal);
+});
+
+router.put('/:id', function (req, res, next) {
+	Animal.update({ _id: req.animal.id }, { $set: req.body })
+	.then(function (updatedAnimal) {
+		res.json(updatedAnimal);
+	}).catch(next);
+});
+
+router.post('/:id/addReview', function (req, res, next) {
     res.json(req.animal);
 });
