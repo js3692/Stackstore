@@ -12,6 +12,7 @@ var animalSchema = new mongoose.Schema({
     },
     price: {
         type: Number,
+        set: convertFormatToCents,
         required: true
     },
     description: {
@@ -38,6 +39,16 @@ var animalSchema = new mongoose.Schema({
         type: Number,
         required: true
     }
+});
+
+function convertFormatToCents (priceInDollars) {
+    return priceInDollars * 100;
+}
+
+animalSchema.set('toObject', { getters: true });
+animalSchema.set('toJSON', { getters: true });
+animalSchema.virtual('price.USD').get(function () {
+    return (this.price/100).toFixed(2);
 });
 
 animalSchema.statics.checkIfUnique = function(name) {
