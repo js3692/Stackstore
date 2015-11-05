@@ -15,7 +15,7 @@ var Cart = mongoose.model('Cart');
 var User = mongoose.model('User');
 var Animal = mongoose.model('Animal');
 
-describe('Cart model', function () {
+xdescribe('Cart model', function () {
     beforeEach('Establish DB connection', function (done) {
         if (mongoose.connection.db) return done();
         mongoose.connect(dbURI, done);
