@@ -18,23 +18,30 @@ var Review = mongoose.model('Review');
 
 // Current URL: '/api/animals'
 
+
+//creates req.animal for requests with id param and attaches all reviews 
 router.param('id', function(req, res, next, id) {
-   Animal.findById(id).then(function(animal){
-       req.animal = animal;
-       next();
-   }).catch(next);
+    Animal.findById(id)
+        .then(function(animal){
+            req.animal = animal;
+            return Review.findReviewsByAnimal(animal._id);
+        })
+        .then(function(reviews) {
+            req.animal.reviews = reviews;
+            next();
+        }).catch(next);
 });
 
 router.get('/', function (req, res, next) {
-	if (req.query) {
-		Animal.find({ name: new RegExp(req.query.name, "i")}).then(function (animals) {
-			res.json(animals);
-		}).catch(next);
-	} else {
-		Animal.find().then(function (animals) {
-			res.json(animals);
-		}).catch(next);
-	}
+//	if (req.query) {
+//		Animal.find({ name: new RegExp(req.query.name, "i")}).then(function (animals) {
+//			res.json(animals);
+//		}).catch(next);
+//	} else {
+    Animal.find({}).then(function (animals) {
+        res.json(animals);
+    }).catch(next);
+//	}
 });
 
 router.post('/', function (req, res, next) {
@@ -49,6 +56,7 @@ router.get('/:id', function (req, res) {
     res.status(200).json(req.animal);
 });
 
+
 router.put('/:id', function (req, res, next) {
     _.extend(req.animal, req.body);
     req.animal.save()
@@ -56,8 +64,6 @@ router.put('/:id', function (req, res, next) {
 		res.status(200).json(updatedAnimal);
 	}).catch(next);
 });
-
-
 
 router.post('/:id/reviews', function (req, res, next) {
     var review = req.body;
