@@ -2,12 +2,14 @@
 var crypto = require('crypto');
 var mongoose = require('mongoose');
 
-var schema = new mongoose.Schema({
+var userSchema = new mongoose.Schema({
     email: {
-        type: String
+        type: String,
+        required: true
     },
     password: {
-        type: String
+        type: String,
+        required: true
     },
     salt: {
         type: String
@@ -39,7 +41,15 @@ var encryptPassword = function (plainText, salt) {
     return hash.digest('hex');
 };
 
-schema.pre('save', function (next) {
+userSchema.pre('validate', function(next) {
+    if(this.isValidEmail(this.email)) next();
+    else {
+        var err = new Error('Not a valid email address');
+        next(err);
+    }
+})
+
+userSchema.pre('save', function (next) {
 
     if (this.isModified('password')) {
         this.salt = this.constructor.generateSalt();
@@ -50,11 +60,16 @@ schema.pre('save', function (next) {
 
 });
 
-schema.statics.generateSalt = generateSalt;
-schema.statics.encryptPassword = encryptPassword;
+userSchema.methods.isValidEmail = function (email) {
+    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    return re.test(email);
+}
 
-schema.method('correctPassword', function (candidatePassword) {
+userSchema.statics.generateSalt = generateSalt;
+userSchema.statics.encryptPassword = encryptPassword;
+
+userSchema.method('correctPassword', function (candidatePassword) {
     return encryptPassword(candidatePassword, this.salt) === this.password;
 });
 
-mongoose.model('User', schema);
+mongoose.model('User', userSchema);
