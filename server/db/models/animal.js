@@ -48,8 +48,9 @@ animalSchema.statics.checkIfUnique = function(name) {
         });
 }
 
-animalSchema.statics.findByCat = function (categories) {
+animalSchema.statics.findByCategory = function (categories) {
     var catArr = categories.split(/[\s,]+/);
+    // JS: parameter categories should be an array instead?
     return this.find({category: {$in: catArr}});
 };
 
