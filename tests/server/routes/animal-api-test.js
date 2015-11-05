@@ -34,6 +34,7 @@ describe('Animal Route', function () {
   });
 
   var animal;
+
   beforeEach('Create an animal', function () {
       return Animal.create(animalInfo).then(function(newAnimal) {
         animal = newAnimal;
@@ -46,7 +47,11 @@ describe('Animal Route', function () {
       clearDB(done);
   });
 
-  describe('Get all animals', function () { 
+  afterEach('Remove created animal', function () {
+    return Animal.remove(animalInfo);
+  });
+
+  describe('Get all animals', function () {
     
       it('should get with 200 response with an array as the body', function (done) {
           agent.get(baseUrl).expect(200).end(function (err, response) {
@@ -102,16 +107,43 @@ describe('Animal Route', function () {
           expect(response.body.rating).to.equal(0.4);
           expect(response.body.price).to.equal(2000);
           done();
-      })
-    })
+      });
+    });
   
-//    describe('Add a review to animal', function() {
-//      it('should get a 200 response with an a body')
-//    })
-    
-    
-  })
+    describe('Adding reviews to an animal', function() {
+      var review;
+      beforeEach('Create arbitrary review', function (done) {
+        return Review.create({
+          content: "I'm a dummy review!",
+          stars: 5,
+          dangerLevel: 3
+        })
+        .then(function (newReview) {
+          review = newReview;
+        }).catch(done);
+      });
+      
+      it('should get a 201 response', function (done) {
+        agent
+          .post('api/animals/' + animal._id + '/reviews')
+          .send(review)
+          .expect(201)
+          .end(done);
+      });
 
+      it('should return a body that is an array of document ids', function (done) {
+        agent
+          .post('api/animals/' + animal._id + '/reviews')
+          .send(review)
+          .expect(201)
+          .end(function (err, res) {
+            if (err) done(err);
+            expect(review._id.equals(res.body._id)).to.be.true;
+          });
+      });
+
+    });
     
+  });
     
 });
