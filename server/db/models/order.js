@@ -31,20 +31,16 @@ var schema = new mongoose.Schema({
     required: true
   },
   date: {
-  	type: Date,
-  	required: true
+		type: Date,
+		required: true
   },
   shippingAddr: {
-  	type: String
+		type: String
   }
 });
 
-schema.methods.deleteOneItem = function(animalId) {
-  
-};
-
-schema.methods.addItem = function(animalId, quantity) {
- 
+schema.statics.getAllOrders = function(userId) {
+	return this.find({ user: userId }).sort({ date: -1 }).exec();
 };
 
 mongoose.model('Order', schema);
