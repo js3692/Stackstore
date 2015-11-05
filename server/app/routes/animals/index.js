@@ -21,13 +21,14 @@ var Review = mongoose.model('Review');
 
 //creates req.animal for requests with id param and attaches all reviews 
 router.param('id', function(req, res, next, id) {
+    req.toSend = {};
     Animal.findById(id)
         .then(function(animal){
-            req.animal = animal;
+            req.toSend.animal = animal;
             return Review.findReviewsByAnimal(animal._id);
         })
         .then(function(reviews) {
-            req.animal.reviews = reviews;
+            req.toSend.reviews = reviews;
             next();
         }).catch(next);
 });
@@ -45,29 +46,39 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-	Animal.create(req.body)
-	.then(function (newAnimal) {
-		res.status(201).json(newAnimal);
-	}).catch(next);
+    //check if animal name is unique
+    Animal.checkIfUnique(req.body.name)
+        .then(function(isUnique) {
+        if(isUnique) {
+            Animal.create(req.body)
+            .then(function (newAnimal) {
+                res.status(201).json(newAnimal);
+            }).catch(next);
+        } else {
+            var validationError = new Error();
+            validationError.message = 'Animal name is not unique';
+            next(validationError);
+        }   
+    })
 });
 
 //get all animals add to results instead
 router.get('/:id', function (req, res) {
-    res.status(200).json(req.animal);
+    res.status(200).json(req.toSend);
 });
 
 
 router.put('/:id', function (req, res, next) {
-    _.extend(req.animal, req.body);
-    req.animal.save()
-	.then(function (updatedAnimal) {
-		res.status(200).json(updatedAnimal);
+    _.extend(req.toSend.animal, req.body);
+    req.toSend.animal.save()
+	.then(function () {
+		res.status(200).json(req.toSend);
 	}).catch(next);
 });
 
 router.post('/:id/reviews', function (req, res, next) {
     var review = req.body;
-    review.animal = req.animal._id;
+    review.animal = req.toSend.animal._id;
     Review.create(review)
         .then(function(newReview) {
             res.status(201).json(newReview);        

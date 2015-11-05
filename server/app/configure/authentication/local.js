@@ -4,6 +4,34 @@ var _ = require('lodash');
 var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+mongoose.Promise = require('bluebird');
+
+function logIn(req, res, next) {
+    var authCb = function (err, user) {
+
+        if (err) return next(err);
+
+        if (!user) {
+            var error = new Error('Invalid login credentials.');
+            error.status = 401;
+            return next(error);
+        }
+
+// ================== make user req.session.cart has appropriate user._id ====================
+
+        // req.logIn will establish our session.
+        req.logIn(user, function (loginErr) {
+            if (loginErr) return next(loginErr);
+            // We respond with a response object that has user with _id and email.
+            res.status(200).send({
+                user: _.omit(user.toJSON(), ['password', 'salt'])
+            });
+        });
+
+    };
+
+    passport.authenticate('local', authCb)(req, res, next);
+}
 
 module.exports = function (app) {
 
@@ -28,32 +56,14 @@ module.exports = function (app) {
 
     // A POST /login route is created to handle login.
     app.post('/login', function (req, res, next) {
-
-        var authCb = function (err, user) {
-
-            if (err) return next(err);
-
-            if (!user) {
-                var error = new Error('Invalid login credentials.');
-                error.status = 401;
-                return next(error);
-            }
-
-// ================== make user req.session.cart has appropriate user._id ====================
-
-            // req.logIn will establish our session.
-            req.logIn(user, function (loginErr) {
-                if (loginErr) return next(loginErr);
-                // We respond with a response object that has user with _id and email.
-                res.status(200).send({
-                    user: _.omit(user.toJSON(), ['password', 'salt'])
-                });
-            });
-
-        };
-
-        passport.authenticate('local', authCb)(req, res, next);
-
+        logIn(req, res, next);
+    });
+    
+    app.post('/signup', function(req, res, next) {
+        User.create(req.body)
+            .then(function() {
+                logIn(req, res, next);
+            }).catch(next);
     });
 
 };
