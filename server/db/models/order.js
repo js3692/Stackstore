@@ -32,18 +32,29 @@ var schema = new mongoose.Schema({
 		type: [{}],
 		required: true
 	},
-  total: {
-    type: Number,
-    required: true
-  },
   date: {
 		type: Date,
 		required: true
   },
   shippingAddr: {
-		type: String
+		type: String,
+		required: true
+  },
+  total: {
+    type: Number,
+    get: convertFormatToDollars
   }
 });
+
+schema.pre('save', function (next) {
+	this.total = this.animals.reduce(function (sum, animal) {
+		return sum + animal.price;
+	}, 0);
+});
+
+function convertFormatToDollars (totalInCents) {
+    return (totalInCents/100).toFixed(2);
+}
 
 schema.statics.getAllOrders = function(userId) {
 	return this.find({ user: userId }).sort({ date: -1 }).exec();
