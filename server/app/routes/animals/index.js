@@ -46,10 +46,20 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-	Animal.create(req.body)
-	.then(function (newAnimal) {
-		res.status(201).json(newAnimal);
-	}).catch(next);
+    //check if animal name is unique
+    Animal.checkIfUnique(req.body.name)
+        .then(function(isUnique) {
+        if(isUnique) {
+            Animal.create(req.body)
+            .then(function (newAnimal) {
+                res.status(201).json(newAnimal);
+            }).catch(next);
+        } else {
+            var validationError = new Error();
+            validationError.message = 'Animal name is not unique';
+            next(validationError);
+        }   
+    })
 });
 
 //get all animals add to results instead
@@ -61,7 +71,7 @@ router.get('/:id', function (req, res) {
 router.put('/:id', function (req, res, next) {
     _.extend(req.toSend.animal, req.body);
     req.toSend.animal.save()
-	.then(function (updatedAnimal) {
+	.then(function () {
 		res.status(200).json(req.toSend);
 	}).catch(next);
 });

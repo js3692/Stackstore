@@ -51,7 +51,9 @@ var seedAnimals = function () {
             price: 3000,
             description: 'Has big eyes, from Madagascar, doesn\'t make for a good pet',
             rating: 2,
-            conservationStatus: 'Endangered'
+            conservationStatus: 'Endangered',
+            category: ['mammal'],
+            inventoryQuantity: 1
         },
         {
             name: 'Box Jellyfish',
@@ -59,7 +61,9 @@ var seedAnimals = function () {
             price: 2500,
             description: 'Very poisonous, not cuddly. Gelatinous.',
             rating: 1,
-            conservationStatus: 'Near Threatened'
+            conservationStatus: 'Near Threatened',
+            category: ['aquatic'],
+            inventoryQuantity: 1
         },
         {
             name: 'Bill Murray',
@@ -67,7 +71,9 @@ var seedAnimals = function () {
             price: 1400,
             description: 'Very poisonous, not cuddly. Gelatinous.',
             rating: 2.4,
-            conservationStatus: 'Extinct in the Wild'
+            conservationStatus: 'Extinct in the Wild',
+            category: ['life aquatic'],
+            inventoryQuantity: 1
         }
         
     ];
