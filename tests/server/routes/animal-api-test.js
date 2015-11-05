@@ -13,7 +13,7 @@ var clearDB = require('mocha-mongoose')(dbURI);
 var supertest = require('supertest');
 var app = require('../../../server/app');
 
-describe('Animal Route', function () {
+xdescribe('Animal Route', function () {
   
   var agent,
       baseUrl = '/api/animals/',
