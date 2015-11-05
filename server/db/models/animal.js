@@ -32,11 +32,6 @@ var schema = new mongoose.Schema({
         type: String,
         enum: ['Near Threatened', 'Vulnerable', 'Endangered', 'Critically Endangered', 'Extinct in the Wild', 'Extinct']
     },
-    reviews: {
-        // Reference to reviews
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Review'
-    },
     rating: {
         // average of stars from reviews, default to zero
         type: Number,

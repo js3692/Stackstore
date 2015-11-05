@@ -21,6 +21,10 @@ var reviewSchema = new mongoose.Schema({
     author: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User'
+    },
+    animal: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Animal'
     }
 });
 
