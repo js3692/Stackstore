@@ -6,6 +6,7 @@ module.exports = router;
 router.use('/members', require('./members'));
 router.use('/animals', require('./animals'));
 router.use('/cart', require('./cart'));
+router.use('/order', require('./order'));
 
 
 // Make sure this is after all of
