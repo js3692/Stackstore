@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 require('../../../db/models');
 var Animal = mongoose.model('Animal');
+var Review = mongoose.model('Review');
 
 //var ensureAuthenticated = function (req, res, next) {
 //    if (req.isAuthenticated()) {
@@ -56,12 +57,13 @@ router.put('/:id', function (req, res, next) {
 	}).catch(next);
 });
 
-router.post('/:id/addReview', function (req, res, next) {
-	var animal = req.animal;
-	animal.reviews.push(req.body._id);
-	animal.save()
-	.then(function (savedAnimal) {
-		req.animal = savedAnimal; // ==> may not be necessary
-		res.status(201).json(req.animal);
-	}).catch(next);
+
+
+router.post('/:id/reviews', function (req, res, next) {
+    var review = req.body;
+    review.animal = req.animal._id;
+    Review.create(review)
+        .then(function(newReview) {
+            res.status(201).json(newReview);        
+        }).catch(next);
 });
