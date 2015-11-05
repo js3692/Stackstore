@@ -19,7 +19,7 @@ var animalSchema = new mongoose.Schema({
         required: true
     },
     category: {
-        type: [String], 
+        type: [String],
         required: true
     },
     countryCode: {
@@ -31,7 +31,7 @@ var animalSchema = new mongoose.Schema({
     },
     rating: {
         type: Number,
-        min: 1, 
+        min: 1,
         max: 5
     },
     inventoryQuantity: {
@@ -44,9 +44,9 @@ animalSchema.statics.checkIfUnique = function(name) {
     return this
         .findOne({ name: name })
         .then(function(animal) {
-            return !Boolean(animal);    
+            return !Boolean(animal);
         });
-}
+};
 
 animalSchema.statics.findByCategory = function (categories) {
     var catArr = categories.split(/[\s,]+/);
