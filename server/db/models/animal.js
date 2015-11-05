@@ -2,28 +2,25 @@
 var mongoose = require('mongoose');
 
 var animalSchema = new mongoose.Schema({
-    // language: {
-    //     type: mongoose.animalSchema.Types.ObjectId
-    // },
-    // code: {
-    //     type: String
-    // },
     name: {
         type: String,
         required: true
     },
     imageUrl: {
-        type: String
+        type: String,
+        default: 'http://fillmurray.com/g/200/300'
     },
     price: {
-        type: Number
+        type: Number,
+        required: true
     },
     description: {
-        // Description of product
-        type: String
+        type: String,
+        required: true
     },
     category: {
-        type: [String]
+        type: [String], 
+        required: true
     },
     countryCode: {
         type: [String]
@@ -33,12 +30,23 @@ var animalSchema = new mongoose.Schema({
         enum: ['Near Threatened', 'Vulnerable', 'Endangered', 'Critically Endangered', 'Extinct in the Wild', 'Extinct']
     },
     rating: {
-        // average of stars from reviews, default to zero
         type: Number,
-        default: 0
+        min: 1, 
+        max: 5
+    },
+    inventoryQuantity: {
+        type: Number,
+        required: true
     }
 });
 
+animalSchema.statics.checkIfUnique = function(name) {
+    return this
+        .findOne({ name: name })
+        .then(function(animal) {
+            return !Boolean(animal);    
+        });
+}
 
 animalSchema.statics.findByCat = function (categories) {
     var catArr = categories.split(/[\s,]+/);
