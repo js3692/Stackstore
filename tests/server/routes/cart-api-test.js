@@ -117,12 +117,12 @@ describe('Cart Route: ', function () {
   describe('PUT request adds the correct animal', function () {
     var animalA, animalB;
     var animalInfoA = {
-      animalName: 'Emu',
+      name: 'Emu',
       rating: 0.1,
       description: 'Likes to kick. Is a bird.'
     };
     var animalInfoB = {
-      animalName: 'Whaleshark',
+      name: 'Whaleshark',
       rating: 4.9,
       description: 'Likes to kick. Is a shark. Maybe a whale.'
     };
@@ -189,7 +189,7 @@ describe('Cart Route: ', function () {
   describe('DELETE request removes the correct animal from cart', function () {
     var animal;
     var animalInfo = {
-      animalName: 'Emu',
+      name: 'Emu',
       rating: 0.1,
       description: 'Likes to kick. Is a bird.'
     };

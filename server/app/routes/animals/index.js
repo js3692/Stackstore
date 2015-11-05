@@ -26,7 +26,7 @@ router.param('id', function(req, res, next, id) {
 
 router.get('/', function (req, res, next) {
 	if (req.query) {
-		Animal.find({ animalName: new RegExp(req.query.name, "i")}).then(function (animals) {
+		Animal.find({ name: new RegExp(req.query.name, "i")}).then(function (animals) {
 			res.json(animals);
 		}).catch(next);
 	} else {

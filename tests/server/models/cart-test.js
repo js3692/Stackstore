@@ -31,11 +31,11 @@ describe('Cart model', function () {
         password: 'robin' 
       }),
       Animal.create({
-        animalName: "lemur",
+        name: "lemur",
         category: ["mammal", "madagascar"]
       }),
       Animal.create({
-          animalName: "Phil Murray",
+          name: "Phil Murray",
           category: ["human", "murray", "mammal"]
       })
     ];
