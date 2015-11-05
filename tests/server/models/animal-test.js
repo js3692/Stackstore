@@ -38,48 +38,6 @@ describe('Animal model', function () {
         });
     });
 
-    describe('reviews', function () {
-        var animal;
-        var agent = supertest.agent(app);
-
-        beforeEach('create animal', function () {
-            return Animal.create({ animalName: 'TestReviewsAnimal' })
-                .then(function (createdAnimal) {
-                    animal = createdAnimal;
-                });
-        });
-        
-        afterEach('destroy animal', function () {
-            return Animal.remove({ animalName: 'TestReviewsAnimal' });
-        });
-
-        it('reviews property should be an array', function() {
-            expect(Array.isArray(animal.reviews)).to.be.true;
-        });
-
-        it('the array should contain Review instance ids', function(done) {
-            Review.create({
-                content: "I'm a dummy review!",
-                stars: 5,
-                dangerLevel: 3
-            })
-            .then(function (newReview) {
-                agent
-                .post('/api/animals/' + animal._id + '/addReview')
-                .send(newReview)
-                .expect(201)
-                .end(function (err, res) {
-                    if (err) return done(err);
-                    Review.findById(res.body.reviews[0])
-                    .then(function (review) {
-                        expect(review.content).to.equal("I'm a dummy review!");
-                    })
-                    done();
-                });
-            });
-        });
-
-    });
     
     describe('Methods', function() {
         beforeEach('populate Database', function() {        
