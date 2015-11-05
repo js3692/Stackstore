@@ -1,14 +1,14 @@
 'use strict';
 var mongoose = require('mongoose');
 
-var schema = new mongoose.Schema({
+var animalSchema = new mongoose.Schema({
     // language: {
-    //     type: mongoose.Schema.Types.ObjectId
+    //     type: mongoose.animalSchema.Types.ObjectId
     // },
     // code: {
     //     type: String
     // },
-    animalName: {
+    name: {
         type: String,
         required: true
     },
@@ -40,12 +40,12 @@ var schema = new mongoose.Schema({
 });
 
 
-schema.statics.findByCat = function (categories) {
+animalSchema.statics.findByCat = function (categories) {
     var catArr = categories.split(/[\s,]+/);
     return this.find({category: {$in: catArr}});
 };
 
-schema.methods.getSimilar = function () {
+animalSchema.methods.getSimilar = function () {
     var myCat = this.category;
     return this.constructor
     .find({
@@ -55,4 +55,4 @@ schema.methods.getSimilar = function () {
 };
 
 
-mongoose.model('Animal', schema);
+mongoose.model('Animal', animalSchema);

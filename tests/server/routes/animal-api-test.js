@@ -18,7 +18,7 @@ describe('Animal Route', function () {
   var agent,
       baseUrl = '/api/animals/',
       animalInfo = {
-      animalName: 'Emu',
+      name: 'Emu',
       rating: 0.1,
       description: 'Likes to kick. Is a bird.'
   };

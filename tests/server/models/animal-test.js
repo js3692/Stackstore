@@ -42,12 +42,12 @@ describe('Animal model', function () {
     describe('Methods', function() {
         beforeEach('populate Database', function() {        
             return Animal.create({
-                    animalName: "lemur",
+                    name: "lemur",
                     category: ["mammal", "madagascar"]
                 })
                 .then(function() {
                     return Animal.create({
-                        animalName: "Phil Murray",
+                        name: "Phil Murray",
                         category: ["human", "murray", "mammal"]
                     });
                 });
@@ -56,16 +56,16 @@ describe('Animal model', function () {
         it('should find phil murray', function() {
             return Animal.findByCat('mammal')
             .then(function(animal) {
-                expect(animal[0].animalName).to.equal('lemur');
+                expect(animal[0].name).to.equal('lemur');
             });
         });
 
         it('should find similar animals to phil murray', function() {
-            return Animal.findOne({animalName: 'Phil Murray'})
+            return Animal.findOne({name: 'Phil Murray'})
                 .then(function(philM) {
                     return philM.getSimilar();
                 }).then(function(animals) {
-                    expect(animals[0].animalName).to.equal('lemur');
+                    expect(animals[0].name).to.equal('lemur');
                 });
         });
     });
