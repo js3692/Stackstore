@@ -17,9 +17,8 @@ var reviewSchema = new mongoose.Schema({
         max: 10
     },
     author: {
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User',
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     },
     animal: {
         type: mongoose.Schema.Types.ObjectId,
