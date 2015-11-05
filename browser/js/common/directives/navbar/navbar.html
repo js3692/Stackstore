@@ -14,5 +14,6 @@
             <span>Welcome, {{ user.email }}!</span>
             <a ng-click="logout()">Logout</a>
         </div>
+        <button ng-show="!user" ui-sref="signup" class="btn login-button">Sign Up</button>
     </div>
 </nav>
