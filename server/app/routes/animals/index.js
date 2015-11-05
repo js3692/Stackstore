@@ -33,15 +33,15 @@ router.param('id', function(req, res, next, id) {
 });
 
 router.get('/', function (req, res, next) {
-	if (req.query) {
-		Animal.find({ name: new RegExp(req.query.name, "i")}).then(function (animals) {
-			res.json(animals);
-		}).catch(next);
-	} else {
-		Animal.find().then(function (animals) {
-			res.json(animals);
-		}).catch(next);
-	}
+//	if (req.query) {
+//		Animal.find({ name: new RegExp(req.query.name, "i")}).then(function (animals) {
+//			res.json(animals);
+//		}).catch(next);
+//	} else {
+    Animal.find({}).then(function (animals) {
+        res.json(animals);
+    }).catch(next);
+//	}
 });
 
 router.post('/', function (req, res, next) {
