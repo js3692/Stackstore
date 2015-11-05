@@ -13,9 +13,8 @@ var CartSchema = new mongoose.Schema({
 	}
 });
 
-CartSchema.methods.deleteOneItem = function(animalId) {
-  var index = this.animals.indexOf(animalId);
-  if (index > -1) this.animals.splice(index, 1);
+CartSchema.methods.deleteAnimalById = function(animalId) {
+  this.animals.pull(animalId);
   return this.save();
 };
 
