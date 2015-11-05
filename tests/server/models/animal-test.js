@@ -13,7 +13,7 @@ var clearDB = require('mocha-mongoose')(dbURI);
 var supertest = require('supertest');
 var app = require('../../../server/app');
 
-xdescribe('Animal model', function () {
+describe('Animal model', function () {
 
     beforeEach('Establish DB connection', function (done) {
         if (mongoose.connection.db) return done();
@@ -28,45 +28,48 @@ xdescribe('Animal model', function () {
         expect(Animal).to.be.a('function');
     });
 
-    describe('On creation', function () {
-        it('should require an Animal name', function() {
-            return Animal.create({ price: 1000 })
-                .then(null, function(error) {
-                    expect(error).to.exist;
-                    expect(error.message).to.equal('Animal validation failed');
-                });
-        });
-    });
-
-    
     describe('Methods', function() {
         beforeEach('populate Database', function() {        
             return Animal.create({
                     name: "lemur",
+                    price: 100,
+                    description: 'A mammal that lives in madagascar.',
+                    inventoryQuantity: 10,
                     category: ["mammal", "madagascar"]
                 })
                 .then(function() {
                     return Animal.create({
                         name: "Phil Murray",
+                        price: 100, 
+                        description: 'His name is Bill, not Phil. He was in some Wes Anderson movies.',
+                        inventoryQuantity: 1,
                         category: ["human", "murray", "mammal"]
                     });
                 });
         });
 
-        it('should find phil murray', function() {
-            return Animal.findByCat('mammal')
+        it('class method should find animals by category', function() {
+            return Animal.findByCategory('mammal')
             .then(function(animal) {
                 expect(animal[0].name).to.equal('lemur');
             });
         });
 
-        it('should find similar animals to phil murray', function() {
+        it('instance method should find similar animals', function() {
             return Animal.findOne({name: 'Phil Murray'})
                 .then(function(philM) {
                     return philM.getSimilar();
                 }).then(function(animals) {
                     expect(animals[0].name).to.equal('lemur');
                 });
+        });
+        
+        it('price getter should return value in dollars', function() {
+            return Animal
+                .findOne({ name: 'Phil Murray' })
+                .then(function(animal) {
+                    expect(Number(animal.priceUSD)).to.equal(100);
+                })
         });
     });
 });
