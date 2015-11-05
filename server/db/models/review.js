@@ -9,24 +9,28 @@ var reviewSchema = new mongoose.Schema({
     stars: {
         type: Number,
         min: 0,
-        max: 5,
-        required: true
+        max: 5
     },
     dangerLevel: {
         type: Number,
         min: 0,
-        max: 10,
-        required: true
+        max: 10
     },
     author: {
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
     animal: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Animal'
+        ref: 'Animal', 
+        required: true
     }
 });
+
+reviewSchema.path('content').validate(function(content) {
+    return content.length > 20;
+}); 
 
 reviewSchema.statics.findReviewsByAnimal = function(animalId) {
     return this.find({})
