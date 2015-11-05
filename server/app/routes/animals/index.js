@@ -8,13 +8,16 @@ require('../../../db/models');
 var Animal = mongoose.model('Animal');
 var Review = mongoose.model('Review');
 
-//var ensureAuthenticated = function (req, res, next) {
-//    if (req.isAuthenticated()) {
-//        next();
-//    } else {
-//        res.status(401).end();
-//    }
-//};
+var ensureAuthenticated = function (req, res, next) {
+    if (req.user) next();
+    else res.status(401).end();
+};
+
+// middleware to check if user is admin.
+function ensureAdmin(req, res, next) {
+    if(req.user && req.user.isAdmin) next();
+    else res.status(401).end();
+}
 
 // Current URL: '/api/animals'
 
@@ -34,18 +37,13 @@ router.param('id', function(req, res, next, id) {
 });
 
 router.get('/', function (req, res, next) {
-//	if (req.query) {
-//		Animal.find({ name: new RegExp(req.query.name, "i")}).then(function (animals) {
-//			res.json(animals);
-//		}).catch(next);
-//	} else {
     Animal.find({}).then(function (animals) {
         res.json(animals);
     }).catch(next);
 //	}
 });
 
-router.post('/', function (req, res, next) {
+router.post('/', ensureAdmin, function (req, res, next) {
     //check if animal name is unique
     Animal.checkIfUnique(req.body.name)
         .then(function(isUnique) {
@@ -68,7 +66,7 @@ router.get('/:id', function (req, res) {
 });
 
 
-router.put('/:id', function (req, res, next) {
+router.put('/:id', ensureAdmin, function (req, res, next) {
     _.extend(req.toSend.animal, req.body);
     req.toSend.animal.save()
 	.then(function () {
@@ -76,7 +74,7 @@ router.put('/:id', function (req, res, next) {
 	}).catch(next);
 });
 
-router.post('/:id/reviews', function (req, res, next) {
+router.post('/:id/reviews', ensureAuthenticated, function (req, res, next) {
     var review = req.body;
     review.animal = req.toSend.animal._id;
     Review.create(review)

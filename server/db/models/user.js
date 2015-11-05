@@ -25,6 +25,9 @@ var userSchema = new mongoose.Schema({
     },
     google: {
         id: String
+    },
+    isAdmin: {
+        type: Boolean
     }
 });
 
