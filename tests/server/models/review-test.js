@@ -40,28 +40,6 @@ describe('Review model', function () {
                 expect(error.message).to.equal('Review validation failed');
             });
         });
-        
-        describe('stars field should not allow', function() {
-            var myReview = {
-                content: 'I\'m going to put the wrong number of stars!'
-            };
-            
-            it('more than 5 stars', function() {
-                myReview.stars = 600;
-                return Review.create(myReview).then(null, function(error) {
-                    expect(error).to.exist;
-                    expect(error.message).to.equal('Review validation failed');
-                });
-            });
-            
-            it('fewer than 0 stars', function() {
-                myReview.stars = -3;
-                return Review.create(myReview).then(null, function(error) {
-                    expect(error).to.exist;
-                    expect(error.message).to.equal('Review validation failed');
-                });
-            });
-        });
     });
 });
 

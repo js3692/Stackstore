@@ -4,7 +4,7 @@ var clearDB = require('mocha-mongoose')(dbURI);
 var sinon = require('sinon');
 var expect = require('chai').expect;
 var mongoose = require('mongoose');
-var Promise = require('bluebird')
+var Promise = require('bluebird');
 mongoose.Promise = Promise;
 
 
@@ -26,9 +26,9 @@ describe('Cart model', function () {
     });
   
     var userAndAnimalsPromises = [
-      User.create({ 
+      User.create({
         email: 'batman@gmail.com',
-        password: 'robin' 
+        password: 'robin'
       }),
       Animal.create({
         name: "lemur",
@@ -51,7 +51,7 @@ describe('Cart model', function () {
 
     describe('on creation', function () {
 
-      var cart, 
+      var cart,
           lemurId,
           philId;
       
@@ -60,10 +60,10 @@ describe('Cart model', function () {
           .spread(function(user, lemur, phil) {
             lemurId = lemur._id;
             philId = phil._id;
-            return Cart.create({ 
+            return Cart.create({
               user: user._id,
               animals: [lemur._id, phil._id]
-            })
+            });
         }).then(function(newCart){
            cart = newCart;
         });
@@ -77,7 +77,7 @@ describe('Cart model', function () {
         });
       });
       
-    })
+    });
 });
 
 
