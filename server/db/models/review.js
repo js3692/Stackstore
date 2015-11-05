@@ -28,4 +28,11 @@ var reviewSchema = new mongoose.Schema({
     }
 });
 
+reviewSchema.statics.findReviewsByAnimal = function(animalId) {
+    return this.find({})
+        .where('animal')
+        .equals(animalId)
+        .exec();
+};
+
 mongoose.model('Review', reviewSchema);
