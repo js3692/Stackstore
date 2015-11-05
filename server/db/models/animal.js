@@ -47,7 +47,7 @@ function convertFormatToCents (priceInDollars) {
 
 animalSchema.set('toObject', { getters: true });
 animalSchema.set('toJSON', { getters: true });
-animalSchema.virtual('price.USD').get(function () {
+animalSchema.virtual('priceUSD').get(function () {
     return (this.price/100).toFixed(2);
 });
 
