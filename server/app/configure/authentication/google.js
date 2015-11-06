@@ -10,27 +10,35 @@ module.exports = function (app) {
     var googleConfig = app.getValue('env').GOOGLE;
 
     var googleCredentials = {
-        clientID: googleConfig.clientID,
-        clientSecret: googleConfig.clientSecret,
-        callbackURL: googleConfig.callbackURL
+        clientID: '405639642373-89s6i4f8bdrsb8g3urmht3jui7j089aj.apps.googleusercontent.com',
+        clientSecret: '21Ij8QoaOfdSnrftmaR03FUB',
+        callbackURL: 'http://localhost:1337/auth/google/callback'
     };
 
     var verifyCallback = function (accessToken, refreshToken, profile, done) {
 
         UserModel.findOne({ 'google.id': profile.id }).exec()
             .then(function (user) {
-
+                console.log('this is the user', user)
                 if (user) {
+                    console.log('are we in if', profile)
+
                     return user;
                 } else {
+                    console.log('are we in else', profile)
+
                     return UserModel.create({
                         google: {
-                            id: profile.id
-                        }
+                            id: profile._json.id,
+                            username: profile._json.name,
+                            token: accessToken
+                        },
+                        email: profile._json.email
                     });
                 }
 
             }).then(function (userToLogin) {
+                console.log('this is the userToLogin', userToLogin)
                 done(null, userToLogin);
             }, function (err) {
                 console.error('Error creating user from Google authentication', err);
@@ -40,8 +48,18 @@ module.exports = function (app) {
     };
 
     passport.use(new GoogleStrategy(googleCredentials, verifyCallback));
+   
+    // app.use('/auth/google', function (req, res, next) {
 
-    app.get('/auth/google', passport.authenticate('google', {
+    //     console.log("are you ALIVE")
+
+    // });
+
+    app.get('/auth/google', function (req, res, next) {
+        console.log('hellooooo')
+        next();
+    },
+        passport.authenticate('google', {
         scope: [
             'https://www.googleapis.com/auth/userinfo.profile',
             'https://www.googleapis.com/auth/userinfo.email'

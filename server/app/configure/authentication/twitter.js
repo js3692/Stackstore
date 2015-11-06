@@ -10,9 +10,9 @@ module.exports = function (app) {
     var twitterConfig = app.getValue('env').TWITTER;
 
     var twitterCredentials = {
-        consumerKey: twitterConfig.consumerKey,
-        consumerSecret: twitterConfig.consumerSecret,
-        callbackUrl: twitterConfig.callbackUrl
+        consumerKey: '1704EqojObgMVIpg8Y2m0mHKd',
+        consumerSecret: 'PLE5IhHrZzciLKBAnsXCvdjK15DjSM3ny3Tef8gFXXXKgL8d85',
+        callbackUrl: 'http://127.0.0.1/auth/twitter/callback'
     };
 
     var createNewUser = function (token, tokenSecret, profile) {

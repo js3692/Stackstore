@@ -5,11 +5,10 @@ var mongoose = require('mongoose');
 var userSchema = new mongoose.Schema({
     email: {
         type: String,
-        required: true
+        // required: true
     },
     password: {
-        type: String,
-        required: true
+        type: String
     },
     salt: {
         type: String
@@ -21,10 +20,14 @@ var userSchema = new mongoose.Schema({
         tokenSecret: String
     },
     facebook: {
-        id: String
+        id: String,
+        username: String,
+        token: String
     },
     google: {
-        id: String
+        id: String,
+        username: String,
+        token: String
     },
     isAdmin: {
         type: Boolean
@@ -45,6 +48,8 @@ var encryptPassword = function (plainText, salt) {
 };
 
 userSchema.pre('validate', function(next) {
+    if(!this.email) { next()}
+    console.log(this.email, 'this.email')
     if(this.isValidEmail(this.email)) next();
     else {
         var err = new Error('Not a valid email address');
