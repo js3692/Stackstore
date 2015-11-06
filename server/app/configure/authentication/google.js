@@ -19,14 +19,9 @@ module.exports = function (app) {
 
         UserModel.findOne({ 'google.id': profile.id }).exec()
             .then(function (user) {
-                console.log('this is the user', user)
                 if (user) {
-                    console.log('are we in if', profile)
-
                     return user;
                 } else {
-                    console.log('are we in else', profile)
-
                     return UserModel.create({
                         google: {
                             id: profile._json.id,
