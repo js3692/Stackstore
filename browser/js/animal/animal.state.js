@@ -3,9 +3,15 @@ app.config(function ($stateProvider) {
         url: '/animal/:id',
         templateUrl: 'js/animal/animal.html',
         resolve: {
-          animal: function(AnimalFactory, $stateParams) {
-            return AnimalFactory.findById($stateParams.id);
-          }
+            animal: function(Animal, $stateParams) {
+                return Animal.find($stateParams.id);
+            },
+            reviews: function(Review) {
+                return Review.findAll();
+            },
+            users: function(User) {
+                return User.findAll();
+            }
         },
         controller: "AnimalCtrl"
     })

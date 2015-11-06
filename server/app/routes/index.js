@@ -9,6 +9,7 @@ router.use('/cart', require('./cart'));
 router.use('/users', require('./users'));
 router.use('/order', require('./order'));
 router.use('/recommendations', require('./recommendations'));
+router.use('/reviews', require('./reviews'));
 
 // Make sure this is after all of
 // the registered routes!

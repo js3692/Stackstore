@@ -1,10 +1,9 @@
 'use strict';
 
-app.factory('User', function(DS, $state) {
-
+app.factory('User', function(DS) {
 	var User = DS.defineResource({
-    name: 'user'
-})
-
+        name: 'users'
+    });
+    
 	return User;
 }).run(function (User) {})
