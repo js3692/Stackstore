@@ -103,12 +103,10 @@ connectToDb.then(function () {
 //    });
     Animal.findAsync({}).then(function (animals) {
         if (animals.length === 0) {
-            
             var usersAndAnimalsPromise = [
                 seedUsers(),
                 seedAnimals()
             ];
-
             return Promise.all(usersAndAnimalsPromise);
         } else {
             console.log(chalk.magenta('Seems to already be user data, exiting!'));
