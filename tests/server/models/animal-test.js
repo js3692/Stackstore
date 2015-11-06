@@ -13,7 +13,7 @@ var clearDB = require('mocha-mongoose')(dbURI);
 var supertest = require('supertest');
 var app = require('../../../server/app');
 
-xdescribe('Animal model', function () {
+describe('Animal model', function () {
 
     beforeEach('Establish DB connection', function (done) {
         if (mongoose.connection.db) return done();
@@ -28,39 +28,80 @@ xdescribe('Animal model', function () {
         expect(Animal).to.be.a('function');
     });
 
-    describe('On creation', function () {
-        it('should require an Animal name', function() {
-            return Animal.create({ price: 1000 })
-                .then(null, function(error) {
-                    expect(error).to.exist;
-                    expect(error.message).to.equal('Animal validation failed');
+    describe('The animal document on creation', function () {
+        it('should save prices in cents', function() {
+            return Animal.create({
+                    name: "lemur",
+                    category: ["Dangerous", "Very rare"],
+                    price: 10.99,
+                    description: "Pet me!",
+                    rating: 3,
+                    inventoryQuantity: 4
+                })
+                .then(function (animal) {
+                    expect(animal.price).to.equal(1099);
+                });
+        });
+
+        it("should not be created if there\'s one with the same name", function() {
+            return Animal.create({
+                    name: "lemur",
+                    category: ["Not Dangerous", "Very common"],
+                    price: 11.99,
+                    description: "Don't touch!",
+                    rating: 1,
+                    inventoryQuantity: 2
+                })
+                .then(null, function (err) {
+                    expect(Animal.create).to.throw(err);
                 });
         });
     });
 
     
-    describe('Methods', function() {
-        beforeEach('populate Database', function() {        
+    describe('Static, instance, virtual methods: ', function() {
+        beforeEach('populate Database', function() {
             return Animal.create({
                     name: "lemur",
-                    category: ["mammal", "madagascar"]
+                    category: ["Dangerous", "Very rare"],
+                    price: 10.99,
+                    description: "Pet me!",
+                    rating: 3,
+                    inventoryQuantity: 4
                 })
                 .then(function() {
                     return Animal.create({
                         name: "Phil Murray",
-                        category: ["human", "murray", "mammal"]
+                        category: ["Human", "Dangerous"],
+                        price: 99.99,
+                        description: "Don't touch",
+                        rating: 2,
+                        inventoryQuantity: 1
                     });
                 });
         });
 
-        it('should find phil murray', function() {
-            return Animal.findByCat('mammal')
-            .then(function(animal) {
-                expect(animal[0].name).to.equal('lemur');
-            });
+        afterEach('Delete created animals for next test', function () {
+            return Animal.remove({});
         });
 
-        it('should find similar animals to phil murray', function() {
+        it('Get price in dollars with priceUSD virtual', function() {
+            return Animal.findOne({ name: "lemur" })
+                .then(function(lemur) {
+                    expect(lemur.price).to.equal(1099);
+                    expect(lemur.priceUSD).to.equal('10.99');
+                });
+        });
+
+
+        it('findByCategories should find phil murray', function() {
+            return Animal.findByCategories(['Very rare'])
+                .then(function(animal) {
+                    expect(animal[0].name).to.equal('lemur');
+                });
+        });
+
+        it('getSimilar should find similar animals to phil murray', function() {
             return Animal.findOne({name: 'Phil Murray'})
                 .then(function(philM) {
                     return philM.getSimilar();

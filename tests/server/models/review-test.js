@@ -9,6 +9,7 @@ var mongoose = require('mongoose');
 require('../../../server/db/models');
 
 var Review = mongoose.model('Review');
+var Animal = mongoose.model('Animal');
 
 describe('Review model', function () {
 
@@ -26,21 +27,69 @@ describe('Review model', function () {
     });
 
     describe('on creation', function () {
-
-        it('should require content', function() {
-            return Review.create({ stars: 0 }).then(null, function(error) {
-                expect(error).to.exist;
-                expect(error.message).to.equal('Review validation failed');
-            });
+        var animal;
+        beforeEach('Create an animal', function () {
+            return Animal.create({
+                    name: "lemur",
+                    category: ["Dangerous", "Very rare"],
+                    price: 200.50,
+                    description: "Pet me if you can",
+                    rating: 3,
+                    inventoryQuantity: 4
+                })
+                .then(function (newAnimal) {
+                    animal = newAnimal;
+                });
         });
-      
-        it('should require stars', function() {
-            return Review.create({ content: 'I forgot to add stars!' }).then(null, function(error) {
-                expect(error).to.exist;
-                expect(error.message).to.equal('Review validation failed');
-            });
+
+        afterEach('Destroy animal', function () {
+            return Animal.remove({}).then(function () { Review.remove({}); });
+        });
+
+        it('content should have more than 20 characters', function() {
+            return Review.create({
+                    content: "Very short",
+                    animal: animal._id
+                }).then(null, function(error) {
+                    expect(error).to.exist;
+                    expect(error.message).to.equal('Review validation failed');
+                });
         });
     });
+
+    describe('Static method: ', function () {
+        var animal;
+
+        beforeEach('Create an animal', function () {
+            return Animal.create({
+                    name: "lemur",
+                    category: ["Dangerous", "Very rare"],
+                    price: 200.50,
+                    description: "Pet me if you can",
+                    rating: 3,
+                    inventoryQuantity: 4
+                })
+                .then(function (newAnimal) {
+                    animal = newAnimal;
+                });
+        });
+
+        afterEach('Destroy animal', function () {
+            return Animal.remove({});
+        });
+
+        it('findReviewsByAnimal should find the animal associated with the review', function() {
+            return Review.create({
+                    content: "Very Looooooooonnnnngggg",
+                    animal: animal._id
+                }).then(function () {
+                    return Review.findReviewsByAnimal(animal._id);
+                }).then(function (reviews) {
+                    expect(reviews[0].animal.equals(animal._id)).to.be.true;
+                });
+        });
+    });
+      
 });
 
 

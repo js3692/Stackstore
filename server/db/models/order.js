@@ -1,6 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose');
+var Item = mongoose.model('Item');
+var Promise = require('bluebird');
 
 var schema = new mongoose.Schema({
 	user: {
@@ -12,25 +14,9 @@ var schema = new mongoose.Schema({
 		type: String,
 		enum: ['Created', 'Processing', 'Cancelled', 'Completed']
 	},
-	animals: {
-		// Each object will be a snapshot of the
-		// animal document at the time of the purchase.
-		// For example,
-		// {
-		//	orderQuantity: 2, =========> MAKE SURE TO ADD THIS KEY WHEN CREATING NEW ORDER
-		//	_id: "39393393933939339393",
-		//	name: "John the Alaskan snow leopard",
-		//	imageUrl: "www.google.com/billmurray",
-		//	price: 20000,
-		//	description: "Pet me if you can",
-		//	category: ["Dangerous", "Very rare"],
-		//	countryCoude: ['US'],
-		//	conservationStatus: "Endangered",
-		//	inventoryQuantity: 3,
-		//	rating: 3
-		// }
-		type: [{}],
-		required: true
+	items: {
+		type: [mongoose.Schema.Types.ObjectId],
+		ref: 'Item'
 	},
   date: {
 		type: Date,
@@ -42,14 +28,21 @@ var schema = new mongoose.Schema({
   },
   total: {
     type: Number,
+    default: 0,
     get: convertFormatToDollars
   }
 });
 
 schema.pre('save', function (next) {
-	this.total = this.animals.reduce(function (sum, animal) {
-		return sum + animal.price;
-	}, 0);
+	var self = this;
+	Promise.map(self.items, function(itemId) {
+		return Item.findById(itemId).then(function (item) {
+			self.total = (self.total * 100) + (item.animal.price * item.quantity);
+		});
+	})
+	.then(function () {
+		next();
+	}).catch(next);
 });
 
 function convertFormatToDollars (totalInCents) {

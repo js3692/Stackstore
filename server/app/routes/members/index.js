@@ -33,15 +33,8 @@ router.get('/secret-stash', ensureAuthenticated, function (req, res) {
 
 });
 
-// ====== ADMIN ONLY =========
-router.get('/', function (req, res) { res.end(); }); // ==> Get member profile
-router.post('/', function (req, res) { res.end(); }); // ==> Get member profile
-router.put('/', function (req, res) { res.end(); }); // ==> Update profile info
-router.delete('/', function (req, res) { res.end(); }); // ==> Delete self
-// ===========================
+// router.get('/:id', function (req, res) { res.end(); }); // ==> Get member (self) profile
+// router.put('/:id', function (req, res) { res.end(); }); // ==> Update profile info
+// router.delete('/:id', function (req, res) { res.end(); }); // ==> Delete self
 
-router.get('/:id', function (req, res) { res.end(); }); // ==> Get member (self) profile
-router.put('/:id', function (req, res) { res.end(); }); // ==> Update profile info
-router.delete('/:id', function (req, res) { res.end(); }); // ==> Delete self
-
-router.use('/:id/history', require('./history')); // ==> View order history
+// router.use('/:id/history', require('./history')); // ==> View order history

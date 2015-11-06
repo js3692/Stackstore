@@ -10,7 +10,7 @@ require('../../../server/db/models');
 
 var User = mongoose.model('User');
 
-xdescribe('User model', function () {
+describe('User model', function () {
 
     beforeEach('Establish DB connection', function (done) {
         if (mongoose.connection.db) return done();
@@ -114,6 +114,23 @@ xdescribe('User model', function () {
             afterEach(function () {
                 encryptSpy.restore();
                 saltSpy.restore();
+            });
+
+            it('should throw error if email is not valid', function (done) {
+                User.create({ email: 'obamagmail.com', password: 'potus' })
+                    .then(null, function (err) {
+                        expect(err).to.exist;
+                        expect(err.message).to.equal('Not a valid email address');
+                        done();
+                    })
+            });
+
+            it('should call User.encryptPassword with the given password and generated salt', function (done) {
+                createUser().then(function () {
+                    var generatedSalt = saltSpy.getCall(0).returnValue;
+                    expect(encryptSpy.calledWith('potus', generatedSalt)).to.be.ok;
+                    done();
+                });
             });
 
             it('should call User.encryptPassword with the given password and generated salt', function (done) {

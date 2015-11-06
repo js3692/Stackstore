@@ -2,27 +2,25 @@
 
 var mongoose = require('mongoose');
 
-var CartSchema = new mongoose.Schema({
+var schema = new mongoose.Schema({
 	user: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
 	},
-	animals: {
+	items: {
 		type: [mongoose.Schema.Types.ObjectId],
-		ref:'Animal'
+		ref: 'Item'
 	}
 });
 
-CartSchema.methods.deleteAnimalById = function(animalId) {
-  this.animals.pull(animalId);
+schema.methods.deleteItem = function (itemId) {
+  this.items.pull(itemId);
   return this.save();
 };
 
-CartSchema.methods.addItem = function(animalId, quantity) {
-  for (var i = 0; i < quantity; i++) {
-		this.animals.push(animalId);
-  }
+schema.methods.addItem = function (itemId) {
+	this.items.push(itemId);
   return this.save();
 };
 
-mongoose.model('Cart', CartSchema);
+mongoose.model('Cart', schema);
