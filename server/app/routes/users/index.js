@@ -17,6 +17,13 @@ function ensureAdmin(req, res, next) {
 
 // Current URL: '/api/users'
 
+router.get('/', function(req, res, next) {
+    User.find({})
+        .then(function(users) {
+            res.status(200).json(users); 
+        }).catch(next);
+});
+
 router.param('id', function(req, res, next, id) {
     User.findById(id)
         .then(function(user) {

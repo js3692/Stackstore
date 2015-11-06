@@ -1,7 +1,13 @@
 app.factory('Cart', function(DS, $state) {
 
 	var Cart = DS.defineResource({
-	    name: 'cart/me',
+	    name: 'cart',
+        actions: {
+            me: {
+                method: 'GET',
+                isArray: false
+            }  
+        },
         relations: {
             hasOne: {
                 user: {

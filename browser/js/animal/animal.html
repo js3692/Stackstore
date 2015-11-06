@@ -1,5 +1,5 @@
 
-<div id="product" class="container-fluid">
+<div id="animal" class="container-fluid">
     <div class="row">
 		<div class="input-group col-md-8 col-centered">
 
@@ -15,6 +15,13 @@
 						 {{ animal.rating }}
 					</div>
 			</div>
+            <div class="panel panel-default" ng-repeat='review in animal.reviews'>
+		  		<div class="panel-heading">{{ review.writtenBy.email }}</div>
+					<div class="panel-body">
+						 {{ review.content }}
+					</div>
+			</div>
+            
 		</div>
 	</div>
 </div>

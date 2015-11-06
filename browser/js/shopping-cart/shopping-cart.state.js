@@ -4,7 +4,7 @@ app.config(function ($stateProvider) {
         templateUrl: 'js/shopping-cart/shopping-cart.html',
         resolve: {
           cart: function($stateParams, Cart) {
-            return Cart.findAll();
+            return Cart.me();
           }
         },
         controller: "ShoppingCartCtrl"

@@ -5,6 +5,12 @@ app.config(function ($stateProvider) {
         resolve: {
             animal: function(Animal, $stateParams) {
                 return Animal.find($stateParams.id);
+            },
+            reviews: function(Review) {
+                return Review.findAll();
+            },
+            users: function(User) {
+                return User.findAll();
             }
         },
         controller: "AnimalCtrl"

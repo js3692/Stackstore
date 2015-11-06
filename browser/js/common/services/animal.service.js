@@ -1,5 +1,5 @@
 'use strict';
-////
+
 app.factory('Animal', function(DS, $state) {
 
 	var Animal = DS.defineResource({
