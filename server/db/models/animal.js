@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var animalSchema = new mongoose.Schema({
     name: {
         type: String,
+        unique: true,
         required: true
     },
     imageUrl: {
@@ -20,8 +21,7 @@ var animalSchema = new mongoose.Schema({
         required: true
     },
     category: {
-        type: [String],
-        required: true
+        type: [String]
     },
     countryCode: {
         type: [String]
@@ -47,31 +47,21 @@ function convertFormatToCents (priceInDollars) {
 
 animalSchema.set('toObject', { getters: true });
 animalSchema.set('toJSON', { getters: true });
+
 animalSchema.virtual('priceUSD').get(function () {
     return (this.price/100).toFixed(2);
 });
 
-animalSchema.statics.checkIfUnique = function(name) {
-    return this
-        .findOne({ name: name })
-        .then(function(animal) {
-            return !Boolean(animal);
-        });
-};
-
-animalSchema.statics.findByCategory = function (categories) {
-    var catArr = categories.split(/[\s,]+/);
-    // JS: parameter categories should be an array instead?
-    return this.find({category: {$in: catArr}});
+animalSchema.statics.findByCategories = function (categories) {
+    return this.find({ category: { $in: categories } });
 };
 
 animalSchema.methods.getSimilar = function () {
-    var myCat = this.category;
     return this.constructor
-    .find({
-        _id: {$ne: this._id},
-        category: {$in: myCat}
-    });
+        .find({
+            _id: { $ne: this._id },
+            category: { $in: this.category }
+        });
 };
 
 

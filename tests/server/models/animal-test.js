@@ -28,34 +28,80 @@ describe('Animal model', function () {
         expect(Animal).to.be.a('function');
     });
 
-    describe('Methods', function() {
-        beforeEach('populate Database', function() {        
+    describe('The animal document on creation', function () {
+        it('should save prices in cents', function() {
             return Animal.create({
                     name: "lemur",
-                    price: 100,
-                    description: 'A mammal that lives in madagascar.',
-                    inventoryQuantity: 10,
-                    category: ["mammal", "madagascar"]
+                    category: ["Dangerous", "Very rare"],
+                    price: 10.99,
+                    description: "Pet me!",
+                    rating: 3,
+                    inventoryQuantity: 4
+                })
+                .then(function (animal) {
+                    expect(animal.price).to.equal(1099);
+                });
+        });
+
+        it("should not be created if there\'s one with the same name", function() {
+            return Animal.create({
+                    name: "lemur",
+                    category: ["Not Dangerous", "Very common"],
+                    price: 11.99,
+                    description: "Don't touch!",
+                    rating: 1,
+                    inventoryQuantity: 2
+                })
+                .then(null, function (err) {
+                    expect(Animal.create).to.throw(err);
+                });
+        });
+    });
+
+    
+    describe('Static, instance, virtual methods: ', function() {
+        beforeEach('populate Database', function() {
+            return Animal.create({
+                    name: "lemur",
+                    category: ["Dangerous", "Very rare"],
+                    price: 10.99,
+                    description: "Pet me!",
+                    rating: 3,
+                    inventoryQuantity: 4
                 })
                 .then(function() {
                     return Animal.create({
                         name: "Phil Murray",
-                        price: 100, 
-                        description: 'His name is Bill, not Phil. He was in some Wes Anderson movies.',
-                        inventoryQuantity: 1,
-                        category: ["human", "murray", "mammal"]
+                        category: ["Human", "Dangerous"],
+                        price: 99.99,
+                        description: "Don't touch",
+                        rating: 2,
+                        inventoryQuantity: 1
                     });
                 });
         });
 
-        it('class method should find animals by category', function() {
-            return Animal.findByCategory('mammal')
-            .then(function(animal) {
-                expect(animal[0].name).to.equal('lemur');
-            });
+        afterEach('Delete created animals for next test', function () {
+            return Animal.remove({});
         });
 
-        it('instance method should find similar animals', function() {
+        it('Get price in dollars with priceUSD virtual', function() {
+            return Animal.findOne({ name: "lemur" })
+                .then(function(lemur) {
+                    expect(lemur.price).to.equal(1099);
+                    expect(lemur.priceUSD).to.equal('10.99');
+                });
+        });
+
+
+        it('findByCategories should find phil murray', function() {
+            return Animal.findByCategories(['Very rare'])
+                .then(function(animal) {
+                    expect(animal[0].name).to.equal('lemur');
+                });
+        });
+
+        it('getSimilar should find similar animals to phil murray', function() {
             return Animal.findOne({name: 'Phil Murray'})
                 .then(function(philM) {
                     return philM.getSimilar();

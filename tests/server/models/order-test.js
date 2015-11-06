@@ -1,7 +1,6 @@
 var dbURI = 'mongodb://localhost:27017/testingDB';
 var clearDB = require('mocha-mongoose')(dbURI);
 
-var sinon = require('sinon');
 var expect = require('chai').expect;
 var mongoose = require('mongoose');
 var Promise = require('bluebird');
@@ -14,6 +13,7 @@ require('../../../server/db/models');
 var Order = mongoose.model('Order');
 var User = mongoose.model('User');
 var Animal = mongoose.model('Animal');
+var Item = mongoose.model('Item');
 
 describe('Order model', function () {
     beforeEach('Establish DB connection', function (done) {
@@ -21,36 +21,39 @@ describe('Order model', function () {
         mongoose.connect(dbURI, done);
     });
 
-    var user, animalA, animalB;
+    var user, animalA, animalB, itemA, itemB;
 
     beforeEach('Create user (the customer) and animals', function () {
       var AnimalsPromises = [
         Animal.create({
           name: "lemur",
           category: ["Dangerous", "Very rare"],
-          imageUrl: "www.google.com/billmurray",
-          price: 20000,
+          price: 200.50,
           description: "Pet me if you can",
-          countryCoude: ['US'],
-          conservationStatus: "Endangered",
           rating: 3,
           inventoryQuantity: 4
         }),
         Animal.create({
           name: "Phil Murray",
           category: ["human", "murray", "mammal"],
-          imageUrl: "www.google.com/billmurray",
           description: "Pet me if you can",
-          price: 30000,
-          countryCoude: ['CH'],
+          price: 300.50,
           rating: 3.4,
           inventoryQuantity: 4
         })
       ];
       return Promise.all(AnimalsPromises)
         .spread(function (lemur, phil) {
-          animalA = lemur.toObject();
-          animalB = phil.toObject();
+          animalA = lemur;
+          animalB = phil;
+          return Item.create({ animal: animalA, quantity: 2 });
+        })
+        .then(function (newItem) {
+          itemA = newItem;
+          return Item.create({ animal: animalB });
+        })
+        .then(function (newItem) {
+          itemB = newItem;
           return User.create({ email: 'batman@gmail.com', password: 'robin' });
         })
         .then(function (newUser) {
@@ -71,11 +74,10 @@ describe('Order model', function () {
       var orderA, orderB;
 
 
-      beforeEach('Create two orders', function(done) {
-        Order.create({
+      beforeEach('Create two orders', function (done) {
+        Order.create({ // ==> Create the first order with two animals
           user: user._id,
-          total: 20000,
-          animals: [animalA],
+          items: [itemA._id, itemB._id],
           date: new Date(),
           shippingAddr: "5 Hanover Square"
         })
@@ -83,10 +85,9 @@ describe('Order model', function () {
           orderA = order;
           return Promise.delay(1000)
             .then(function () {
-              return Order.create({
+              return Order.create({ // ==> Create another order with one animal, 1 sec behind
                   user: user._id,
-                  animals: [animalB],
-                  total: 30000,
+                  animals: [itemB._id],
                   date: Date.now(),
                   shippingAddr: "5 Hanover Square"
                 });
@@ -97,7 +98,16 @@ describe('Order model', function () {
           done();
         }).catch(done);
       });
-      
+
+      afterEach('Delete those orders', function () {
+        return Order.remove({});
+      });
+
+      it('total should have been saved correctly', function () {
+        expect(orderA.total).to.not.equal(70150);
+        expect(orderA.total).to.equal((701.5).toFixed(2));
+      });
+
       it('getAllOrders should get all orders sorted by date (DESC)', function() {
         return Order.getAllOrders(user._id)
           .then(function(orders) {
@@ -105,6 +115,7 @@ describe('Order model', function () {
             expect(orders[0].date).to.be.above(orders[1].date);
           });
       });
+
       
     });
 });

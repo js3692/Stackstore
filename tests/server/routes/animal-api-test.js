@@ -35,20 +35,16 @@ xdescribe('Animal Route', function () {
 
   var animal;
 
-  beforeEach('Create an animal', function () {
-      return Animal.create(animalInfo).then(function(newAnimal) {
-        animal = newAnimal;
-      }).catch(function(error) {
-          console.log(error);
-      });
-  });
+  // beforeEach('Create an animal', function () {
+  //     return Animal.create(animalInfo).then(function(newAnimal) {
+  //       animal = newAnimal;
+  //     }).catch(function(error) {
+  //         console.log(error);
+  //     });
+  // });
 
   afterEach('Clear test database', function (done) {
       clearDB(done);
-  });
-
-  afterEach('Remove created animal', function () {
-    return Animal.remove(animalInfo);
   });
 
   describe('Get all animals', function () {

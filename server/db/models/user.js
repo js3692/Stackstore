@@ -54,7 +54,7 @@ userSchema.pre('validate', function(next) {
         var err = new Error('Not a valid email address');
         next(err);
     }
-})
+});
 
 userSchema.pre('save', function (next) {
 
@@ -70,7 +70,7 @@ userSchema.pre('save', function (next) {
 userSchema.methods.isValidEmail = function (email) {
     var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     return re.test(email);
-}
+};
 
 userSchema.statics.generateSalt = generateSalt;
 userSchema.statics.encryptPassword = encryptPassword;
