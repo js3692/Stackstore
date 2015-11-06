@@ -27,7 +27,7 @@
                       <tbody>
                         <tr ui-sref="animal({id: animal._id})" ng-repeat="animal in animals | filter: {animalName: animalName}">
                           <td><figure><img ng-src="{{animal.imageUrl}}"/></figure></td>
-                          <td>{{animal.animalName}}</td>
+                          <td>{{animal.name}}</td>
                           <td>{{animal.rating}}</td>
                           <td>{{animal.conservationStatus}}</td>
                           <td>{{animal.price}}</td>
