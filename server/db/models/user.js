@@ -49,7 +49,6 @@ var encryptPassword = function (plainText, salt) {
 
 userSchema.pre('validate', function(next) {
     if(!this.email) { next()}
-    console.log(this.email, 'this.email')
     if(this.isValidEmail(this.email)) next();
     else {
         var err = new Error('Not a valid email address');

@@ -50,6 +50,7 @@ schema.pre('save', function (next) {
 	this.total = this.animals.reduce(function (sum, animal) {
 		return sum + animal.price;
 	}, 0);
+    next();
 });
 
 function convertFormatToDollars (totalInCents) {
