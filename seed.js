@@ -21,26 +21,27 @@ var mongoose = require('mongoose');
 var Promise = require('bluebird');
 var chalk = require('chalk');
 var connectToDb = require('./server/db');
-//var User = Promise.promisifyAll(mongoose.model('User'));
+var User = Promise.promisifyAll(mongoose.model('User'));
 var Animal = Promise.promisifyAll(mongoose.model('Animal'));
 var Review = Promise.promisifyAll(mongoose.model('Review'));
 
-//var seedUsers = function () {
-//
-//    var users = [
-//        {
-//            email: 'testing@fsa.com',
-//            password: 'password'
-//        },
-//        {
-//            email: 'obama@gmail.com',
-//            password: 'potus'
-//        }
-//    ];
-//
-//    return User.createAsync(users);
-//
-//};
+var seedUsers = function () {
+
+    var users = [
+        {
+            email: 'testing@fsa.com',
+            password: 'password'
+        },
+        {
+            email: 'obama@gmail.com',
+            password: 'potus',
+            isAdmin: true
+        }
+    ];
+
+    return User.createAsync(users);
+
+};
 
 var seedAnimals = function () {
 
@@ -83,7 +84,7 @@ var seedAnimals = function () {
 };
 
 var review = {
-    content: 'this is a review',
+    content: 'This emu is subpar. He does not kick, as was advertised.',
     stars: 1,
     dangerLevel: 10
 };
@@ -95,13 +96,21 @@ function seedReview(review) {
 connectToDb.then(function () {
     Animal.findAsync({}).then(function (animals) {
         if (animals.length === 0) {
-            return seedAnimals();
+            
+            var usersAndAnimalsPromise = [
+                seedUsers(),
+                seedAnimals()
+            ];
+
+            return Promise.all(usersAndAnimalsPromise);
         } else {
+            console.log(animals);
             console.log(chalk.magenta('Seems to already be user data, exiting!'));
             process.kill(0);
         }
-    }).then(function(animals) {
+    }).spread(function(users, animals) {
         review.animal = animals[0]._id;
+        review.author = users[0]._id;
         return seedReview(review);
     }).then(function () {
         console.log(chalk.green('Seed successful!'));

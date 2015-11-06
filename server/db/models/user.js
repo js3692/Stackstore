@@ -28,6 +28,9 @@ var userSchema = new mongoose.Schema({
         id: String,
         username: String,
         token: String
+    },
+    isAdmin: {
+        type: Boolean
     }
 });
 

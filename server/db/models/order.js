@@ -8,11 +8,16 @@ var schema = new mongoose.Schema({
 		ref: 'User',
 		required: true
 	},
+	status: {
+		type: String,
+		enum: ['Created', 'Processing', 'Cancelled', 'Completed']
+	},
 	animals: {
 		// Each object will be a snapshot of the
 		// animal document at the time of the purchase.
 		// For example,
 		// {
+		//	orderQuantity: 2, =========> MAKE SURE TO ADD THIS KEY WHEN CREATING NEW ORDER
 		//	_id: "39393393933939339393",
 		//	name: "John the Alaskan snow leopard",
 		//	imageUrl: "www.google.com/billmurray",
@@ -21,23 +26,35 @@ var schema = new mongoose.Schema({
 		//	category: ["Dangerous", "Very rare"],
 		//	countryCoude: ['US'],
 		//	conservationStatus: "Endangered",
+		//	inventoryQuantity: 3,
 		//	rating: 3
 		// }
-		type: [Object],
+		type: [{}],
 		required: true
 	},
-  total: {
-    type: Number,
-    required: true
-  },
   date: {
 		type: Date,
 		required: true
   },
   shippingAddr: {
-		type: String
+		type: String,
+		required: true
+  },
+  total: {
+    type: Number,
+    get: convertFormatToDollars
   }
 });
+
+schema.pre('save', function (next) {
+	this.total = this.animals.reduce(function (sum, animal) {
+		return sum + animal.price;
+	}, 0);
+});
+
+function convertFormatToDollars (totalInCents) {
+    return (totalInCents/100).toFixed(2);
+}
 
 schema.statics.getAllOrders = function(userId) {
 	return this.find({ user: userId }).sort({ date: -1 }).exec();

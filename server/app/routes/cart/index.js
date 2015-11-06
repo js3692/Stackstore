@@ -21,7 +21,11 @@ var Cart = mongoose.model('Cart');
 
 router.use(function (req, res, next) {
 	if (req.session.cart) {
-		next();
+        Cart.findById(req.session.cart._id)
+            .then(function(cart) {
+                req.session.cart = cart;
+                next();
+        }).catch(next);
 	}
 	else {
 		if (req.user) { // ==> if a user is logged in
@@ -51,25 +55,25 @@ router.use(function (req, res, next) {
 
 // === Below here, all middlewares have a req.session.cart
 
-router.get('/', function (req, res) {
+router.get('/me', function (req, res) {
 	res.json(req.session.cart);
 });
 
-router.put('/', function (req, res, next) {
-	Cart.findById(req.session.cart._id)
-	.then(function (cart) {
-		return cart.addItem(req.body.animal, req.body.quantity);
-	})
-	.then (function (savedCart) {
-		res.status(201).json(savedCart);
-	}).catch(next);
+router.put('/me', function (req, res, next) {
+    console.log(req.session.cart);
+    var cart = req.session.cart;
+    cart.animals.push(req.body.animal);
+    cart.save()
+        .then(function() {
+            res.status(201).json(cart);
+        }).catch(next);
 });
 
-router.delete('/', function (req, res, next) {
-	Cart.findById(req.session.cart._id)
-	.then(function (cart) {
-		return cart.deleteOneItem(req.body.id);
-	})
+router.delete('/me/:itemId', function (req, res, next) {
+	var toDelete = req.params.itemId;
+    var cart = req.session.cart;
+    
+    cart.deleteAnimalById(toDelete)
 	.then(function (updatedCart) {
 		res.status(200).json(updatedCart);
 	}).catch(next);

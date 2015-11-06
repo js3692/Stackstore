@@ -12,6 +12,7 @@ var animalSchema = new mongoose.Schema({
     },
     price: {
         type: Number,
+        set: convertFormatToCents,
         required: true
     },
     description: {
@@ -19,7 +20,7 @@ var animalSchema = new mongoose.Schema({
         required: true
     },
     category: {
-        type: [String], 
+        type: [String],
         required: true
     },
     countryCode: {
@@ -31,7 +32,7 @@ var animalSchema = new mongoose.Schema({
     },
     rating: {
         type: Number,
-        min: 1, 
+        min: 1,
         max: 5
     },
     inventoryQuantity: {
@@ -40,13 +41,23 @@ var animalSchema = new mongoose.Schema({
     }
 });
 
+function convertFormatToCents (priceInDollars) {
+    return priceInDollars * 100;
+}
+
+animalSchema.set('toObject', { getters: true });
+animalSchema.set('toJSON', { getters: true });
+animalSchema.virtual('priceUSD').get(function () {
+    return (this.price/100).toFixed(2);
+});
+
 animalSchema.statics.checkIfUnique = function(name) {
     return this
         .findOne({ name: name })
         .then(function(animal) {
-            return !Boolean(animal);    
+            return !Boolean(animal);
         });
-}
+};
 
 animalSchema.statics.findByCategory = function (categories) {
     var catArr = categories.split(/[\s,]+/);
