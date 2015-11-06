@@ -19,11 +19,13 @@ name in the environment files.
 
 var mongoose = require('mongoose');
 var Promise = require('bluebird');
+mongoose.Promise = Promise;
 var chalk = require('chalk');
 var connectToDb = require('./server/db');
 var User = Promise.promisifyAll(mongoose.model('User'));
 var Animal = Promise.promisifyAll(mongoose.model('Animal'));
 var Review = Promise.promisifyAll(mongoose.model('Review'));
+var Order = Promise.promisifyAll(mongoose.model('Order'));
 
 var seedUsers = function () {
 
@@ -89,11 +91,16 @@ var review = {
     dangerLevel: 10
 };
 
+
 function seedReview(review) {
     return Review.createAsync(review)
 }
 
 connectToDb.then(function () {
+//    var collectionNames = ['']
+//    mongoose.connection.collections['collectionName'].drop( function(err) {
+//        console.log('collection dropped');
+//    });
     Animal.findAsync({}).then(function (animals) {
         if (animals.length === 0) {
             
@@ -104,14 +111,40 @@ connectToDb.then(function () {
 
             return Promise.all(usersAndAnimalsPromise);
         } else {
-            console.log(animals);
             console.log(chalk.magenta('Seems to already be user data, exiting!'));
             process.kill(0);
         }
     }).spread(function(users, animals) {
         review.animal = animals[0]._id;
         review.author = users[0]._id;
-        return seedReview(review);
+        return Order.create({
+          user: users[0]._id,
+          total: 20000,
+          animals: [animals[0], animals[1]],
+          date: new Date(),
+          shippingAddr: "5 Hanover Square"
+        }).then(function () {
+            return Order.create({
+                  user: users[1]._id,
+                  total: 20000,
+                  animals: [animals[0], animals[2]],
+                  date: new Date(),
+                  shippingAddr: "5 Hanover Square"
+            })
+        }).then(function() {
+            return  Order.create({
+                  user: users[0]._id,
+                  total: 20000,
+                  animals: [animals[0], animals[1], animals[2]],
+                  date: new Date(),
+                  shippingAddr: "5 Hanover Square"
+            });
+        }).then(function() {
+            return seedReview(review)
+        }).catch(function(err) {
+            console.log(err);
+        });
+        
     }).then(function () {
         console.log(chalk.green('Seed successful!'));
         process.kill(0);
