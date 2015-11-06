@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-lg-12 col-md-12 col-centered">
       <form name="search">        
-        <input type="text" class="form-control" ng-model="animalName" placeholder="Find your next dangerous best friend.">
+        <input type="text" class="form-control" ng-model="name" placeholder="Find your next dangerous best friend.">
       </form>  
     </div>
   </div>    
@@ -25,7 +25,7 @@
                           </tr>
                       </thead>
                       <tbody>
-                        <tr ui-sref="animal({id: animal._id})" ng-repeat="animal in animals | filter: {animalName: animalName}">
+                        <tr ui-sref="animal({id: animal._id})" ng-repeat="animal in animals | filter: {name: name}">
                           <td><figure><img ng-src="{{animal.imageUrl}}"/></figure></td>
                           <td>{{animal.name}}</td>
                           <td>{{animal.rating}}</td>
