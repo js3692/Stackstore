@@ -50,7 +50,7 @@ var seedAnimals = function () {
     var animals = [
         {
             name: 'Lemur',
-            imageUrl: 'http://www.annenbergradio.org/sites/default/files/uploads/images/370/lemur2.jpg?1424828573',
+            imageUrl: 'http://travlanders.com/class/wp-content/uploads/sites/8/2014/09/lemur-mom-baby.jpg',
             price: 3000,
             description: 'Has big eyes, from Madagascar, doesn\'t make for a good pet',
             rating: 2,
@@ -60,7 +60,7 @@ var seedAnimals = function () {
         },
         {
             name: 'Box Jellyfish',
-            imageUrl: 'http://i.livescience.com/images/i/000/034/425/original/boxjelly.jpg?1355348969',
+            imageUrl: 'http://media.cirrusmedia.com.au/RD_Media_Library/RE_WEB_IMAGES/General/Box-jellyfish.jpg?width=300&height=300&mode=max',
             price: 2500,
             description: 'Very poisonous, not cuddly. Gelatinous.',
             rating: 1,
@@ -70,7 +70,47 @@ var seedAnimals = function () {
         },
         {
             name: 'Bill Murray',
-            imageUrl: 'http://www.fillmurray.com/g/200/300',
+            imageUrl: 'http://www.fillmurray.com/g/300/300',
+            price: 1400,
+            description: 'Very poisonous, not cuddly. Gelatinous.',
+            rating: 2.4,
+            conservationStatus: 'Extinct in the Wild',
+            category: ['life aquatic'],
+            inventoryQuantity: 1
+        },
+        {
+            name: 'Fill Murray',
+            imageUrl: 'http://www.fillmurray.com/g/300/300',
+            price: 1400,
+            description: 'Very poisonous, not cuddly. Gelatinous.',
+            rating: 2.4,
+            conservationStatus: 'Extinct in the Wild',
+            category: ['life aquatic'],
+            inventoryQuantity: 1
+        },
+        {
+            name: 'Phil Murray',
+            imageUrl: 'http://www.fillmurray.com/g/300/300',
+            price: 1400,
+            description: 'Very poisonous, not cuddly. Gelatinous.',
+            rating: 2.4,
+            conservationStatus: 'Extinct in the Wild',
+            category: ['life aquatic'],
+            inventoryQuantity: 1
+        },
+        {
+            name: 'Steve Zissou',
+            imageUrl: 'http://www.fillmurray.com/g/300/300',
+            price: 1400,
+            description: 'Very poisonous, not cuddly. Gelatinous.',
+            rating: 2.4,
+            conservationStatus: 'Extinct in the Wild',
+            category: ['life aquatic'],
+            inventoryQuantity: 1
+        },
+        {
+            name: 'Peter Venkman',
+            imageUrl: 'http://www.fillmurray.com/g/300/300',
             price: 1400,
             description: 'Very poisonous, not cuddly. Gelatinous.',
             rating: 2.4,
