@@ -114,7 +114,7 @@ describe('Animal model', function () {
             return Animal
                 .findOne({ name: 'Phil Murray' })
                 .then(function(animal) {
-                    expect(Number(animal.priceUSD)).to.equal(100);
+                    expect(animal.priceUSD).to.equal('99.99');
                 })
         });
     });
