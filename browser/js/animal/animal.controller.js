@@ -1,6 +1,16 @@
-app.controller('AnimalCtrl', function($scope, animal, users, reviews) {
-    console.log('here are the reviews!', reviews);
-    $scope.reviews = reviews;
-    $scope.users = users;
+app.controller('AnimalCtrl', function($scope, Review, Cart, animal, Session) {
+    Cart.sayHello();
     $scope.animal = animal;
+    $scope.submit = function() {
+        $scope.review.author = Session.user._id;
+        $scope.review.animal = animal._id;
+        Review.create($scope.review);
+    };
+    
+//    $scope.addToCart = function() {
+//        
+//    };
+//    $scope.removeFromCart = function() {
+//        
+//    };
 })

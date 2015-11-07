@@ -7,16 +7,6 @@ mongoose.Promise = require('bluebird');
 require('../../../db/models');
 var Cart = mongoose.model('Cart');
 
-// var User = mongoose.model('User');
-
-//var ensureAuthenticated = function (req, res, next) {
-//    if (req.isAuthenticated()) {
-//        next();
-//    } else {
-//        res.status(401).end();
-//    }
-//};
-
 // Current URL: '/api/cart'
 
 router.use(function (req, res, next) {
@@ -60,7 +50,6 @@ router.get('/me', function (req, res) {
 });
 
 router.put('/me', function (req, res, next) {
-    console.log(req.session.cart);
     var cart = req.session.cart;
     cart.animals.push(req.body.animal);
     cart.save()

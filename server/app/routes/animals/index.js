@@ -45,20 +45,10 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', ensureAdmin, function (req, res, next) {
-    //check if animal name is unique
-    Animal.checkIfUnique(req.body.name)
-        .then(function(isUnique) {
-        if(isUnique) {
-            Animal.create(req.body)
-            .then(function (newAnimal) {
-                res.status(201).json(newAnimal);
-            }).catch(next);
-        } else {
-            var validationError = new Error();
-            validationError.message = 'Animal name is not unique';
-            next(validationError);
-        }   
-    })
+    Animal.create(req.body)
+        .then(function (newAnimal) {
+            res.status(201).json(newAnimal);
+        }).catch(next);
 });
 
 //get all animals add to results instead
