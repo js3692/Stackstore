@@ -16,7 +16,7 @@ app.factory('Cart', function(DS, $state) {
                 }
             }
         }
-    })
+    });
 
 	return Cart;
 }).run(function (Cart) {})
