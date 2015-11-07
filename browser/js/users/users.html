@@ -1,0 +1,34 @@
+<div class="row">
+		<div class="input-group col-md-8 col-centered">
+			<div class="panel panel-default">
+			  <!-- Table -->
+				  	<table class="table">
+					  	<thead>
+					  		<tr>
+					  			<th></th>
+					  			<th>Name</th>
+					  			<th>Promote To Administrator</th>
+					  			<th>Delete</th>
+					  			<th></th>
+					  		</tr>
+					  	</thead>
+					  	<tbody>
+						  	<tr ng-repeat="user in users">
+						  		<td> </td>
+						  		<td>{{ user.email }}</td>
+						  		<td>
+                                    <button class="btn btn-default" type="button">
+						  				<span ng-click="promoteToAdmin(user._id)" class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
+						  			</button>
+                                </td>
+						  		<td>
+                                    <button class="btn btn-default" type="button">
+						  				<span ng-click="deleteUser(user._id)" class="glyphicon glyphicon-remove" aria-hidden="true"></span> 
+						  			</button>
+                                </td>
+						  	</tr>
+					  	</tbody>
+				  	</table>
+				</div>
+        </div>
+</div>

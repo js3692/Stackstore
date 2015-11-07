@@ -11,6 +11,9 @@ app.config(function ($stateProvider) {
             },
             users: function(User) {
                 return User.findAll();
+            },
+            cart: function(Cart) {
+                return Cart.me();
             }
         },
         controller: "AnimalCtrl"

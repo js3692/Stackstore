@@ -1,4 +1,4 @@
-app.controller('AnimalCtrl', function($scope, Review, Cart, animal, Session, AuthService) {
+app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Session, AuthService) {
     
     $scope.animal = animal;
     $scope.submit = function() {
@@ -8,27 +8,34 @@ app.controller('AnimalCtrl', function($scope, Review, Cart, animal, Session, Aut
         $scope.review = {};
     };
 
-    $scope.stars = [1,2,3,4,5];
     
     $scope.centerPanel = [
         { label: "Conservation Status:", value: animal.conservationStatus },
-        { label: "Price:", value: "$" + animal.price }, 
+        { label: "Price:", value: "$" + animal.priceUSD }, 
         { label: "Left in stock:", value: animal.inventoryQuantity }
     ];
     
     $scope.addToCart = function() {
-        Cart.addItem($scope.animal)
-            .then(function(cart) {
-                console.log(cart);
-            }, function(err) {
-                console.log(err);
+        console.log(cart, 'here is the cart');  
+        cart.data.items.push($scope.animal._id);
+        Cart.update(cart)
+            .then(function(updatedCart) {
+                cart = updatedCart;
             });
+//        Cart.addItem($scope.animal)
+//            .then(function(cart) {
+//                console.log(cart);
+//            }, function(err) {
+//                console.log(err);
+//            });
     };
     
     $scope.isLoggedIn = function () {
         return AuthService.isAuthenticated();
     };
     
+    
+    //for star ratings.
     $scope.rate = 0;
     $scope.max = 5;
     $scope.isReadonly = false;
@@ -38,15 +45,4 @@ app.controller('AnimalCtrl', function($scope, Review, Cart, animal, Session, Aut
         $scope.percent = 100 * (value / $scope.max);
     };
 
-//    $scope.ratingStates = [
-//        {stateOn: 'glyphicon-ok-sign', stateOff: 'glyphicon-ok-circle'},
-//        {stateOn: 'glyphicon-star', stateOff: 'glyphicon-star-empty'},
-//        {stateOn: 'glyphicon-heart', stateOff: 'glyphicon-ban-circle'},
-//        {stateOn: 'glyphicon-heart'},
-//        {stateOff: 'glyphicon-off'}
-//    ];
-
-//    $scope.removeFromCart = function() {
-//        
-//    };
 });
