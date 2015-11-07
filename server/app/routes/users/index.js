@@ -34,7 +34,6 @@ router.param('id', function(req, res, next, id) {
 
 //Promote user to admin
 router.post('/:id/admin', ensureAdmin, function (req, res, next) {
-    console.log('in here')
     req.userToUpdate.isAdmin = true;
     req.userToUpdate
         .save()

@@ -3,9 +3,12 @@ app.config(function ($stateProvider) {
         url: '/shoppingCart',
         templateUrl: 'js/shopping-cart/shopping-cart.html',
         resolve: {
-          cart: function($stateParams, Cart) {
-            return Cart.me();
-          }
+            cart: function($stateParams, Cart) {
+                return Cart.me();
+            },
+            animals: function(Animal) {
+                return Animal.findAll();
+            }
         },
         controller: "ShoppingCartCtrl"
     });

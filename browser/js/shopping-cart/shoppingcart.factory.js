@@ -24,12 +24,22 @@ app.factory('Cart', function(DS, $state, $http) {
         }
     });
     
-    Cart.addItem = function(item) {
-        console.log('inside the cart!');
-        return $http.put(baseUrl, item)
+    Cart.update = function(cart) {
+        return $http.put(baseUrl, cart.data)
             .then(toData);
     };
     
-
+    Cart.matchToAnimals = function(animals, cart) {
+        var matchedCart = cart.map(function(item) {
+            var matched = animals.reduce(function(match, animal) {
+                if(animal._id === item) return animal;
+                else return match;
+            });
+            return matched; 
+        });    
+        return matchedCart;
+    };
+    
+    
 	return Cart;
 }).run(function (Cart) {})

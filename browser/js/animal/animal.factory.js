@@ -1,6 +1,4 @@
-'use strict';
-
-app.factory('Animal', function(DS, $state) {
+app.factory('Animal', function(DS) {
 
 	var Animal = DS.defineResource({
 	    name: 'animals',
@@ -12,7 +10,7 @@ app.factory('Animal', function(DS, $state) {
                 }
             }
         }
-    })
+    });
 
 	return Animal;
 }).run(function (Animal) {})
