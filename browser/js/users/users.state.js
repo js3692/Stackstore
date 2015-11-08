@@ -1,6 +1,6 @@
 app.config(function($stateProvider) {
     $stateProvider.state('adminDashboard.users', {
-        url:'users',
+        url:'/users',
         templateUrl: 'js/users/users.html',
         controller: 'UsersCtrl',
         resolve: {

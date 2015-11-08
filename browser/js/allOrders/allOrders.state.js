@@ -1,6 +1,6 @@
 app.config(function($stateProvider){
     $stateProvider.state('adminDashboard.allOrders',{
-        url:'allOrders',
+        url:'/allOrders',
         templateUrl: 'js/allOrders/allOrders.html',
         resolve: {
             orders: function(Order){

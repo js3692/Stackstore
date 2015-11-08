@@ -21,5 +21,13 @@ app.factory('User', function(DS, $http) {
             .then(toData);
     };
     
+    User.triggerReset = function(id) {
+        return $http.post(baseUrl + id + '/triggerReset')  
+    };
+    
+    User.reset = function(id, password){
+        return $http.post(baseUrl + id + '/reset', password);  
+    };
+    
 	return User;
 }).run(function (User) {});

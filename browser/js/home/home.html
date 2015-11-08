@@ -2,15 +2,35 @@
 <!--  <h1>sdfsdfsdfsdfsdfsdfsdfsdfsdfsfsdfsdfsd</h1>-->
   <div class="row">
     <div class="col-lg-12 col-md-12 col-centered">
-      <form name="search">        
-            <input type="text" class="form-control input-lg" ng-model="name" placeholder="Find your next dangerous best friend...">
+      <form name="search">
+            <div class="row">
+            <div class="col-lg-11">
+            
+                <input type="text" class="form-control input-lg" ng-model="name" placeholder="Find your next dangerous best friend...">
+                
+            </div>
+            <div class="col-lg-1">
+                <div uib-dropdown is-open="status.isopen">
+                  <button type="button" class="btn btn-primary btn-lg" uib-dropdown-toggle ng-disabled="disabled">
+                    Search By <span class="caret"></span>
+                  </button>
+                  <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
+                      <li ng-repeat="category in categories" ng-click="chooseCategory(category)" role="menuitem"><a>{{ category }}</a></li>
+                  </ul>
+                </div>
+            </div>
+          
+          
+            </div>
+          
+          
       </form>  
     </div>
   </div>    
 <!--      </div>  -->
     <div id="results" class="container-fluid">
         <div class="row">
-          <div class="col-sm-6 col-md-4" ng-repeat="animal in animals | filter: {name: name}">
+          <div class="col-sm-6 col-md-4" ng-repeat="animal in animals | filter: { name: name, conservationStatus: category}">
               <a ui-sref="animal({ id: animal._id })">
                 <div class="thumbnail">
                     <div class="imagebox">
