@@ -15,6 +15,11 @@ function ensureAdmin(req, res, next) {
     else res.status(401).end();
 }
 
+var ensureAuthenticated = function (req, res, next) {
+    if (req.user) next();
+    else res.status(401).end();
+};
+
 // Current URL: '/api/users'
 
 router.get('/', function(req, res, next) {
@@ -53,6 +58,38 @@ router.delete('/:id', ensureAdmin, function(req, res, next) {
 
 //Trigger password reset
 
-router.put('/:id/password', ensureAdmin, function(req, res, next){
-    
-})
+router.post('/:id/triggerReset', ensureAdmin, function(req, res, next){
+    req.userToUpdate.reset = true;
+    req.userToUpdate
+        .save()
+        .then(function(user){
+            res.status(204).end();
+        }).catch(next);
+});
+
+//update password
+router.post('/:id/reset', ensureAuthenticated, function(req, res, next){
+    var password = req.body.password;
+    var salt = User.generateSalt(password);
+    var encryptedPassword = User.encryptPassword(password, salt);
+    req.userToUpdate.update({
+        password: encryptedPassword,
+        salt: salt,
+        reset: false
+    }).then(function(){
+        res.status(204).end();
+    }).catch(next);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+

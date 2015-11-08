@@ -1,5 +1,17 @@
 app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Session, AuthService) {
     
+    $scope.aggregateStars = function(reviews){
+        var totalReviewsWithStars = 0;
+        var starTotal = reviews.reduce(function(sum, review) {
+            if(review.stars) {
+                sum+=review.stars;
+                totalReviewsWithStars++;
+            }
+            return sum;
+        }, 0);
+        return Math.ceil(starTotal/totalReviewsWithStars);
+    };
+    
     $scope.animal = animal;
     $scope.submit = function() {
         $scope.review.author = Session.user._id;
@@ -16,18 +28,11 @@ app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Sessio
     ];
     
     $scope.addToCart = function() {
-        console.log(cart, 'here is the cart');  
         cart.data.items.push($scope.animal._id);
         Cart.update(cart)
             .then(function(updatedCart) {
                 cart = updatedCart;
             });
-//        Cart.addItem($scope.animal)
-//            .then(function(cart) {
-//                console.log(cart);
-//            }, function(err) {
-//                console.log(err);
-//            });
     };
     
     $scope.isLoggedIn = function () {

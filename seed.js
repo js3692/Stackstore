@@ -158,14 +158,14 @@ connectToDb.then(function () {
         return Order.create({
           user: users[0]._id,
           total: 20000,
-          animals: [animals[0], animals[1]],
+          animals: [[{animal: animals[1], quantity: 2},{animal: animals[1], quantity: 1},{animal: animals[2], quantity: 3}]],
           date: new Date(),
           shippingAddr: "5 Hanover Square"
         }).then(function () {
             return Order.create({
                   user: users[1]._id,
                   total: 20000,
-                  animals: [animals[0], animals[2]],
+                  animals: [[{animal: animals[1], quantity: 2},{animal: animals[1], quantity: 1},{animal: animals[0], quantity: 3}]],
                   date: new Date(),
                   shippingAddr: "5 Hanover Square"
             })
@@ -173,7 +173,7 @@ connectToDb.then(function () {
             return  Order.create({
                   user: users[0]._id,
                   total: 20000,
-                  animals: [animals[0], animals[1], animals[2]],
+                  animals: [{animal: animals[0], quantity: 2},{animal: animals[1], quantity: 1},{animal: animals[2], quantity: 3}],
                   date: new Date(),
                   shippingAddr: "5 Hanover Square"
             });

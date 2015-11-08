@@ -7,4 +7,8 @@ app.controller('UsersCtrl', function($scope, User, users) {
     $scope.deleteUser = function(id) {
         User.destroy(id);
     };
+    
+    $scope.triggerReset = function(id) {
+        User.triggerReset(id);  
+    };
 });

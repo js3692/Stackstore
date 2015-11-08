@@ -18,6 +18,11 @@
                 <a ui-sref-active="active" ui-sref="shoppingCart">My Cart</a>
             </li>
         </ul>
+        <ul class="nav navbar-nav">
+            <li ng-show="isLoggedIn()">
+                <a ui-sref-active="active" ui-sref="myOrders">My Orders</a>
+            </li>
+        </ul>
         
         
         <button ng-show="!user" ui-sref="login" class="btn login-button">Login</button>
