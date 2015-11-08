@@ -28,7 +28,11 @@ app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Sessio
     ];
     
     $scope.addToCart = function() {
-        cart.data.items.push($scope.animal._id);
+        var cartItem = {
+            animal: $scope.animal._id,
+            quantity: $scope.animalQuantity
+        }
+        cart.data.items.push(cartItem);
         Cart.update(cart)
             .then(function(updatedCart) {
                 cart = updatedCart;
@@ -37,6 +41,14 @@ app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Sessio
     
     $scope.isLoggedIn = function () {
         return AuthService.isAuthenticated();
+    };
+    
+    
+    //for animal quantity picker
+    $scope.animalQuantity = 1;
+
+    $scope.options = {
+        astep: [1, 2, 3, 4, 5]
     };
     
     

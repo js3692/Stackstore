@@ -32,9 +32,12 @@ app.factory('Cart', function(DS, $state, $http) {
     Cart.matchToAnimals = function(animals, cart) {
         var matchedCart = cart.map(function(item) {
             var matched = animals.reduce(function(match, animal) {
-                if(animal._id === item) return animal;
+                if(animal._id === item.animal) {
+                    animal.quantity = item.quantity;
+                    return animal;
+                }
                 else return match;
-            });
+            },{});
             return matched; 
         });    
         return matchedCart;
