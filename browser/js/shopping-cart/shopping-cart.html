@@ -7,40 +7,32 @@
 				  	<table class="table">
 					  	<thead>
 					  		<tr>
-					  			<th></th>
 					  			<th>Name</th>
 					  			<th>Price</th>
 					  			<th>Conservation Status</th>
-					  			<th></th>
+					  			<th>Quantity</th>
+					  			<th>Remove From Cart</th>
 					  		</tr>
 					  	</thead>
 					  	<tbody>
 						  	<tr ng-repeat="item in cart">
-						  		<td> </td>
 						  		<td>{{ item.name }}</td>
-						  		<td> {{ item.conservationStatus }}</td>
-						  		<td>{{ item.priceUSD }}</td>
+						  		<td> ${{ item.priceUSD }}</td>
+						  		<td>{{ item.conservationStatus }}</td>
+                                <td> {{ item.quantity }}</td>
 						  		<td>
 						  			<button class="btn btn-default" type="button">
 						  				<span ng-click="deleteOne()" class="glyphicon glyphicon-remove" aria-hidden="true"></span> 
 						  			</button>
-						  		</td>
-						  	</tr>
-<!--
-						  			<button class="btn btn-default" type="button">
-						  				<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-						  			</button>
--->
 						  		</td>
 						  	</tr>						  	
 					  	</tbody>
 				  	</table>
 				</div>
 				<button type="button" class="btn btn-default btn-lg">
-				  <span class="glyphicon glyphicon-euro" aria-hidden="true"></span> Purchase
+                    Purchase
 				</button>
 			</div>
 		</div>
 	</div>
-</div>
 

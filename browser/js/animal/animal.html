@@ -2,7 +2,11 @@
 <div id="animal" class="container-fluid">
     <div class="row">
         <div class="page-header">
-            <h1>{{ animal.name }}        <small><stars stars="aggregateStars(animal.reviews)"></stars></small><div class='pull-right'> <small>Add to cart</small> <button class="btn btn-default "> <span class="glyphicon glyphicon-plus" ng-click="addToCart()"></span></button></div></h1>    
+            <h1>{{ animal.name }}        
+                <small>
+                    <stars stars="aggregateStars(animal.reviews)"></stars>
+                </small>
+            </h1>    
         </div>
         <div class="well well-lg">
             <div class="row">
@@ -11,6 +15,11 @@
                             <div class="panel-body">
                                 {{ animal.description }}
                             </div>
+			          </div>
+                    <div class="panel panel-default">
+                            <div class="panel-heading">You might also like...</div>
+                                <div class="panel-body">   
+                                </div>
 			          </div>
                 </div> 
                 <div class="col-lg-4">
@@ -23,7 +32,25 @@
                                 </div>    
                             </div>
 			          </div>
-                </div> 
+                     <div class="panel panel-default">
+                         <div class="panel-heading">Add to cart</div>
+                            <div class="panel-body">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-lg-9">            
+                                            <select class="form-control" ng-model="animalQuantity" ng-options="opt for opt in options.astep"></select>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <button class="btn btn-default ">
+                                                <span class="glyphicon glyphicon-plus" ng-click="addToCart()"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>    
+                            </div>
+			          </div>
+                     
                 <div class="col-lg-4">
                     <img class="pull-right" ng-src="{{ animal.imageUrl }}"/>
                 </div>    
