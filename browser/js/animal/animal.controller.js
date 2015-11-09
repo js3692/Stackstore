@@ -45,10 +45,10 @@ app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Sessio
     
     
     //for animal quantity picker
-    $scope.animalQuantity = 1;
+    // $scope.animalQuantity = 1;
 
     $scope.options = {
-        astep: [1, 2, 3, 4, 5]
+        astep: _.fill(Array(animal.inventoryQuantity), 0).map(function (elem, idx) { return idx + 1; })
     };
     
     
