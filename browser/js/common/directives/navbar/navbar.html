@@ -9,7 +9,7 @@
             </li>
         </ul>
         <ul class="nav navbar-nav">
-            <li ng-repeat="item in items" ng-show="isAdmin">
+            <li ng-repeat="item in items" ng-if="isAdmin && isLoggedIn()">
                 <a ui-sref-active="active" ui-sref="{{ item.state }}">{{ item.label }}</a>
             </li>
         </ul>
