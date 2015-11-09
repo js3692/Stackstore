@@ -70,14 +70,14 @@ router.post('/:id/triggerReset', ensureAdmin, function(req, res, next){
         .then(function(user){
                mdClient.messages.send({
                 message: {
-                  html: "<p>Example HTML content</p>",
-                  text: "Example text content",
-                  subject: "example subject",
-                  from_email: "message.from_email@example.com",
-                  from_name: "Example Name",
+                  html: "<a href=\"http://localhost:1337\">Login Here</a>",
+                  text: "Please login to reset your password",
+                  subject: "Password Reset",
+                  from_email: "no-reply@TheLifeExotic.com",
+                  from_name: "The Life Exotic",
                   to: [{
-                          email: "abhujle7@gmail.com",
-                          name: "Recipient Name",
+                          email: user.email,
+                          name: "Curator",
                           type: "to"
                       }],
                 },
