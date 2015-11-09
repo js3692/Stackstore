@@ -79,43 +79,43 @@ var seedAnimals = function () {
             inventoryQuantity: 1
         },
         {
-            name: 'Fill Murray',
-            imageUrl: 'http://www.fillmurray.com/g/300/300',
-            price: 1400,
-            description: 'Very poisonous, not cuddly. Gelatinous.',
-            rating: 2.4,
-            conservationStatus: 'Extinct in the Wild',
+            name: 'Humphead Wrasse',
+            imageUrl: 'https://c402277.ssl.cf1.rackcdn.com/photos/1765/images/story_full_width/Humphead_Wrasse_8.13.2012_Revised_Hero_Image_HI_111751.jpg?1345602611',
+            price: 4000,
+            description: 'Six feet long, prominent bulge on forehead, lifespan exceeding 30 years.',
+            rating: 3.7,
+            conservationStatus: 'Endangered',
             category: ['life aquatic'],
+            inventoryQuantity: 2
+        },
+        {
+            name: 'Bonobo',
+            imageUrl: 'https://c402277.ssl.cf1.rackcdn.com/photos/1121/images/portrait_small/bonobos_7.31.2012_poaching_HI_106087.jpg?1345586459',
+            price: 1400,
+            description: 'Peaceful, matriarchal, settle conflict through sex.',
+            rating: 4.1,
+            conservationStatus: 'Endangered',
+            category: ['mammal'],
+            inventoryQuantity: 3
+        },
+        {
+            name: 'Amur Leopard',
+            imageUrl: 'https://c402277.ssl.cf1.rackcdn.com/photos/1046/images/story_carousel/Amur_Leopard_01_7.30.2012_Camera_Traps.jpg?1345536335',
+            price: 1400,
+            description: 'Can run at speeds of up to 37 miles per hour and leap more than 19 feet horizontally and 10 feet vertically.',
+            rating: 4.5,
+            conservationStatus: 'Critically Endangered',
+            category: ['mammal'],
             inventoryQuantity: 1
         },
         {
-            name: 'Phil Murray',
-            imageUrl: 'http://www.fillmurray.com/g/300/300',
-            price: 1400,
-            description: 'Very poisonous, not cuddly. Gelatinous.',
-            rating: 2.4,
-            conservationStatus: 'Extinct in the Wild',
-            category: ['life aquatic'],
-            inventoryQuantity: 1
-        },
-        {
-            name: 'Steve Zissou',
-            imageUrl: 'http://www.fillmurray.com/g/300/300',
-            price: 1400,
-            description: 'Very poisonous, not cuddly. Gelatinous.',
-            rating: 2.4,
-            conservationStatus: 'Extinct in the Wild',
-            category: ['life aquatic'],
-            inventoryQuantity: 1
-        },
-        {
-            name: 'Peter Venkman',
-            imageUrl: 'http://www.fillmurray.com/g/300/300',
-            price: 1400,
-            description: 'Very poisonous, not cuddly. Gelatinous.',
-            rating: 2.4,
-            conservationStatus: 'Extinct in the Wild',
-            category: ['life aquatic'],
+            name: 'African Elephant',
+            imageUrl: 'https://c402277.ssl.cf1.rackcdn.com/photos/882/images/story_full_width/African_Elephant_7.27.2012_hero_and_circle_HI_53941.jpg?1345532748',
+            price: 7000,
+            description: 'Largest walking animal on Earth, radiate excess heat through their large ears.',
+            rating: 4.8,
+            conservationStatus: 'Vulnerable',
+            category: ['mammal'],
             inventoryQuantity: 1
         }
         
