@@ -160,14 +160,16 @@ connectToDb.then(function () {
           total: 20000,
 //          items: [[{animal: animals[1], quantity: 2},{animal: animals[1], quantity: 1},{animal: animals[2], quantity: 3}]],
           date: new Date(),
-          shippingAddr: "5 Hanover Square"
+          shippingAddr: "5 Hanover Square",
+          status: "Cancelled"
         }).then(function () {
             return Order.create({
                   user: users[1]._id,
                   total: 20000,
 //                  items: [[{animal: animals[1], quantity: 2},{animal: animals[1], quantity: 1},{animal: animals[0], quantity: 3}]],
                   date: new Date(),
-                  shippingAddr: "5 Hanover Square"
+                  shippingAddr: "5 Hanover Square",
+                  status: "Created"
             })
         }).then(function() {
             return  Order.create({
@@ -175,7 +177,8 @@ connectToDb.then(function () {
                   total: 20000,
 //                  items: [{animal: animals[0], quantity: 2},{animal: animals[1], quantity: 1},{animal: animals[2], quantity: 3}],
                   date: new Date(),
-                  shippingAddr: "5 Hanover Square"
+                  shippingAddr: "5 Hanover Square",
+                  status: "Processing"
             });
         }).then(function() {
             return seedReview(review)

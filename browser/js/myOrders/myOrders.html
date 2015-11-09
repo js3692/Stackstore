@@ -1,25 +1,30 @@
 <div class="row">
 		<div class="input-group col-md-8 col-centered">
-			<div class="panel panel-default">
-				  	<table class="table">
+              <uib-accordion close-others="oneAtATime">
+                <uib-accordion-group heading="{{ order.date | date }}" ng-repeat="order in orders">
+                    <table class="table">
 					  	<thead>
 					  		<tr>
-					  			<th>Date</th>
-					  			<th>Shipping Address</th>
-					  			<th>Items</th>
-					  			<th></th>
-					  			<th></th>
+					  			<th>Name</th>
+					  			<th>Price Per Animal</th>
+					  			<th>Conservation Status</th>
+					  			<th>Quantity</th>
+					  			<th>Remove From Cart</th>
+                                <th>Subtotal</th>
 					  		</tr>
 					  	</thead>
 					  	<tbody>
-						  	<tr ng-repeat="order in orders">
-						  		<td>{{ order.date }}</td>
-						  		<td>{{ order.shippingAddr }}</td>
-						  		<td>{{ order.items }}</td>
-						  		<td>{{ order.total }}</td>
+						  	<tr ng-repeat="item in order.items">
+						  		<td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
 						  	</tr>
 					  	</tbody>
 				  	</table>
-				</div>
+                </uib-accordion-group>
+              </uib-accordion>
         </div>
 </div>
