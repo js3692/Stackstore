@@ -61,12 +61,3 @@ router.put('/:id', ensureAdmin, function (req, res, next) {
 		res.status(200).json(req.animal);
 	}).catch(next);
 });
-
-router.post('/:id/reviews', ensureAuthenticated, function (req, res, next) {
-    var review = req.body;
-    review.animal = req.animal._id;
-    Review.create(review)
-        .then(function(newReview) {
-            res.status(201).json(newReview);        
-        }).catch(next);
-});
