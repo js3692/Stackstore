@@ -1,4 +1,6 @@
 app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Session, AuthService) {
+    console.log($scope);
+    
     
     $scope.aggregateStars = function(reviews){
         var totalReviewsWithStars = 0;
@@ -14,6 +16,11 @@ app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Sessio
     
     $scope.animal = animal;
     $scope.submit = function() {
+        if($scope.review.content.length < 20) {
+            addAlert();
+            return;
+        }
+        $scope.closeAlert();
         $scope.review.author = Session.user._id;
         $scope.review.animal = animal._id;
         Review.create($scope.review);
@@ -44,9 +51,7 @@ app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Sessio
     };
     
     
-    //for animal quantity picker
-    // $scope.animalQuantity = 1;
-
+    //for animal quantity picker.
     $scope.options = {
         astep: _.fill(Array(animal.inventoryQuantity), 0).map(function (elem, idx) { return idx + 1; })
     };
@@ -60,6 +65,17 @@ app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Sessio
     $scope.hoveringOver = function(value) {
         $scope.overStar = value;
         $scope.percent = 100 * (value / $scope.max);
+    };
+    
+    $scope.alerts = [];
+
+    function addAlert() {
+        if($scope.alerts.length > 0) return;
+        $scope.alerts.push({msg: 'Reviews must be 20 characters long.'});
+      };
+
+    $scope.closeAlert = function() {
+        $scope.alerts.pop();
     };
 
 });
