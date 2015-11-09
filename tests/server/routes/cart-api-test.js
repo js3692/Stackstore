@@ -15,7 +15,7 @@ var clearDB = require('mocha-mongoose')(dbURI);
 var supertest = require('supertest');
 var app = require('../../../server/app');
 
-xdescribe('Cart Route: ', function () {
+describe('Cart Route: ', function () {
   
   var baseUrl = '/api/cart/';
 

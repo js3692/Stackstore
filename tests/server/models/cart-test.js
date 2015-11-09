@@ -26,30 +26,6 @@ describe('Cart model', function () {
     afterEach('Clear test database', function (done) {
         clearDB(done);
     });
-  
-    var userAndAnimalsPromises = [
-      User.create({
-        email: 'batman@gmail.com',
-        password: 'robin'
-      }),
-      Animal.create({
-        name: "lemur",
-        category: ["mammal", "madagascar"],
-        price: 10.99,
-        description: "I like to eat fried chicken",
-        rating: 3,
-        inventoryQuantity: 4
-      }),
-      Animal.create({
-          name: "Phil Murray",
-          category: ["human", "murray", "mammal"],
-          price: 11.99,
-          description: "I like to eat fried chicken",
-          rating: 2,
-          inventoryQuantity: 1
-      })
-    ];
-
 
     it('should exist', function () {
         expect(Cart).to.be.a('function');
@@ -65,6 +41,28 @@ describe('Cart model', function () {
           itemB;
       
       beforeEach('create a cart', function() {
+        var userAndAnimalsPromises = [
+          User.create({
+            email: 'batman@gmail.com',
+            password: 'robin'
+          }),
+          Animal.create({
+            name: "lemur",
+            category: ["mammal", "madagascar"],
+            price: 10.99,
+            description: "I like to eat red chicken",
+            rating: 3,
+            inventoryQuantity: 4
+          }),
+          Animal.create({
+              name: "Phil Murray",
+              category: ["human", "murray", "mammal"],
+              price: 11.99,
+              description: "I like to eat blue chicken",
+              rating: 2,
+              inventoryQuantity: 1
+          })
+        ];
         return Promise.all(userAndAnimalsPromises)
           .spread(function(newUser, lemur, phil) {
             user = newUser;
@@ -91,7 +89,7 @@ describe('Cart model', function () {
           });
       });
 
-      afterEach('delete the cart for next test', function () {
+      afterEach('delete everything for next test', function () {
         return Cart.remove({})
           .then(function () { Item.remove({}); })
           .then(function () { Animal.remove({}); });

@@ -38,7 +38,7 @@ describe('Item model', function () {
             name: "Bill Murray",
             category: ["human", "murray", "mammal"],
             price: 11.99,
-            description: "I like to eat fried chicken",
+            description: "I don't like to eat fried chicken",
             rating: 2,
             inventoryQuantity: 1
           })
