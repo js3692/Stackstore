@@ -29,6 +29,11 @@ app.factory('Cart', function(DS, $state, $http) {
             .then(toData);
     };
     
+    Cart.purchase = function(cart) {
+        return $http.post('/api/order', cart.data)
+            .then(toData);
+    };
+    
     Cart.matchToAnimals = function(animals, cart) {
         var matchedCart = cart.map(function(item) {
             var matched = animals.reduce(function(match, animal) {
