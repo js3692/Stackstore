@@ -106,17 +106,57 @@ var seedAnimals = function () {
             rating: 4.5,
             conservationStatus: 'Critically Endangered',
             category: ['mammal'],
+            inventoryQuantity: 9
+        },
+         {
+            name: 'Giant Panda',
+            imageUrl: 'https://c402277.ssl.cf1.rackcdn.com/photos/144/images/story_full_width/Giant_Panda_Hero_image_(c)_Michel_Gunther_WWF_Canon.jpg?1345515244',
+            price: 6500,
+            description: 'Eats between 26 to 84 pounds of bamboo a day, peaceful nature',
+            rating: 4.8,
+            conservationStatus: 'Endangered',
+            category: ['mammal'],
+            inventoryQuantity: 6
+        },
+         {
+            name: 'Sumatran Rhino',
+            imageUrl: 'https://c402277.ssl.cf1.rackcdn.com/photos/1410/images/story_full_width/Rhinos_Main_8.6.2012_Stengthening_Law_Enforcement_HI_112396.jpg?1345544478',
+            price: 8000,
+            description: 'Only six substantial populations in the wild, marks territory through scraping soil with feet, likes mud baths.',
+            rating: 4.4,
+            conservationStatus: 'Critically Endangered',
+            category: ['mammal'],
+            inventoryQuantity: 4
+        },
+         {
+            name: 'Polar Bear',
+            imageUrl: 'https://c402277.ssl.cf1.rackcdn.com/photos/1252/images/story_full_width/PolarBear-1600x1200px.jpg?1345540824',
+            price: 7600,
+            description: 'Talented swimmers, diet includes ringed and bearded seals, and Coca Cola.',
+            rating: 4.5,
+            conservationStatus: 'Vulnerable',
+            category: ['marine mammal'],
+            inventoryQuantity: 3
+        },
+         {
+            name: 'Sperm Whale',
+            imageUrl: 'http://cdn.images.express.co.uk/img/dynamic/128/590x/secondary/131825.jpg',
+            price: 1400,
+            description: 'Largest of the toothed whales, enjoys a diet of wooden puppets who think they are real boys',
+            rating: 4.5,
+            conservationStatus: 'Critically Endangered',
+            category: ['marine mammal'],
             inventoryQuantity: 1
         },
         {
-            name: 'African Elephant',
-            imageUrl: 'https://c402277.ssl.cf1.rackcdn.com/photos/882/images/story_full_width/African_Elephant_7.27.2012_hero_and_circle_HI_53941.jpg?1345532748',
-            price: 7000,
-            description: 'Largest walking animal on Earth, radiate excess heat through their large ears.',
+            name: 'African Lion',
+            imageUrl: 'http://t0.gstatic.com/images?q=tbn:ANd9GcTVPExpLlAk2hI2RaF5CLWgzraNt5TyMwBMjksGer0ffHwHB7J_',
+            price: 9500,
+            description: 'King of the Jungle, timeless and classic, this animal will make a great edition to any collection.',
             rating: 4.8,
             conservationStatus: 'Vulnerable',
             category: ['mammal'],
-            inventoryQuantity: 1
+            inventoryQuantity: 4
         }
         
     ];

@@ -1,6 +1,11 @@
 'use strict';
 var router = require('express').Router();
 module.exports = router;
+var bodyParser = require('body-parser');
+router.use(bodyParser.urlencoded({ extended: true}));
+router.use(bodyParser.json());
+var mandrill = require('mandrill-api/mandrill');
+var mdClient = new mandrill.Mandrill('68yA4Bp41FKbX9tv7NkcFg');
 var _ = require('lodash');
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
@@ -63,6 +68,31 @@ router.post('/:id/triggerReset', ensureAdmin, function(req, res, next){
     req.userToUpdate
         .save()
         .then(function(user){
+               mdClient.messages.send({
+                message: {
+                  html: "<p>Example HTML content</p>",
+                  text: "Example text content",
+                  subject: "example subject",
+                  from_email: "message.from_email@example.com",
+                  from_name: "Example Name",
+                  to: [{
+                          email: "abhujle7@gmail.com",
+                          name: "Recipient Name",
+                          type: "to"
+                      }],
+                },
+                  async: false, 
+                  ip_pool: "Main Pool", 
+                  send_at: "example send_at"
+                }, function(result) {
+                    console.log('inside call back')
+                    console.log(result)
+                    },
+                    function(e) {
+                         // Mandrill returns the error as an object with name and message keys
+                          console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+                        // A mandrill error occurred: Unknown_Subaccount - No subaccount exists with the id 'customer-123'
+              })
             res.status(204).end();
         }).catch(next);
 });

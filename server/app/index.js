@@ -1,5 +1,7 @@
 'use strict';
 var path = require('path');
+var mandrill = require('mandrill-api/mandrill');
+var mdClient = new mandrill.Mandrill('68yA4Bp41FKbX9tv7NkcFg');
 var express = require('express');
 var app = express();
 module.exports = app;
