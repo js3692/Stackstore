@@ -11,7 +11,11 @@ app.controller('ShoppingCartCtrl', function($scope, cart, Cart, animals) {
         Cart.update(cart);
     };
     
-    $scope.getTotal = function() {  
+    $scope.getTotal = function() {
+        return $scope.cart.reduce(function(total, animal) {
+            total += Number(animal.quantity)*Number(animal.priceUSD);
+            return total;
+        }, 0);
     };
     
     $scope.getSubtotal = function(quantity, price) {
