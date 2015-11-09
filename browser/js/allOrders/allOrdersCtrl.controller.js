@@ -1,14 +1,14 @@
-app.controller('HomeCtrl', function($scope, $state, animals) { 
-    $scope.animals = animals;
+app.controller('AllOrdersCtrl', function($scope, orders, users){
+    $scope.orders = orders;
+    $scope.users = users;
     
-    
-    $scope.categories = ['All', 
-                    'Near Threatened', 
-                    'Vulnerable',
-                    'Endangered',
-                    'Critically Endangered',
-                    'Extinct in the Wild',
-                    'Extinct'];
+    $scope.categories = [
+        'All',
+        'Created', 
+        'Processing', 
+        'Cancelled',
+        'Completed'
+    ];
 
     $scope.status = {
         isopen: false

@@ -8,8 +8,7 @@ var schema = new mongoose.Schema({
 		ref: 'User'
 	},
 	items: {
-		type: [mongoose.Schema.Types.ObjectId],
-		ref: 'Item'
+		type: [{}]
 	}
 });
 

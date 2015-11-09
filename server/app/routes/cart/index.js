@@ -1,21 +1,11 @@
 'use strict';
 var router = require('express').Router();
 module.exports = router;
-// var _ = require('lodash');
+var _ = require('lodash');
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 require('../../../db/models');
 var Cart = mongoose.model('Cart');
-
-// var User = mongoose.model('User');
-
-//var ensureAuthenticated = function (req, res, next) {
-//    if (req.isAuthenticated()) {
-//        next();
-//    } else {
-//        res.status(401).end();
-//    }
-//};
 
 // Current URL: '/api/cart'
 
@@ -60,13 +50,17 @@ router.get('/me', function (req, res) {
 });
 
 router.put('/me', function (req, res, next) {
-    console.log(req.session.cart);
+    var newCart = req.body;
     var cart = req.session.cart;
-    cart.animals.push(req.body.animal);
-    cart.save()
+    cart.update(newCart)
         .then(function() {
-            res.status(201).json(cart);
+            res.status(201).json(newCart);
         }).catch(next);
+//    cart.animals.push(req.body.animal);
+//    cart.save()
+//        .then(function() {
+//            res.status(201).json(cart);
+//        }).catch(next);
 });
 
 router.delete('/me/:itemId', function (req, res, next) {

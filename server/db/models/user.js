@@ -32,6 +32,10 @@ var userSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false
+    },
+    reset: {
+        type: Boolean,
+        default: false
     }
 });
 

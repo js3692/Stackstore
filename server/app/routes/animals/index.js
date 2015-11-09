@@ -29,7 +29,12 @@ router.param('id', function(req, res, next, id) {
         .then(function(animal){
             req.animal = animal;
             next();
+//            return Review.findReviewsByAnimal(animal._id);
         }).catch(next);
+//        .then(function(reviews) {
+//            req.toSend.reviews = reviews;
+//            next();
+//        }).catch(next);
 });
 
 router.get('/', function (req, res, next) {
@@ -50,18 +55,18 @@ router.get('/:id', function (req, res) {
 });
 
 router.put('/:id', ensureAdmin, function (req, res, next) {
-   _.extend(req.animal, req.body);
-   req.animal.save()
-    .then(function () {
-        res.status(200).json(req.animal);
-    }).catch(next);
+    _.extend(req.animal, req.body);
+    req.animal.save()
+	.then(function () {
+		res.status(200).json(req.animal);
+	}).catch(next);
 });
 
 router.post('/:id/reviews', ensureAuthenticated, function (req, res, next) {
-   var review = req.body;
-   review.animal = req.animal._id;
-   Review.create(review)
-       .then(function(newReview) {
-           res.status(201).json(newReview);
-       }).catch(next);
+    var review = req.body;
+    review.animal = req.animal._id;
+    Review.create(review)
+        .then(function(newReview) {
+            res.status(201).json(newReview);        
+        }).catch(next);
 });

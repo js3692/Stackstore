@@ -1,0 +1,25 @@
+<div class="row">
+		<div class="input-group col-md-8 col-centered">
+			<div class="panel panel-default">
+				  	<table class="table">
+					  	<thead>
+					  		<tr>
+					  			<th>Date</th>
+					  			<th>Shipping Address</th>
+					  			<th>Items</th>
+					  			<th></th>
+					  			<th></th>
+					  		</tr>
+					  	</thead>
+					  	<tbody>
+						  	<tr ng-repeat="order in orders">
+						  		<td>{{ order.date }}</td>
+						  		<td>{{ order.shippingAddr }}</td>
+						  		<td>{{ order.items }}</td>
+						  		<td>{{ order.total }}</td>
+						  	</tr>
+					  	</tbody>
+				  	</table>
+				</div>
+        </div>
+</div>

@@ -5,11 +5,11 @@ app.controller('LoginCtrl', function ($scope, AuthService, $state) {
 
     $scope.sendLogin = function (loginInfo) {
         $scope.error = null;
-        AuthService.login(loginInfo).then(function () {
-            $state.go('home');
+        AuthService.login(loginInfo).then(function (user) {
+            if(user.reset) $state.go('resetPassword');
+            else $state.go('home');
         }).catch(function () {
             $scope.error = 'Invalid login credentials.';
         });
     };
-
 });

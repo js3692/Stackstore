@@ -1,21 +1,83 @@
 
-<div id="product" class="container-fluid">
+<div id="animal" class="container-fluid">
     <div class="row">
-		<div class="input-group col-md-8 col-centered">
-
-  			<div class="panel panel-default">
-		  		<div class="panel-heading">{{ animal.name }}</div>
+        <div class="page-header">
+            <h1>{{ animal.name }}        
+                <small>
+                    <stars stars="aggregateStars(animal.reviews)"></stars>
+                </small>
+            </h1>    
+        </div>
+        <div class="well well-lg">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                            <div class="panel-body">
+                                {{ animal.description }}
+                            </div>
+			          </div>
+                    <div class="panel panel-default">
+                            <div class="panel-heading">You might also like...</div>
+                                <div class="panel-body">   
+                                </div>
+			          </div>
+                </div> 
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="container-fluid">
+                                    <div ng-repeat="item in centerPanel" class="row">
+                                        <strong>{{ item.label }}</strong> {{ item.value }}
+                                    </div>
+                                </div>    
+                            </div>
+			          </div>
+                     <div class="panel panel-default">
+                         <div class="panel-heading">Add to cart</div>
+                            <div class="panel-body">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-lg-9">            
+                                            <select class="form-control" ng-model="animalQuantity" ng-options="opt for opt in options.astep"></select>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <button class="btn btn-default ">
+                                                <span class="glyphicon glyphicon-plus" ng-click="addToCart()"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>    
+                            </div>
+			          </div>
+                     
+                <div class="col-lg-4">
+                    <img class="pull-right" ng-src="{{ animal.imageUrl }}"/>
+                </div>    
+            </div>
+        </div>
+        
+        </div>
+        <form  ng-show="isLoggedIn()">
+            <div class="row">
+                <div class="col-lg-10">
+                    <div class="input-group input-group-lg">
+                        <input type="text" ng-model="review.content" class="form-control" placeholder="Leave a review." aria-describedby="sizing-addon1"/>
+                        <span ng-click="submit()" class="input-group-addon">Submit</span>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <uib-rating ng-model="review.stars" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three']" aria-labelledby="default-rating"></uib-rating>
+                </div>
+            </div>
+        </form>
+        
+        <hr>
+            <div class="panel panel-default" ng-repeat="review in animal.reviews">
+		  		<div class="panel-heading">{{ review.writtenBy.email }} <small><stars class="pull-right" stars="review.stars"></stars></small></div>
 					<div class="panel-body">
-						{{ animal.description }}
+						 {{ review.content }}
 					</div>
 			</div>
-  			<div class="panel panel-default">
-		  		<div class="panel-heading">Rating</div>
-					<div class="panel-body">
-						 {{ animal.rating }}
-					</div>
-			</div>
-		</div>
 	</div>
-</div>
 

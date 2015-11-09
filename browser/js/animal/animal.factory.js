@@ -1,23 +1,16 @@
-app.factory('AnimalFactory', function($http) {
-  var baseUrl = '/api/animals/';
-  
-  function toData(response) {
-    return response.data; 
-  }
-  
-  return {
-    findByName: function(name) {      
-      return $http.get(baseUrl, { name: name })
-        .then(toData);
-    }, 
-    findById: function(id) {
-      return $http.get(baseUrl + id)
-        .then(toData);
-    },
-    findAll: function() {
-      return $http.get(baseUrl)
-        .then(toData);
-    }
-    
-  };
-});
+app.factory('Animal', function(DS) {
+
+	var Animal = DS.defineResource({
+	    name: 'animals',
+        relations: {
+            hasMany: {
+                reviews: {
+                    localField: 'reviews',
+                    foreignKey: 'animal'
+                }
+            }
+        }
+    });
+
+	return Animal;
+}).run(function (Animal) {})
