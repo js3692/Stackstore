@@ -19,9 +19,4 @@ app.controller('HomeCtrl', function($scope, $state, animals) {
         else $scope.category = category;  
     };
 
-    $scope.toggleDropdown = function($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.status.isopen = !$scope.status.isopen;
-    };
 });
