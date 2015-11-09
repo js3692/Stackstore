@@ -7,9 +7,10 @@ var schema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
 	},
-	items: {
-		type: [{}]
-	}
+	items: [{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Item'
+	}]
 });
 
 schema.methods.deleteItem = function (itemId) {

@@ -37,6 +37,7 @@ var animalSchema = new mongoose.Schema({
     },
     inventoryQuantity: {
         type: Number,
+        min: 0,
         required: true
     }
 });
@@ -64,5 +65,16 @@ animalSchema.methods.getSimilar = function () {
         });
 };
 
+animalSchema.methods.decrInventory = function (quantity) {
+    quantity = quantity || 1;
+    this.inventoryQuantity -= quantity;
+    return this.save();
+};
+
+animalSchema.methods.incrInventory = function (quantity) {
+    quantity = quantity || 1;
+    this.inventoryQuantity += quantity;
+    return this.save();
+};
 
 mongoose.model('Animal', animalSchema);
