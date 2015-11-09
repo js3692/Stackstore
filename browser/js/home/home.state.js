@@ -16,7 +16,7 @@ app.config(function ($stateProvider) {
         url: '/',
         templateUrl: 'js/home/home.html',
         resolve: {
-          animals: function(Animal, $stateParams) {
+          animals: function(Animal, $stateParams) { // why state params
             return Animal.findAll();
           }
         },

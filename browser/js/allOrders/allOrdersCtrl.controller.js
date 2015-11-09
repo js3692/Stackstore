@@ -1,11 +1,11 @@
 app.controller('AllOrdersCtrl', function($scope, orders, users){
     $scope.orders = orders;
     $scope.users = users;
-    
+
     $scope.categories = [
         'All',
-        'Created', 
-        'Processing', 
+        'Created',
+        'Processing',
         'Cancelled',
         'Completed'
     ];
@@ -13,12 +13,13 @@ app.controller('AllOrdersCtrl', function($scope, orders, users){
     $scope.status = {
         isopen: false
     };
-    
+
     $scope.chooseCategory = function(category){
         if(category === 'All') delete $scope.category;
-        else $scope.category = category;  
+        else $scope.category = category;
     };
 
+// what's this for?
     $scope.toggleDropdown = function($event) {
         $event.preventDefault();
         $event.stopPropagation();
