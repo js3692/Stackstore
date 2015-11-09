@@ -1,8 +1,27 @@
 app.controller('AllOrdersCtrl', function($scope, orders, users){
-    $scope.orders = orders;
+    $scope.orders = setStatusOptions(orders);
     $scope.users = users;
     
-    $scope.categories = [
+    function setStatusOptions(orders){
+        var orderTransitionOptions = {
+            created: ['Processing'],
+            processing: ['Cancelled', 'Completed']
+        }
+        
+        orders.forEach(function(order) {
+            order.statusOptions = orderTransitionOptions[order.status.toLowerCase()];
+        });
+        return orders;
+    }
+    
+    $scope.changeOrderStatus = function(order, status) {
+        order.DSUpdate({ status: status })
+            .then(function() {
+                $scope.orders = setStatusOptions(orders);
+            });
+    };
+    
+    $scope.Ordercategories = [
         'All',
         'Created', 
         'Processing', 
@@ -18,10 +37,5 @@ app.controller('AllOrdersCtrl', function($scope, orders, users){
         if(category === 'All') delete $scope.category;
         else $scope.category = category;  
     };
-
-    $scope.toggleDropdown = function($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.status.isopen = !$scope.status.isopen;
-    };
+    
 });

@@ -64,25 +64,28 @@
 			          </div>
                      
                 <div class="col-lg-4">
-                    <img class="pull-right" ng-src="{{ animal.imageUrl }}"/>
+                    <img-wit class="pull-right" src="{{animal.imageUrl}}" w="350" h="400"></img-wit>
                 </div>    
             </div>
         </div>
         
         </div>
-        <form  ng-if="isLoggedIn()">
+        <div ng-if="isLoggedIn()">
             <div class="row">
                 <div class="col-lg-10">
-                    <div class="input-group input-group-lg">
-                        <input type="text" ng-model="review.content" class="form-control" placeholder="Leave a review." aria-describedby="sizing-addon1"/>
-                        <span ng-click="submit()" class="input-group-addon">Submit</span>
-                    </div>
+                    <form name="reviewForm">
+                        <div class="input-group form-group input-group-lg">
+                            <input type="text" ng-model="review.content" class="form-control input-group-lg" placeholder="Leave a review." aria-describedby="sizing-addon1" required/>
+                            <span ng-click="submit()" class="input-group-addon">Submit</span>
+                        </div>
+                         <uib-alert ng-repeat="alert in alerts" close="closeAlert()" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+                    </form>
                 </div>
                 <div class="col-lg-2">
                     <uib-rating ng-model="review.stars" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three']" aria-labelledby="default-rating"></uib-rating>
                 </div>
             </div>
-        </form>
+        </div>
         
         <hr>
             <div class="panel panel-default" ng-repeat="review in animal.reviews">
