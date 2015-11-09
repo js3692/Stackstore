@@ -15,18 +15,18 @@
 						  	<tr ng-repeat="user in users">
 						  		<td>{{ user.email }}</td>
 						  		<td>
-                                    <button class="btn btn-default" type="button">
-						  				<span ng-click="promoteToAdmin(user._id)" class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
+                                    <button ng-click="promoteToAdmin(user._id)" class="btn btn-default" type="button">
+						  				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
 						  			</button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-default" type="button">
-						  				<span ng-click="triggerReset(user._id)" class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
+                                    <button ng-click="triggerReset(user._id)" class="btn btn-default" type="button">
+						  				<span  class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
 						  			</button>
                                 </td>
 						  		<td>
-                                    <button class="btn btn-default" type="button">
-						  				<span ng-click="deleteUser(user._id)" class="glyphicon glyphicon-remove" aria-hidden="true"></span> 
+                                    <button ng-click="deleteUser(user._id)" class="btn btn-default" type="button">
+						  				<span  class="glyphicon glyphicon-remove" aria-hidden="true"></span> 
 						  			</button>
                                 </td>
 						  	</tr>
