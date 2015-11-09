@@ -1,18 +1,21 @@
 app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Session, AuthService) {
     
-    $scope.aggregateStars = function(reviews){
-        var totalReviewsWithStars = 0;
-        var starTotal = reviews.reduce(function(sum, review) {
-            if(review.stars) {
-                sum+=review.stars;
-                totalReviewsWithStars++;
-            }
-            return sum;
-        }, 0);
-        return Math.ceil(starTotal/totalReviewsWithStars);
+    $scope.aggregateStars = function (reviews) {
+        if (reviews) {
+            var totalReviewsWithStars = 0;
+            var starTotal = reviews.reduce(function(sum, review) {
+                if(review.stars) {
+                    sum+=review.stars;
+                    totalReviewsWithStars++;
+                }
+                return sum;
+            }, 0);
+            return Math.ceil(starTotal/totalReviewsWithStars);
+        } else return 0;
     };
     
     $scope.animal = animal;
+
     $scope.submit = function() {
         $scope.review.author = Session.user._id;
         $scope.review.animal = animal._id;
@@ -20,38 +23,35 @@ app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Sessio
         $scope.review = {};
     };
 
+    $scope.animalQuantity = 0;
     
-    $scope.centerPanel = [
-        { label: "Conservation Status:", value: animal.conservationStatus },
-        { label: "Price:", value: "$" + animal.priceUSD }, 
-        { label: "Left in stock:", value: animal.inventoryQuantity }
-    ];
-    
+    $scope.changeQuantity = function (quantity) {
+        $scope.animalQuantity += quantity;
+    };
+
+    $scope.isMin = function () {
+        return $scope.animalQuantity === 0;
+    };
+
+    $scope.isMax = function () {
+        return $scope.animalQuantity === $scope.animal.inventoryQuantity;
+    };
+
     $scope.addToCart = function() {
-        var cartItem = {
+        Cart.update({
             animal: $scope.animal._id,
             quantity: $scope.animalQuantity
-        }
-        cart.data.items.push(cartItem);
-        Cart.update(cart)
-            .then(function(updatedCart) {
-                cart = updatedCart;
-            });
+        })
+        .then(function (animal) {
+            $scope.animal = animal;
+            $scope.animalQuantity = 0;
+        });
     };
     
     $scope.isLoggedIn = function () {
         return AuthService.isAuthenticated();
     };
-    
-    
-    //for animal quantity picker
-    // $scope.animalQuantity = 1;
 
-    $scope.options = {
-        astep: _.fill(Array(animal.inventoryQuantity), 0).map(function (elem, idx) { return idx + 1; })
-    };
-    
-    
     //for star ratings.
     $scope.rate = 0;
     $scope.max = 5;

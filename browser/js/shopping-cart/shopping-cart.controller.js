@@ -1,26 +1,29 @@
-app.controller('ShoppingCartCtrl', function($scope, cart, Cart, animals) {
-    $scope.cart = Cart.matchToAnimals(animals, cart.data.items);
-    
-    $scope.deleteOne = function(animalToDelete) {
-        $scope.cart = $scope.cart.filter(function(animal) {
-             return animal._id !== animalToDelete._id;
-        });
-        cart.data.items = cart.data.items.filter(function(item) {
-            return item.animal !== animalToDelete._id;
-        });
-        Cart.update(cart);
+app.controller('ShoppingCartCtrl', function($scope, $state, cart, Cart) {
+    $scope.cart = cart;
+
+    $scope.deleteOne = function (itemId) {
+        Cart.delete(itemId)
+            .then(function (updatedCart) {
+                $scope.cart = updatedCart;
+            });
     };
     
-    $scope.getTotal = function() {  
+    $scope.getTotal = function() {
+
     };
     
-    $scope.getSubtotal = function(quantity, price) {
-        return Number(quantity) * Number(price);  
+    $scope.getSubtotal = function (quantity, price) {
+        return (quantity * price).toFixed(2);
     };
     
-    $scope.purchase = function() {
-        cart.data.shippingAddr = $scope.shippingAddress;
-        Cart.purchase(cart);
+    $scope.purchase = function () {
+        // If not logged in direct to log in page
+
+        Cart.purchase({ shipTo: $scope.shippingAddress })
+            .then(function (emptyCart) {
+                $scope.cart = emptyCart;
+                $state.transitionTo('home', {}, { location: true, notify: true, reload: true });
+            });
     };
     
 });

@@ -6,20 +6,22 @@ var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 require('../../../db/models');
 var Cart = mongoose.model('Cart');
+var Item = mongoose.model('Item');
+var Animal = mongoose.model('Animal');
 
 // Current URL: '/api/cart'
 
 router.use(function (req, res, next) {
 	if (req.session.cart) {
-        Cart.findById(req.session.cart._id)
-            .then(function(cart) {
-                req.session.cart = cart;
-                next();
-        }).catch(next);
+    Cart.findById(req.session.cart._id).populate('items')
+      .then(function(cart) {
+        req.session.cart = cart;
+        next();
+      }).catch(next);
 	}
 	else {
 		if (req.user) { // ==> if a user is logged in
-			Cart.find({ user: req.user._id })
+			Cart.find({ user: req.user._id }).populate('items')
 			.then(function (cart) {
 				if (cart.length) { // Get the "personal" cart and attach it to req.session
 					req.session.cart = cart;
@@ -50,25 +52,39 @@ router.get('/me', function (req, res) {
 });
 
 router.put('/me', function (req, res, next) {
-    var newCart = req.body;
-    var cart = req.session.cart;
-    cart.update(newCart)
-        .then(function() {
-            res.status(201).json(newCart);
-        }).catch(next);
-//    cart.animals.push(req.body.animal);
-//    cart.save()
-//        .then(function() {
-//            res.status(201).json(cart);
-//        }).catch(next);
+	var animal;
+	Animal.findById(req.body.animal)
+	.then(function (animalToSave) {
+		animal = animalToSave;
+		return Item.create({ animal: animalToSave, quantity: req.body.quantity });
+	})
+	.then(function (createdItem) {
+		return req.session.cart.addItem(createdItem._id);
+	})
+  .then(function (newCart) {
+		req.session.cart = newCart;
+		return animal.decrInventory(req.body.quantity);
+  })
+  .then(function () {
+    res.status(201).json(animal);
+  }).catch(next);
 });
 
 router.delete('/me/:itemId', function (req, res, next) {
-	var toDelete = req.params.itemId;
-    var cart = req.session.cart;
-    
-    cart.deleteAnimalById(toDelete)
-	.then(function (updatedCart) {
-		res.status(200).json(updatedCart);
-	}).catch(next);
+	req.session.cart.deleteItem(req.params.itemId)
+		.then(function () {
+			return Item.findById(req.params.itemId);
+		})
+		.then(function (deletedItem) {
+			return Animal.findById(deletedItem.animal._id)
+				.then(function (animalToReplenish) {
+					return animalToReplenish.incrInventory(deletedItem.quantity);
+				});
+		})
+		.then(function () {
+			return Cart.findById(req.session.cart._id).populate('items');
+		})
+		.then(function (updatedCart) {
+			res.status(200).json(updatedCart);
+		}).catch(next);
 });
