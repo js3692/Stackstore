@@ -7,7 +7,7 @@ app.controller('AllOrdersCtrl', function($scope, orders, users){
             created: ['Processing'],
             processing: ['Cancelled', 'Completed']
         }
-        
+        console.log('this is ordersssss', orders)
         orders.forEach(function(order) {
             order.statusOptions = orderTransitionOptions[order.status.toLowerCase()];
         });

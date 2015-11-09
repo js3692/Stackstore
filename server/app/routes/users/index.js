@@ -68,9 +68,10 @@ router.post('/:id/triggerReset', ensureAdmin, function(req, res, next){
     req.userToUpdate
         .save()
         .then(function(user){
+          console.log('this is the user', user);
                mdClient.messages.send({
                 message: {
-                  html: "<a href=\"http://localhost:1337\">Login Here</a>",
+                  html: "<a href=\"http://localhost:1337/signup\">Click here to log in and reset your password</a>",
                   text: "Please login to reset your password",
                   subject: "Password Reset",
                   from_email: "no-reply@TheLifeExotic.com",
@@ -82,10 +83,8 @@ router.post('/:id/triggerReset', ensureAdmin, function(req, res, next){
                       }],
                 },
                   async: false, 
-                  ip_pool: "Main Pool", 
-                  send_at: "example send_at"
+                  ip_pool: "Main Pool"
                 }, function(result) {
-                    console.log('inside call back')
                     console.log(result)
                     },
                     function(e) {
