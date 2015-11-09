@@ -22,6 +22,12 @@ app.factory('Cart', function(DS, $state, $http) {
                     foreignKey: 'user' // that's not what that does I don't think
                 }
             }
+        },
+        methods: {
+            cartUpdate: function() {
+                return this.update(this.data)
+                    .then(toData)
+            }
         }
     });
 
@@ -45,6 +51,16 @@ app.factory('Cart', function(DS, $state, $http) {
         });
         return matchedCart;
     };
+[{animal: idthing, quantity:17}]
+[{name:'Bill Murray', quantity:17}]
+cart = animals.filter(function(animal) {
+    var cartItem = _.find(cart, function(item) {
+        return item._id === animal._id;
+    })
+    if (!cartItem) return false;
+    animal.quantity = cartItem.quantity;
+    return true;
+})
 
 
 	return Cart;
