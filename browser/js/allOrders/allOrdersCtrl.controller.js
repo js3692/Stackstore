@@ -1,4 +1,4 @@
-app.controller('AllOrdersCtrl', function($scope, orders, users, $log){
+app.controller('AllOrdersCtrl', function($scope, orders, users){
     $scope.orders = setStatusOptions(orders);
     $scope.users = users;
     
@@ -9,10 +9,17 @@ app.controller('AllOrdersCtrl', function($scope, orders, users, $log){
         }
         
         orders.forEach(function(order) {
-            order.options = orderTransitionOptions[order.status.toLowerCase()];
+            order.statusOptions = orderTransitionOptions[order.status.toLowerCase()];
         });
         return orders;
     }
+    
+    $scope.changeOrderStatus = function(order, status) {
+        order.DSUpdate({ status: status })
+            .then(function() {
+                $scope.orders = setStatusOptions(orders);
+            });
+    };
     
     $scope.Ordercategories = [
         'All',

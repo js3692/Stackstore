@@ -1,6 +1,11 @@
 app.factory('Order', function(DS) {
     var Order = DS.defineResource({
         name: 'order',
+//        methods: {
+//            updateStatus: function(status){
+//                console.log(status);
+//            }
+//        },
         relations: {
             hasOne: {
                 users: {
@@ -10,6 +15,8 @@ app.factory('Order', function(DS) {
             }
         }
     }); 
+    
+    
     Order.byUser = function(id) {
         return this.findAll()
             .then(function(orders) {
