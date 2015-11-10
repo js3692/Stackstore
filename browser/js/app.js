@@ -12,7 +12,6 @@ app.config(function ($urlRouterProvider, $locationProvider, DSProvider) {
 
     DSProvider.defaults.basePath = '/api';
     DSProvider.defaults.idAttribute = '_id';
-   
 });
 
 // This app.run is for controlling access to specific states.
