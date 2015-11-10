@@ -93,24 +93,24 @@
 						</div>
 					</div>
 
-					<div class="col-lg-4">
-						<img class="pull-right" ng-src="{{animal.imageUrl}}" w="350" h="400">
-					</div>
-				</div>
-			</div>
-			<hr>
-			<br>
-		</div>
-		<div class="row" ng-if="isLoggedIn()">
-			<div class="col-sm-10">
-				<form ng-submit="submit()">
-					<div class="input-group form-group input-group-lg">
-						<input type="text" ng-model="$parent.review.content" class="form-control input-group-lg" placeholder="Leave a review" aria-describedby="sizing-addon1" required/>
-						<span type="submit" class="input-group-addon">Submit</span>
-					</div>
-					<uib-alert ng-repeat="alert in alerts" close="closeAlert()" type="{{alert.type}}">{{alert.msg}}</uib-alert>
-				</form>
-
+          <div class="col-lg-4">
+            <div ng-style="{ background: 'url({{animal.imageUrl}}) center center no-repeat', 'background-size':'contain' }"></div>
+            <img class="pull-right" ng-src="{{animal.imageUrl}}">
+          </div>
+        </div>
+      </div>
+      <hr>
+      <br>
+    </div>
+    <div class="row" ng-if="isLoggedIn()">
+      <div class="col-sm-10">
+        <form ng-submit="submit()">
+          <div class="input-group form-group input-group-lg">
+            <input type="text" ng-model="$parent.review.content" class="form-control input-group-lg" placeholder="Leave a review" aria-describedby="sizing-addon1" required/>
+            <span type="submit" class="input-group-addon">Submit</span>
+          </div>
+          <uib-alert ng-repeat="alert in alerts" close="closeAlert()" type="{{alert.type}}">{{alert.msg}}</uib-alert>
+        </form>
 			</div>
 			<div class="col-sm-2" style="height: 46px;">
 				<uib-rating ng-model="review.stars" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three']" aria-labelledby="default-rating" style="color: #fff; font-size: 1.5em; display: block; margin-top: 10px; text-align: center;"></uib-rating>

@@ -114,7 +114,7 @@ var seedAnimals = function () {
         },
          {
             name: 'Giant Panda',
-            imageUrl: 'https://c402277.ssl.cf1.rackcdn.com/photos/144/images/story_full_width/Giant_Panda_Hero_image_(c)_Michel_Gunther_WWF_Canon.jpg?1345515244',
+            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Panda_Cub_from_Wolong%2C_Sichuan%2C_China.JPG/284px-Panda_Cub_from_Wolong%2C_Sichuan%2C_China.JPG',
             price: 6500,
             description: 'Eats between 26 to 84 pounds of bamboo a day, peaceful nature',
             rating: 4.8,
