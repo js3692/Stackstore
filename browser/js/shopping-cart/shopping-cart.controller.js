@@ -1,4 +1,4 @@
-app.controller('ShoppingCartCtrl', function($scope, $state, cart, Cart) {
+app.controller('ShoppingCartCtrl', function($scope, $state, cart, Cart, DS) {
     $scope.cart = cart;
 
     $scope.deleteOne = function (itemId) {
@@ -25,6 +25,7 @@ app.controller('ShoppingCartCtrl', function($scope, $state, cart, Cart) {
         Cart.purchase({ shipTo: $scope.shippingAddress })
             .then(function (emptyCart) {
                 $scope.cart = emptyCart;
+                DS.ejectAll('animals');
                 $state.transitionTo('home', {}, { location: true, notify: true, reload: true });
             });
     };

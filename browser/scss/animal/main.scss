@@ -1,8 +1,28 @@
-#animal {
-    img {
-        border-radius: 5%;
-    }
-    select {
-    }
+.animal-wrapper {
+	background-color: #2d3853;
+	.page-header {
+		color: #ddd;
+	}
 }
-
+#animal {
+  img {
+    border-radius: 12px;
+  }
+  .shop {
+  	.panel-body {
+  		padding: 15px 0;
+  	}
+  	.button-column {
+  		padding: 0;
+  		text-align: center;
+  	}
+  	.cta-column {
+  		button {
+  			width: 100%;
+  		}
+  	}
+  	#quant:hover {
+  		cursor: initial;
+  	}
+  }
+}
