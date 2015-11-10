@@ -15,7 +15,8 @@ app.config(function ($stateProvider) {
             cart: function(Cart) {
                 return Cart.me().then(function (res) { return res.data; });
             },
-            recommendations: function(Recommendation, $stateParams) {
+            recommendations: function(Recommendation, $stateParams, DS) {
+                DS.ejectAll('recommendations');
                 return Recommendation.find($stateParams.id);
             }
         },

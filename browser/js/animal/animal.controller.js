@@ -1,5 +1,5 @@
 app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Session, AuthService, recommendations) {
-    
+    console.log('here are the recommendations!', recommendations);
     $scope.animal = animal;
     
     $scope.aggregateStars = function (reviews) {
