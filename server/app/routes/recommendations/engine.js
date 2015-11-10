@@ -9,8 +9,8 @@ transforms orders into an array of animal id arrays.
 */
 function transformOrdersToData (orders) {
     var data = orders.map(function(order) {
-        return order.animals.map(function(animal) {
-            return animal._id;
+        return order.items.map(function(item) {
+            return item.animal._id;
        }); 
     });
     return data;
@@ -32,7 +32,6 @@ appeared in orders with itemToMatch.
 */
 
 function generateRecHash (data, itemToMatch) {
-    console.log(data, itemToMatch, 'data and itemtoMatch')
     var recHash = data.reduce(function(recHash, order) {
         if(!containsId(order, itemToMatch)) return recHash;
         order.forEach(function(item) {
@@ -72,6 +71,7 @@ function topThreeRecs (recHash) {
 
 module.exports = function(itemToMatch) {
     return Order.find({})
+        .populate('items')     
         .then(function(orders) {
             var data = transformOrdersToData(orders);
             var hash = generateRecHash(data, itemToMatch);

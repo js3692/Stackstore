@@ -18,15 +18,15 @@ var schema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Item'
 	}],
-  date: {
+    date: {
 		type: Date,
 		required: true
-  },
-  shippingAddr: {
+    },
+    shippingAddr: {
 		type: String,
 		required: true
-  },
-  total: {
+    },
+    total: {
     type: Number,
     default: 0,
     get: convertFormatToDollars
