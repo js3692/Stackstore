@@ -1,4 +1,4 @@
-app.controller('ShoppingCartCtrl', function($scope, $state, cart, Cart, DS) {
+app.controller('ShoppingCartCtrl', function($scope, $state, cart, Cart, DS, AuthService) {
     $scope.cart = cart;
 
     $scope.deleteOne = function (itemId) {
@@ -20,14 +20,15 @@ app.controller('ShoppingCartCtrl', function($scope, $state, cart, Cart, DS) {
     };
     
     $scope.purchase = function () {
-        // If not logged in direct to log in page
-
-        Cart.purchase({ shipTo: $scope.shippingAddress })
-            .then(function (emptyCart) {
-                $scope.cart = emptyCart;
-                DS.ejectAll('animals');
-                $state.transitionTo('home', {}, { location: true, notify: true, reload: true });
-            });
+        if (!AuthService.isAuthenticated()) $state.go('login');
+        else {
+            Cart.purchase({ shipTo: $scope.shippingAddress })
+                .then(function (emptyCart) {
+                    $scope.cart = emptyCart;
+                    DS.ejectAll('animals');
+                    $state.transitionTo('home', {}, { location: true, notify: true, reload: true });
+                });
+        }
     };
     
 });
