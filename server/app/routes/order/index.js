@@ -26,7 +26,7 @@ var Cart = mongoose.model('Cart');
 // Current URL: '/api/order'
 
 router.get('/', function (req, res, next) {
-	Order.find()
+	Order.find().populate('items')
 	.then(function (allOrders) {
 		res.status(200).json(allOrders);
 	}).catch(next);
