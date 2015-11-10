@@ -32,16 +32,7 @@
           </div>
 
           <div class="col-lg-4">
-            <div class="panel panel-primary" style="min-height: 205px;">
-              <div class="panel-heading">
-                You might also like....
-              </div>
-              <div class="panel-body">
-                <div class="container-fluid">
-                  
-                </div>    
-              </div>
-            </div>
+            
             <div class="panel panel-primary shop">
               <div class="panel-heading">
                 Add to cart
@@ -73,10 +64,36 @@
                 </div>
               </div>    
             </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                You might also like....
+              </div>
+              <div class="panel-body">
+                <div class="container-fluid">
+                    <div ng-if="recommendations.length === 0">
+                        No recommendations for this animal.
+                    </div>
+                    <div id="myCarousel" ng-if="recommendations.length > 0">
+<!--                            <div class="col-lg-offset-1 col-lg-6">  -->
+                                <div class="carousel-outer">
+                                    <uib-carousel interval="myInterval" no-wrap="noWrapSlides">
+                                      <uib-slide ui-sref="animal({ id: recommendation._id })" ng-repeat="recommendation in recommendations" active="slide.active">
+                                        <img ng-src="{{ recommendation.imageUrl }}">
+                                        <div class="carousel-caption">
+                                            <h4>{{ recommendation.name }}</h4>
+                                        </div>
+                                      </uib-slide>
+                                    </uib-carousel>
+                                  </div>
+<!--                        </div>-->
+                    </div>
+                </div>    
+              </div>
+            </div>    
           </div>
                      
           <div class="col-lg-4">
-              <img-wit class="pull-right" src="{{animal.imageUrl}}" w="350" h="400"></img-wit>
+              <img class="pull-right" ng-src="{{animal.imageUrl}}" w="350" h="400">
           </div>    
         </div>
       </div>
@@ -85,13 +102,14 @@
     </div>
     <div class="row" ng-if="isLoggedIn()">
       <div class="col-sm-10">
-        <form name="reviewForm">
+        <form ng-submit="submit()">
           <div class="input-group form-group input-group-lg">
-            <input type="text" ng-model="review.content" class="form-control input-group-lg" placeholder="Leave a review" aria-describedby="sizing-addon1" required/>
-            <span ng-click="submit()" class="input-group-addon">Submit</span>
+            <input type="text" ng-model="$parent.review.content" class="form-control input-group-lg" placeholder="Leave a review" aria-describedby="sizing-addon1" required/>
+            <span type="submit" class="input-group-addon">Submit</span>
           </div>
-          <uib-alert ng-repeat="alert in alerts" close="closeAlert()" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+          <uib-alert ng-repeat="alert in alerts" close="closeAlert()" type="{{alert.type}}">{{alert.msg}}</uib-alert>
         </form>
+         
       </div>
       <div class="col-sm-2" style="height: 46px;">
           <uib-rating ng-model="review.stars" max="max" readonly="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three']" aria-labelledby="default-rating" style="color: #fff; font-size: 1.5em; display: block; margin-top: 10px; text-align: center;"></uib-rating>
@@ -106,3 +124,4 @@
     <hr>
   </div>
 </div>
+    

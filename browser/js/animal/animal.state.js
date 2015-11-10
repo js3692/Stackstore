@@ -14,6 +14,9 @@ app.config(function ($stateProvider) {
             },
             cart: function(Cart) {
                 return Cart.me().then(function (res) { return res.data; });
+            },
+            recommendations: function(Recommendation, $stateParams) {
+                return Recommendation.find($stateParams.id);
             }
         },
         controller: "AnimalCtrl"

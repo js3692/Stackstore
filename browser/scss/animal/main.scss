@@ -5,9 +5,26 @@
 	}
 }
 #animal {
-  img {
-    border-radius: 12px;
-  }
+    img {
+        border-radius: 6px;
+    }
+    #myCarousel {
+        img {
+            width: 200px; 
+            height: 200px; 
+            margin: 0 auto;
+        }
+    }
+
+    .carousel-outer {
+        width: 200px;
+        overflow: hidden;
+        height: 200px;
+        margin: 0 auto;
+    }
+    
+    
+    
   .shop {
   	.panel-body {
   		padding: 15px 0;
