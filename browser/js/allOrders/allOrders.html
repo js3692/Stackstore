@@ -32,7 +32,7 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat="item in order.items">
-							<td>{{item.animal.name}}</td>
+							<td> <a ui-sref="animal({ id: item.animal._id })">{{item.animal.name}}</a></td>
 							<td>{{item.animal.priceUSD}}</td>
 							<td>{{item.animal.conservationStatus}}</td>
 							<td>{{item.quantity}}</td>

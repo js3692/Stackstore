@@ -1,43 +1,43 @@
 <div class="home-wrapper">
-  <section id="home" class="container-fluid">
-    <form name="search" class="form-inline">
-      <div class="row">
-        <div class="col-sm-10">
-          <input type="text" class="form-control input-lg" ng-model="name" placeholder="Find your next dangerous best friend..." style="width: 100%;">
-        </div>
-        <div class="col-sm-2">
-          <div uib-dropdown is-open="status.isopen">
-            <button type="button" class="btn btn-default btn-lg" uib-dropdown-toggle ng-disabled="disabled">
-              {{ label }} <span class="caret"></span>
-            </button>
+	<section id="home" class="container-fluid">
+		<form name="search" class="form-inline">
+			<div class="row">
+				<div class="col-sm-10">
+					<input type="text" class="form-control input-lg" ng-model="name" placeholder="Find your next dangerous best friend..." style="width: 100%;">
+				</div>
+				<div class="col-sm-2">
+					<div uib-dropdown is-open="status.isopen">
+						<button type="button" class="btn btn-default btn-lg" uib-dropdown-toggle ng-disabled="disabled">
+							{{ label }} <span class="caret"></span>
+						</button>
 
-            <ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
-              <li ng-repeat="category in categories" ng-click="chooseCategory(category)" role="menuitem">
-                <a>{{ category }}</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </form>
-  </section>
-  <section id="results">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-6 col-md-4" ng-repeat="animal in animals | filter: { name: name, conservationStatus: category}">
-          <a ui-sref="animal({ id: animal._id })">
-            <div class="thumbnail">
-              <div class="imagebox">
-                <img-wit src="{{ animal.imageUrl }}" alt="..." w="400" h="400"></img-wit>
-              </div>
-              <div class="caption">
-                <h3>{{ animal.name }}</h3>
-                <p>{{ animal.conservationStatus }}</p>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+						<ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
+							<li ng-repeat="category in categories" ng-click="chooseCategory(category)" role="menuitem">
+								<a>{{ category }}</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</form>
+	</section>
+	<section id="results">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-6 col-md-4" ng-repeat="animal in animals | filter: { name: name, conservationStatus: category }">
+					<a ui-sref="animal({ id: animal._id })">
+						<div class="thumbnail">
+							<div class="imagebox">
+								<img-wit src="{{ animal.imageUrl }}" alt="..." w="400" h="400"></img-wit>
+							</div>
+							<div class="caption">
+								<h3>{{ animal.name }}</h3>
+								<p>{{ animal.conservationStatus }}</p>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
 </div>

@@ -1,4 +1,7 @@
 app.controller('AllOrdersCtrl', function ($scope, orders, users, Order) {
+	//newest orders listed first.
+	orders.reverse();
+
 	var orderTransitionOptions = {
 		created: ['Processing'],
 		processing: ['Cancelled', 'Completed']
