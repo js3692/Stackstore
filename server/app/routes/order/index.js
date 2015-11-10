@@ -42,6 +42,33 @@ router.post('/', function (req, res, next) {
 		shippingAddr: req.body.shipTo
 	})
 	.then(function (createdOrder) {
+		   User.findById(createdOrder.user).then(function (user) {
+	           mdClient.messages.send({
+		            message: {
+			              html: "<p>Thank you for being part of the Life Exotic<br>\“Animals don’t lie. Animals don’t criticize. If animals have moody days, they handle them better than humans do.\”<br> ― Betty White, If You Ask Me</p>",
+			              text: "Your Exotic Zoo is on the Way!",
+			              subject: "Your Purchase has been Made",
+			              from_email: "no-reply@TheLifeExotic.com",
+			              from_name: "The Life Exotic",
+			              to: [{
+			                      email: user.email,
+			                      name: "Curator",
+			                      type: "to"
+			                  }],
+		            },
+	              	async: false, 
+	              	ip_pool: "Main Pool"
+		           }, function(result) {
+		                console.log(result)
+		              },
+		                function(e) {
+		                     // Mandrill returns the error as an object with name and message keys
+		                      console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+		                    // A mandrill error occurred: Unknown_Subaccount - No subaccount exists with the id 'customer-123'
+	          })
+	        	
+	        })
+
 		newOrder = createdOrder;
 		return Cart.findById(req.session.cart._id);
 	})
@@ -73,9 +100,9 @@ router.put('/:id', function (req, res, next) {
         User.findById(savedOrder.user).then(function (user) {
            mdClient.messages.send({
 	            message: {
-		              html: "<a href=\"http://localhost:1337/signup\">Click here to log in and reset your password</a>",
+		              html: "<p>Thank you for being part of the Life Exotic<br>\“Until one has loved an animal, a part of one's soul remains unawakened.\”<br>― Anatole France</p>",
 		              text: "Your Order Status",
-		              subject: "Your Order Status Has Been Changed To" + savedOrder.status,
+		              subject: "Your Order Status Has Been Changed To " + savedOrder.status,
 		              from_email: "no-reply@TheLifeExotic.com",
 		              from_name: "The Life Exotic",
 		              to: [{

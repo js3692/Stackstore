@@ -68,7 +68,6 @@ router.post('/:id/triggerReset', ensureAdmin, function(req, res, next){
     req.userToUpdate
         .save()
         .then(function(user){
-          console.log('this is the user', user);
                mdClient.messages.send({
                 message: {
                   html: "<a href=\"http://localhost:1337/signup\">Click here to log in and reset your password</a>",
