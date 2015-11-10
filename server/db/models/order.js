@@ -14,10 +14,10 @@ var schema = new mongoose.Schema({
 		type: String,
 		enum: ['Created', 'Processing', 'Cancelled', 'Completed']
 	},
-	items: {
-		type: [mongoose.Schema.Types.ObjectId],
+	items: [{
+		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Item'
-	},
+	}],
   date: {
 		type: Date,
 		required: true
