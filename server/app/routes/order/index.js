@@ -2,7 +2,9 @@
 var router = require('express').Router();
 module.exports = router;
 var bodyParser = require('body-parser');
-router.use(bodyParser.urlencoded({ extended: true}));
+router.use(bodyParser.urlencoded({
+	extended: true
+}));
 router.use(bodyParser.json());
 var mandrill = require('mandrill-api/mandrill');
 var mdClient = new mandrill.Mandrill('68yA4Bp41FKbX9tv7NkcFg');
@@ -46,9 +48,9 @@ function sendEmail(message) {
 
 router.get('/', function (req, res, next) {
 	Order.find().populate('items')
-	.then(function (allOrders) {
-		res.status(200).json(allOrders);
-	}).catch(next);
+		.then(function (allOrders) {
+			res.status(200).json(allOrders);
+		}).catch(next);
 });
 
 router.post('/', function (req, res, next) {
@@ -105,7 +107,6 @@ router.post('/', function (req, res, next) {
 		   		message.to[0].email = user.email;
 	            sendEmail(message);
 	       })
-	           
 			newOrder = createdOrder;
 			return Cart.findById(req.session.cart._id);
 		})
@@ -119,11 +120,11 @@ router.post('/', function (req, res, next) {
 	}
 });
 
-router.param('id', function(req, res, next, id) {
-   Order.findById(id).then(function (order) {
-       req.order = order;
-       next();
-   }).catch(next);
+router.param('id', function (req, res, next, id) {
+	Order.findById(id).then(function (order) {
+		req.order = order;
+		next();
+	}).catch(next);
 });
 
 router.get('/:id', function (req, res, next) {
@@ -165,7 +166,7 @@ router.put('/:id', function (req, res, next) {
 
 router.delete('/:id', function (req, res, next) {
 	req.order.remove().exec()
-	.then(function () {
-		res.sendStatus(201);
-	});
+		.then(function () {
+			res.sendStatus(201);
+		});
 });

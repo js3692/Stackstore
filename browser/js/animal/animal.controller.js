@@ -1,6 +1,6 @@
-app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Session, AuthService) {
-    console.log($scope);
-    
+app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Session, AuthService, recommendations) {
+    console.log('here are the recommendations!', recommendations);
+    $scope.animal = animal;
     
     $scope.aggregateStars = function (reviews) {
         if (reviews) {
@@ -15,9 +15,8 @@ app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Sessio
             return Math.ceil(starTotal/totalReviewsWithStars);
         } else return 0;
     };
-    
-    $scope.animal = animal;
-
+    console.log($scope)
+//    $scope.review = {};
     $scope.submit = function() {
         if($scope.review.content.length < 20) {
             addAlert();
@@ -27,9 +26,9 @@ app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Sessio
         $scope.review.author = Session.user._id;
         $scope.review.animal = animal._id;
         Review.create($scope.review);
-        $scope.review = {};
+//        $scope.review = {};
     };
-
+    
     $scope.animalQuantity = 0;
     
     $scope.changeQuantity = function (quantity) {
@@ -69,6 +68,7 @@ app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Sessio
         $scope.percent = 100 * (value / $scope.max);
     };
     
+    //review form alerts
     $scope.alerts = [];
 
     function addAlert() {
@@ -79,5 +79,20 @@ app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Sessio
     $scope.closeAlert = function() {
         $scope.alerts.pop();
     };
+    
+    //recommendations
+    
+    
+    
+    $scope.myInterval = 5000;
+    
+    
+    function formatRecommendations(recommendations){
+        if(Array.isArray(recommendations)) return recommendations;    
+        else return [recommendations];
+    }
+    
+    $scope.recommendations = formatRecommendations(recommendations);
+    
 
 });
