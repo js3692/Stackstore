@@ -38,6 +38,10 @@ var seedUsers = function () {
             email: 'obama@gmail.com',
             password: 'potus',
             isAdmin: true
+        },
+        {
+            email: 'abhujle7@gmail.com',
+            password: '1234',
         }
     ];
 
