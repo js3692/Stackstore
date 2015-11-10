@@ -25,6 +25,25 @@ var Cart = mongoose.model('Cart');
 
 // Current URL: '/api/order'
 
+
+
+function sendEmail(message) {
+	           
+    mdClient.messages.send({
+        message: message,
+      	async: false, 
+      	ip_pool: "Main Pool"
+    }, function(result) {
+        console.log(result)
+    },
+    function(e) {
+        console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);               
+  	})
+	
+}
+
+
+
 router.get('/', function (req, res, next) {
 	Order.find().populate('items')
 	.then(function (allOrders) {
@@ -34,51 +53,70 @@ router.get('/', function (req, res, next) {
 
 router.post('/', function (req, res, next) {
 	var newOrder;
-	Order.create({
-		user: req.user._id,
-		status: 'Created',
-		items: req.session.cart.items,
-		date: new Date(),
-		shippingAddr: req.body.shipTo
-	})
-	.then(function (createdOrder) {
-		   User.findById(createdOrder.user).then(function (user) {
-	           mdClient.messages.send({
-		            message: {
-			              html: "<p>Thank you for being part of the Life Exotic<br>\“Animals don’t lie. Animals don’t criticize. If animals have moody days, they handle them better than humans do.\”<br> ― Betty White, If You Ask Me</p>",
-			              text: "Your Exotic Zoo is on the Way!",
-			              subject: "Your Purchase has been Made",
-			              from_email: "no-reply@TheLifeExotic.com",
-			              from_name: "The Life Exotic",
-			              to: [{
-			                      email: user.email,
-			                      name: "Curator",
-			                      type: "to"
-			                  }],
-		            },
-	              	async: false, 
-	              	ip_pool: "Main Pool"
-		           }, function(result) {
-		                console.log(result)
-		              },
-		                function(e) {
-		                     // Mandrill returns the error as an object with name and message keys
-		                      console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
-		                    // A mandrill error occurred: Unknown_Subaccount - No subaccount exists with the id 'customer-123'
-	          })
-	        	
-	        })
 
-		newOrder = createdOrder;
-		return Cart.findById(req.session.cart._id);
-	})
-	.then(function (foundCart) {
-		foundCart.items = [];
-		return foundCart.save();
-	})
-	.then(function (emptyCart) {
-		res.status(201).json(emptyCart);
-	}).catch(next);
+	var message = {
+              html: "<p>Thank you for being part of the Life Exotic<br>\“Animals don’t lie. Animals don’t criticize. If animals have moody days, they handle them better than humans do.\”<br> ― Betty White, If You Ask Me</p>",
+              text: "Your Exotic Zoo is on the Way!",
+              subject: "Your Purchase has been Made",
+              from_email: "no-reply@TheLifeExotic.com",
+              from_name: "The Life Exotic",
+              to: [{
+                      email: "",
+                      name: "Curator",
+                      type: "to"
+                  }],
+    }
+
+	if (!req.user) {
+		Order.create({
+			guestEmail: req.body.guestEmail,
+			status: 'Created',
+			items: req.session.cart.items,
+			date: new Date(),
+			shippingAddr: req.body.shipTo
+		})
+		.then(function (createdOrder) {
+			message.to[0].email = createdOrder.guestEmail;
+	        sendEmail(message);
+
+			newOrder = createdOrder;
+			return Cart.findById(req.session.cart._id);
+		})
+		.then(function (foundCart) {
+			foundCart.items = [];
+			return foundCart.save();
+		})
+		.then(function (emptyCart) {
+			res.status(201).json(emptyCart);
+		}).catch(next);
+	} 
+
+	else {
+		Order.create({
+			user: req.user._id,
+			status: 'Created',
+			items: req.session.cart.items,
+			date: new Date(),
+			shippingAddr: req.body.shipTo
+		})
+		.then(function (createdOrder) {
+		   // console.log('this is the crated order', createdOrder)
+		   User.findById(createdOrder.user).then(function (user) {
+		   		message.to[0].email = user.email;
+	            sendEmail(message);
+	       })
+	           
+			newOrder = createdOrder;
+			return Cart.findById(req.session.cart._id);
+		})
+		.then(function (foundCart) {
+			foundCart.items = [];
+			return foundCart.save();
+		})
+		.then(function (emptyCart) {
+			res.status(201).json(emptyCart);
+		}).catch(next);
+	}
 });
 
 router.param('id', function(req, res, next, id) {
@@ -93,37 +131,35 @@ router.get('/:id', function (req, res, next) {
 });
 
 router.put('/:id', function (req, res, next) {
+
+	var message = {
+          html: "<p>Thank you for being part of the Life Exotic<br>\“Until one has loved an animal, a part of one's soul remains unawakened.\”<br>― Anatole France</p>",
+          text: "Your Order Status",
+          subject: "Your Order Status Has Been Changed To " + savedOrder.status,
+          from_email: "no-reply@TheLifeExotic.com",
+          from_name: "The Life Exotic",
+          to: [{
+                  email: "",
+                  name: "Curator",
+                  type: "to"
+              }],
+    }
+
 	req.order.status = req.body.status;
 	req.order.save()
 	.then(function (savedOrder) {
-		console.log('this is the savedorder', savedOrder);
-        User.findById(savedOrder.user).then(function (user) {
-           mdClient.messages.send({
-	            message: {
-		              html: "<p>Thank you for being part of the Life Exotic<br>\“Until one has loved an animal, a part of one's soul remains unawakened.\”<br>― Anatole France</p>",
-		              text: "Your Order Status",
-		              subject: "Your Order Status Has Been Changed To " + savedOrder.status,
-		              from_email: "no-reply@TheLifeExotic.com",
-		              from_name: "The Life Exotic",
-		              to: [{
-		                      email: user.email,
-		                      name: "Curator",
-		                      type: "to"
-		                  }],
-	            },
-              	async: false, 
-              	ip_pool: "Main Pool"
-	           }, function(result) {
-	                console.log(result)
-	              },
-	                function(e) {
-	                     // Mandrill returns the error as an object with name and message keys
-	                      console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
-	                    // A mandrill error occurred: Unknown_Subaccount - No subaccount exists with the id 'customer-123'
-          })
-        	
-        })
-		res.status(201).json(savedOrder);
+		// console.log('this is the savedorder', savedOrder);
+        if (!savedOrder.user) {
+     		message.to[0].email = savedOrder.guestEmail;
+        	sendEmail(message);
+			res.status(201).json(savedOrder);
+		} else {
+     		User.findById(savedOrder.user).then(function (user) {
+     			message.to[0].email = user.email;
+     			sendEmail(message);
+	        })
+			res.status(201).json(savedOrder);
+		}
 	}).catch(next);
 });
 

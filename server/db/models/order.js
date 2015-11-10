@@ -8,7 +8,10 @@ var schema = new mongoose.Schema({
 	user: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User',
-		required: true
+		// required: true
+	},
+	guestEmail: {
+		type: String
 	},
 	status: {
 		type: String,
@@ -18,19 +21,19 @@ var schema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Item'
 	}],
-  date: {
+	date: {
 		type: Date,
 		required: true
-  },
-  shippingAddr: {
+	},
+	shippingAddr: {
 		type: String,
 		required: true
-  },
-  total: {
-    type: Number,
-    default: 0,
-    get: convertFormatToDollars
-  }
+	},
+	total: {
+		type: Number,
+		default: 0,
+		get: convertFormatToDollars
+	}
 });
 
 schema.pre('save', function (next) {
@@ -44,6 +47,14 @@ schema.pre('save', function (next) {
 		next();
 	}).catch(next);
 });
+
+// schema.pre('validate', function (next) {
+// 	if (user.)
+// 	.then(function () {
+// 		next();
+// 	}).catch(next);
+// });
+
 
 function convertFormatToDollars (totalInCents) {
     return (totalInCents/100).toFixed(2);
