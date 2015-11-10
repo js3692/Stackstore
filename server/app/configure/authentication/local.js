@@ -4,6 +4,7 @@ var _ = require('lodash');
 var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var Cart = mongoose.model('Cart');
 mongoose.Promise = require('bluebird');
 
 function logIn(req, res, next) {
@@ -17,16 +18,28 @@ function logIn(req, res, next) {
             return next(error);
         }
 
-// ================== make user req.session.cart has appropriate user._id ====================
-
-        // req.logIn will establish our session.
-        req.logIn(user, function (loginErr) {
-            if (loginErr) return next(loginErr);
-            // We respond with a response object that has user with _id and email.
-            res.status(200).send({
-                user: _.omit(user.toJSON(), ['password', 'salt'])
+        if(req.session.cart) {
+            Cart.update({ user: user._id })
+                .then(function (updatedCart) {
+                    req.session.cart = updatedCart;
+                    req.logIn(user, function (loginErr) {
+                        if (loginErr) return next(loginErr);
+                        // We respond with a response object that has user with _id and email.
+                        res.status(200).send({
+                            user: _.omit(user.toJSON(), ['password', 'salt'])
+                        });
+                    });
+                }, next);
+        } else {
+            // req.logIn will establish our session.
+            req.logIn(user, function (loginErr) {
+                if (loginErr) return next(loginErr);
+                // We respond with a response object that has user with _id and email.
+                res.status(200).send({
+                    user: _.omit(user.toJSON(), ['password', 'salt'])
+                });
             });
-        });
+        }
 
     };
 

@@ -38,6 +38,7 @@ router.use(function (req, res, next) {
 			// Create a new cart and attach it to req.session
 			Cart.create({})
 				.then(function (newCart) {
+					console.log(req.session);
 					req.session.cart = newCart;
 					next();
 				}).catch(next);

@@ -4,6 +4,7 @@ var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var mongoose = require('mongoose');
 var UserModel = mongoose.model('User');
+var Cart = mongoose.model('Cart');
 
 module.exports = function (app) {
 
@@ -33,7 +34,6 @@ module.exports = function (app) {
                 }
 
             }).then(function (userToLogin) {
-                console.log('this is the userToLogin', userToLogin)
                 done(null, userToLogin);
             }, function (err) {
                 console.error('Error creating user from Google authentication', err);
