@@ -91,7 +91,8 @@
           </div>
 
           <div class="col-lg-4">
-            <img class="pull-right" ng-src="{{animal.imageUrl}}" w="350" h="400">
+            <div ng-style="{ background: 'url({{animal.imageUrl}}) center center no-repeat', 'background-size':'contain' }"></div>
+            <img class="pull-right" ng-src="{{animal.imageUrl}}">
           </div>
         </div>
       </div>

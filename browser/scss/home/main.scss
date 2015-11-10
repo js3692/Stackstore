@@ -30,27 +30,14 @@ section#results {
         background-color: #5a5a5a;
         border-radius: 12px;
         border: none;
+        .imagebox {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+        }
         .caption {
             color: #ddd;
         }
     }
-    .imagebox {
-        width: 300px;
-        height: 300px;
-        overflow: hidden;
-        margin: 0 auto;
-        position: relative;
-    }
-    img {
-        position: absolute;
-        margin: auto;
-        min-height: 100%;
-        min-width: 100%;
-        /* For the following settings we set 100%, but it can be higher if needed 
-        See the answer's update */
-        left: -100%;
-        right: -100%;
-        top: -100%;
-        bottom: -100%;
-    }
+    
 }

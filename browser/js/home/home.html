@@ -27,9 +27,7 @@
         <div class="col-sm-6 col-md-4" ng-repeat="animal in animals | filter: { name: name, conservationStatus: category}">
           <a ui-sref="animal({ id: animal._id })">
             <div class="thumbnail">
-              <div class="imagebox">
-                <img-wit src="{{ animal.imageUrl }}" alt="..." w="400" h="400"></img-wit>
-              </div>
+              <div class="imagebox" ng-style="{ background: 'url({{animal.imageUrl}}) center center no-repeat', 'background-size':'contain' }"></div>
               <div class="caption">
                 <h3>{{ animal.name }}</h3>
                 <p>{{ animal.conservationStatus }}</p>
