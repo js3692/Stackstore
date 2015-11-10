@@ -13,6 +13,7 @@ require('../../../db/models');
 var Order = mongoose.model('Order');
 var Animal = mongoose.model('Animal');
 var User = mongoose.model('User');
+var Cart = mongoose.model('Cart');
 
 //var ensureAuthenticated = function (req, res, next) {
 //    if (req.isAuthenticated()) {
@@ -22,7 +23,7 @@ var User = mongoose.model('User');
 //    }
 //};
 
-// Current URL: '/api/orders'
+// Current URL: '/api/order'
 
 router.get('/', function (req, res, next) {
 	Order.find()
@@ -32,24 +33,24 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-	//	req.body should have the animal document._id's in it
-	//	and also a shipping address
-
-	Animal.find({ _id: { $in: req.body.id }})
-	.then(function (animalsToBuy) {
-		animalsToBuy.map(function(animal) {
-			return animal.toObject();
-		});
-		return Order.create({
-			user: req.user._id,
-			status: 'Created',
-			animals: animalsToBuy,
-			date: new Date(),
-			shippingAddr: req.body.shippingAddr
-		});
+	var newOrder;
+	Order.create({
+		user: req.user._id,
+		status: 'Created',
+		items: req.session.cart.items,
+		date: new Date(),
+		shippingAddr: req.body.shipTo
 	})
-	.then(function (newOrder) {
-		res.status(201).json(newOrder);
+	.then(function (createdOrder) {
+		newOrder = createdOrder;
+		return Cart.findById(req.session.cart._id);
+	})
+	.then(function (foundCart) {
+		foundCart.items = [];
+		return foundCart.save();
+	})
+	.then(function (emptyCart) {
+		res.status(201).json(emptyCart);
 	}).catch(next);
 });
 

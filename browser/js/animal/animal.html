@@ -26,9 +26,9 @@
                     <div class="panel panel-default">
                             <div class="panel-body">
                                 <div class="container-fluid">
-                                    <div ng-repeat="item in centerPanel" class="row">
-                                        <strong>{{ item.label }}</strong> {{ item.value }}
-                                    </div>
+                                    <p><strong>Conservation Status: </strong>{{ animal.conservationStatus }}</p>
+                                    <p><strong>Price: </strong>$ {{ animal.priceUSD }}</p>
+                                    <p><strong>Left in stock: </strong>{{ animal.inventoryQuantity }}</p>
                                 </div>    
                             </div>
 			          </div>
@@ -37,12 +37,24 @@
                             <div class="panel-body">
                                 <div class="container-fluid">
                                     <div class="row">
-                                        <div class="col-lg-9">            
-                                            <select class="form-control" ng-model="animalQuantity" ng-options="opt for opt in options.astep"></select>
+                                        <div class="col-lg-2">
+                                            <button type="button" class="btn btn-primary" ng-click="changeQuantity(-1)" ng-disabled="isMin()">
+                                                <span class="glyphicon glyphicon-minus"></span>
+                                            </button>
+                                        </div>
+                                        <div class="col-lg-2" style="text-align: center;">
+                                            <button type="button" class="btn btn-default disabled">
+                                                <span>{{ animalQuantity }}</span>
+                                            </button>
                                         </div>
                                         <div class="col-lg-2">
-                                            <button class="btn btn-default" ng-click="addToCart()">
+                                            <button type="button" class="btn btn-primary" ng-click="changeQuantity(1)" ng-disabled="isMax()">
                                                 <span class="glyphicon glyphicon-plus"></span>
+                                            </button>
+                                        </div>
+                                        <div class="col-lg-2 col-lg-offset-1">
+                                            <button class="btn btn-success" ng-click="addToCart()" ng-disabled="animalQuantity === 0">
+                                                Add to Cart <span class="glyphicon glyphicon-shopping-cart"></span>
                                             </button>
                                         </div>
                                     </div>
@@ -58,7 +70,7 @@
         </div>
         
         </div>
-        <div  ng-show="isLoggedIn()">
+        <div ng-if="isLoggedIn()">
             <div class="row">
                 <div class="col-lg-10">
                     <form name="reviewForm">

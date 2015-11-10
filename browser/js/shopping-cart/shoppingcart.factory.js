@@ -12,7 +12,7 @@ app.factory('Cart', function(DS, $state, $http) {
             me: {
                 method: 'GET',
                 isArray: false
-            }  
+            }
         },
         relations: {
             hasOne: {
@@ -24,30 +24,17 @@ app.factory('Cart', function(DS, $state, $http) {
         }
     });
     
-    Cart.update = function(cart) {
-        return $http.put(baseUrl, cart.data)
-            .then(toData);
+    Cart.update = function(cartItem) {
+        return $http.put(baseUrl, cartItem).then(toData);
+    };
+
+    Cart.delete = function(cartItemId) {
+        return $http.delete(baseUrl + cartItemId).then(toData);
     };
     
-    Cart.purchase = function(cart) {
-        return $http.post('/api/order', cart.data)
-            .then(toData);
+    Cart.purchase = function (address) {
+        return $http.post('/api/order', address).then(toData);
     };
-    
-    Cart.matchToAnimals = function(animals, cart) {
-        var matchedCart = cart.map(function(item) {
-            var matched = animals.reduce(function(match, animal) {
-                if(animal._id === item.animal) {
-                    animal.quantity = item.quantity;
-                    return animal;
-                }
-                else return match;
-            },{});
-            return matched; 
-        });    
-        return matchedCart;
-    };
-    
     
 	return Cart;
-}).run(function (Cart) {})
+}).run(function (Cart) {});

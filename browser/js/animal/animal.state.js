@@ -13,7 +13,7 @@ app.config(function ($stateProvider) {
                 return User.findAll();
             },
             cart: function(Cart) {
-                return Cart.me();
+                return Cart.me().then(function (res) { return res.data; });
             }
         },
         controller: "AnimalCtrl"
