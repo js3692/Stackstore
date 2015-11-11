@@ -1,4 +1,4 @@
-app.controller('AllOrdersCtrl', function ($scope, orders, users, Order) {
+app.controller('AllOrdersCtrl', function ($scope, orders, users, Order, DS) {
 	//newest orders listed first.
 	orders.reverse();
 
