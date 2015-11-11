@@ -1,7 +1,10 @@
-<ul class="nav nav-tabs">
-    <li><a ui-sref="adminDashboard.users">Users</a></li>
-    <li><a ui-sref="adminDashboard.allOrders">Orders</a></li>
-    <li><a ui-sref="adminDashboard.addAnimal">Add Animals</a></li>
-    
-</ul>
-<ui-view></ui-view>
+<div class="dashboard-wrapper">
+	<div id="dashboard" class="container">
+		<ul class="nav nav-tabs">
+		    <li><a class="menu-tabs" ui-sref="adminDashboard.users">Users</a></li>
+		    <li><a class="menu-tabs" ui-sref="adminDashboard.allOrders">Orders</a></li>
+		    <li><a class="menu-tabs" ui-sref="adminDashboard.addAnimal">Add Animals</a></li>
+		</ul>
+		<ui-view></ui-view>
+	</div>
+</div>
