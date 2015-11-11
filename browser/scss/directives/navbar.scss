@@ -1,7 +1,7 @@
 navbar {
 
   display: block;
-  background: white;
+  background: #f8efe6;
   border-bottom: 1px solid black;
 //  box-shadow: 1px 1px 14px -3px black;
 
@@ -43,6 +43,22 @@ navbar {
     margin-top: 10px;
     background: none;
     outline: none !important;
+  }
+
+  button#signup {
+    margin-right: 10px;
+    width: 100px;
+    &:hover {
+      background-color: #2D2D2D;
+      color: #eee;
+    }
+  }
+  button#login {
+    width: 100px;
+    &:hover {
+      background-color: #2D2D2D;
+      color: #eee;
+    }
   }
 
   .welcome {

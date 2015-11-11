@@ -26,6 +26,7 @@ var User = Promise.promisifyAll(mongoose.model('User'));
 var Animal = Promise.promisifyAll(mongoose.model('Animal'));
 var Review = Promise.promisifyAll(mongoose.model('Review'));
 var Order = Promise.promisifyAll(mongoose.model('Order'));
+var Item = Promise.promisifyAll(mongoose.model('Item'));
 
 var seedUsers = function () {
 
@@ -37,6 +38,11 @@ var seedUsers = function () {
         {
             email: 'obama@gmail.com',
             password: 'potus',
+            isAdmin: true
+        },
+        {
+            email: 'asdpoiqwe@gmail.com',
+            password: 'password',
             isAdmin: true
         },
         {
@@ -70,7 +76,7 @@ var seedAnimals = function () {
             rating: 1,
             conservationStatus: 'Near Threatened',
             category: ['aquatic'],
-            inventoryQuantity: 1
+            inventoryQuantity: 5
         },
         {
             name: 'Bill Murray',
@@ -80,7 +86,7 @@ var seedAnimals = function () {
             rating: 2.4,
             conservationStatus: 'Extinct in the Wild',
             category: ['life aquatic'],
-            inventoryQuantity: 1
+            inventoryQuantity: 9
         },
         {
             name: 'Humphead Wrasse',
@@ -161,8 +167,57 @@ var seedAnimals = function () {
             conservationStatus: 'Vulnerable',
             category: ['mammal'],
             inventoryQuantity: 4
+        },
+        {
+            name: 'Swiss Turtle',
+            imageUrl: 'http://animalwonder.com/wp-content/uploads/2014/09/Sea_Turtle_506f386b36187.jpg',
+            price: 80.99,
+            description: "I'm a turtle from Switzerland. It's pretty hilly out here. Take me to a nice, sunnier place.",
+            rating: 5,
+            conservationStatus: 'Endangered',
+            category: ['mammal'],
+            inventoryQuantity: 3
+        },
+        {
+            name: 'BiPolar Bear',
+            imageUrl: 'http://storage.torontosun.com/v1/dynamic_resize/id/31727795/?size=400x400&site=blogs&authtoken=3ef318efc0d861959b4b4c43bdd7f1d6&quality=90',
+            price: 80.99,
+            description: "I'm a bi-polar bear. My mood swings from very angry to very happy in an instant.",
+            rating: 2.1,
+            conservationStatus: 'Vulnerable',
+            category: ['bear'],
+            inventoryQuantity: 6
+        },
+        {
+            name: 'NYC Rat',
+            imageUrl: 'http://www.usefulslug.com/wp-content/uploads/2011/03/RatSmall.jpg',
+            price: 1.99,
+            description: "I'm a rat. I live in the dungeons. I'm easy to raise because I can feed myself.",
+            rating: 1.1,
+            conservationStatus: 'Vulnerable',
+            category: ['rat'],
+            inventoryQuantity: 9999999999
+        },
+        {
+            name: 'Fat Horse',
+            imageUrl: 'http://isyourgirlfriendahorse.com/carousel-horse-1.jpg',
+            price: 80.99,
+            description: "I like to run around a lot in my spare time. But I also eat a lot.",
+            rating: 2.1,
+            conservationStatus: 'Vulnerable',
+            category: ['bear'],
+            inventoryQuantity: 6
+        },
+        {
+            name: 'Pantless Bear',
+            imageUrl: 'https://s-media-cache-ak0.pinimg.com/736x/72/d1/c1/72d1c14fe303efe8053d028a04421d40.jpg',
+            price: 40.99,
+            description: "I usually wear a shirt, but never wear pants. I like honey.",
+            rating: 2.1,
+            conservationStatus: 'Endangered',
+            category: ['bear'],
+            inventoryQuantity: 19
         }
-        
     ];
 
     return Animal.createAsync(animals);
@@ -171,66 +226,88 @@ var seedAnimals = function () {
 
 var review = {
     content: 'This emu is subpar. He does not kick, as was advertised.',
-    stars: 1,
+    stars: 3,
     dangerLevel: 10
 };
-
-
-function seedReview(review) {
-    return Review.createAsync(review)
+function seedReview (review) {
+    return Review.createAsync(review);
 }
 
-connectToDb.then(function () {
-//    var collectionNames = ['']
-//    mongoose.connection.collections['collectionName'].drop( function(err) {
-//        console.log('collection dropped');
-//    });
-    Animal.findAsync({}).then(function (animals) {
-        if (animals.length === 0) {
-            var usersAndAnimalsPromise = [
-                seedUsers(),
-                seedAnimals()
-            ];
-            return Promise.all(usersAndAnimalsPromise);
-        } else {
-            console.log(chalk.magenta('Seems to already be user data, exiting!'));
-            process.kill(0);
+function seedItems (animals) {
+    var items = [
+        {
+            animal: animals[0],
+            quantity: 1
+        },
+        {
+            animal: animals[1],
+            quantity: 2
+        },
+        {
+            animal: animals[2],
+            quantity: 3
         }
-    }).spread(function(users, animals) {
+    ];
+    return Item.createAsync(items);
+}
+
+connectToDb.then(function (db) {
+    //    var collectionNames = ['']
+    //    mongoose.connection.collections['collectionName'].drop( function(err) {
+    //        console.log('collection dropped');
+    //    });
+    return db.db.dropDatabase();
+})
+.then(function () {
+    console.log(chalk.magenta('database dropped'));
+    var users, itemOne, itemTwo, itemThree;
+    Animal.findAsync({}).then(function (animals) {
+        var usersAndAnimalsPromise = [
+            seedUsers(),
+            seedAnimals()
+        ];
+        return Promise.all(usersAndAnimalsPromise);
+    })
+    .spread(function(newUsers, animals) {
+        users = newUsers;
         review.animal = animals[0]._id;
         review.author = users[0]._id;
+        return seedItems(animals);
+    })
+    .then(function (items) {
+        itemOne = items[0];
+        itemTwo = items[1];
+        itemThree = items[2];
         return Order.create({
-          user: users[0]._id,
-          total: 20000,
-//          items: [[{animal: animals[1], quantity: 2},{animal: animals[1], quantity: 1},{animal: animals[2], quantity: 3}]],
-          date: new Date(),
-          shippingAddr: "5 Hanover Square",
-          status: "Cancelled"
-        }).then(function () {
-            return Order.create({
-                  user: users[1]._id,
-                  total: 20000,
-//                  items: [[{animal: animals[1], quantity: 2},{animal: animals[1], quantity: 1},{animal: animals[0], quantity: 3}]],
-                  date: new Date(),
-                  shippingAddr: "5 Hanover Square",
-                  status: "Created"
-            })
-        }).then(function() {
-            return  Order.create({
-                  user: users[0]._id,
-                  total: 20000,
-//                  items: [{animal: animals[0], quantity: 2},{animal: animals[1], quantity: 1},{animal: animals[2], quantity: 3}],
-                  date: new Date(),
-                  shippingAddr: "5 Hanover Square",
-                  status: "Processing"
-            });
-        }).then(function() {
-            return seedReview(review)
-        }).catch(function(err) {
-            console.log(err);
+            user: users[1]._id,
+            items: [itemOne._id],
+            date: new Date(2015, 10, 7, 3, 24, 0),
+            shippingAddr: "5 Hanover Square",
+            status: "Processing"
         });
-        
-    }).then(function () {
+    })
+    .then(function () {
+        return Order.create({
+            user: users[1]._id,
+            items: [itemTwo._id],
+            date: new Date(2015, 10, 8, 3, 24, 0),
+            shippingAddr: "5 Hanover Square",
+            status: "Created"
+        });
+    })
+    .then(function() {
+        return Order.create({
+            user: users[1]._id,
+            items: [itemThree._id],
+            date: new Date(2015, 10, 9, 3, 24, 0),
+            shippingAddr: "5 Hanover Square",
+            status: "Completed"
+        });
+    })
+    .then(function() {
+        return seedReview(review);
+    })
+    .then(function () {
         console.log(chalk.green('Seed successful!'));
         process.kill(0);
     }).catch(function (err) {

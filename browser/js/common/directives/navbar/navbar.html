@@ -25,11 +25,11 @@
         </ul>
         
         
-        <button ng-show="!user" ui-sref="login" class="btn login-button">Login</button>
+        <button ng-show="!user" ui-sref="login" class="btn login-button" id="login">Login</button>
         <div ng-show="user" class="welcome">
             <span>Welcome, {{ user.email }}!</span>
             <a ng-click="logout()">Logout</a>
         </div>
-        <button ng-show="!user" ui-sref="signup" class="btn login-button">Sign Up</button>
+        <button ng-show="!user" ui-sref="signup" class="btn login-button" id="signup">Sign Up</button>
     </div>
 </nav>

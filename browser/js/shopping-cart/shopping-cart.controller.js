@@ -6,15 +6,17 @@ app.controller('ShoppingCartCtrl', function ($scope, $state, cart, Cart, DS, Aut
 	$scope.deleteOne = function (itemId) {
 		Cart.delete(itemId)
 			.then(function (updatedCart) {
+				DS.ejectAll('cart');
+				DS.ejectAll('animals');
 				$scope.cart = updatedCart;
 			});
 	};
 
 	$scope.getTotal = function () {
-		return $scope.cart.reduce(function (total, animal) {
-			total += Number(animal.quantity) * Number(animal.priceUSD);
+		return $scope.cart.items.reduce(function (total, item) {
+			total += Number(item.quantity) * Number(item.animal.priceUSD);
 			return total;
-		}, 0);
+		}, 0).toFixed(2);
 	};
 
 	$scope.getSubtotal = function (quantity, price) {
@@ -29,11 +31,8 @@ app.controller('ShoppingCartCtrl', function ($scope, $state, cart, Cart, DS, Aut
 			.then(function (emptyCart) {
 				$scope.cart = emptyCart;
 				DS.ejectAll('animals');
-				$state.transitionTo('home', {}, {
-					location: true,
-					notify: true,
-					reload: true
-				});
+				DS.ejectAll('order');
+				$state.go('home');
 			});
 	};
 

@@ -1,8 +1,12 @@
-app.controller('AddAnimalCtrl', function($scope, Animal) {
+app.controller('AddAnimalCtrl', function($scope, $state, Animal, DS) {
     $scope.animal = {};
     
     $scope.submit = function() {
-        Animal.create($scope.animal);
+        Animal.create($scope.animal)
+        .then(function (newAnimal) {
+            DS.ejectAll('animals');
+            $state.go('animal', newAnimal.id);
+        });
     };
     
     $scope.categories = [ 
