@@ -22,7 +22,6 @@ app.controller('ShoppingCartCtrl', function ($scope, $state, cart, Cart, DS, Aut
 	};
 
 	$scope.purchase = function () {
-		console.log("email address is", $scope.email)
 		Cart.purchase({
 				shipTo: $scope.shippingAddress,
 				guestEmail: $scope.email
@@ -38,13 +37,15 @@ app.controller('ShoppingCartCtrl', function ($scope, $state, cart, Cart, DS, Aut
 			});
 	};
 
-
 	$scope.changeQuantity = function (item, quantity) {
-		ItemFactory.updateItemQuantity(item, quantity)
-			.then(function (updatedItem) {
-				item.quantity = updatedItem.quantity;
-				DS.ejectAll('animals');
-			})
+		if (item.quantity === 1 && quantity === -1) $scope.deleteOne(item._id);
+		else {
+			ItemFactory.updateItemQuantity(item, quantity)
+				.then(function (updatedItem) {
+					item.quantity = updatedItem.quantity;
+					DS.ejectAll('animals');
+				})
+		}
 	};
 
 	$scope.isMin = function (item) {
