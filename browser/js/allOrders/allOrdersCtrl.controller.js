@@ -24,6 +24,7 @@ app.controller('AllOrdersCtrl', function ($scope, orders, users, Order) {
 			})
 			.then(function () {
 				order.statusOptions = orderTransitionOptions[status.toLowerCase()];
+				DS.ejectAll('order')
 			});
 	};
 
