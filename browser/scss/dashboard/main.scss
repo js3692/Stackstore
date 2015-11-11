@@ -1,0 +1,40 @@
+.dashboard-wrapper {
+	background-color: #2d3853;
+  min-height: calc(100vh - 92px);
+  padding-top: 15px;
+  .menu-tabs {
+  	color: #ddd;
+  	&:hover {
+  		background-color: #337ab7;
+  	}
+  	&:focus {
+  		background-color: #ec971f;
+  	}
+  }
+  .users-table {
+  	margin-top: 30px;
+  	th {
+  		text-align: center;
+  	}
+  	td {
+  		text-align: center;
+  		vertical-align: middle;
+  	}
+  }
+  .allOrders-row {
+  	margin-top: 30px;
+  	padding: 0 195px;
+  }
+  .add-form {
+  	margin-top: 30px;
+  	label {
+  		color: #eee;
+  	}
+  	button.btn-extend {
+  		width: 100%;
+  	}
+  	button.btn-submit {
+  		margin-top: 30px;
+  	}
+  }
+}

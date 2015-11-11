@@ -1,4 +1,7 @@
 app.controller('AllOrdersCtrl', function ($scope, orders, users, Order) {
+	//newest orders listed first.
+	orders.reverse();
+
 	var orderTransitionOptions = {
 		created: ['Processing'],
 		processing: ['Cancelled', 'Completed']
@@ -36,9 +39,16 @@ app.controller('AllOrdersCtrl', function ($scope, orders, users, Order) {
 		isopen: false
 	};
 
+	$scope.label = 'All';
+
 	$scope.chooseCategory = function (category) {
-		if (category === 'All') delete $scope.category;
-		else $scope.category = category;
+		if (category === 'All') {
+			delete $scope.category;
+			$scope.label = 'All';
+		} else {
+			$scope.category = category;
+			$scope.label = category;
+		}
 	};
 
 	$scope.getSubtotal = Order.getSubtotal;

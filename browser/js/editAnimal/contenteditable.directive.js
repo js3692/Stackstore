@@ -1,20 +1,22 @@
-// app.directive("contenteditable", function() {
-//   return {
-//     restrict: "A",
-//     require: "?ngModel",
-//     link: function(scope, element, attrs, ngModel) {
+'use strict';
 
-//       function read() {
-//         ngModel.$setViewValue(element.html());
-//       }
+app.directive("contenteditable", function() {
+  return {
+    restrict: "A",
+    require: "?ngModel",
+    link: function(scope, element, attrs, ngModel) {
 
-//       ngModel.$render = function() {
-//         element.html(ngModel.$viewValue || "");
-//       };
+      function read() {
+        ngModel.$setViewValue(element.html());
+      }
 
-//       element.bind("blur keyup change", function() {
-//         scope.$apply(read);
-//       });
-//     }
-//   };
-// });
+      ngModel.$render = function() {
+        element.html(ngModel.$viewValue || "");
+      };
+
+      element.bind("blur keyup change", function() {
+        scope.$apply(read);
+      });
+    }
+  };
+});

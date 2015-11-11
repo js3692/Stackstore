@@ -1,57 +1,57 @@
-<div class="row">
-	<div class="col-md-10">
-		<uib-accordion close-others="oneAtATime">
-			<uib-accordion-group heading="{{ order.date | date }}, {{ order.status }}" ng-repeat="order in orders | filter : { status : category }">
-				<div class="row">
-					<div class="col-lg-4">
-						<strong>User email: </strong> {{ order.orderedBy.email }}
-					</div>
-					<div class="col-lg-5">
-						<strong>Total: </strong> $ {{getTotal(order.items)}}
-					</div>
-					<div ng-if="order.statusOptions" class="col-lg-3">
-						<div class="btn-group pull-right" uib-dropdown>
-							<button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
-								Change Order Status To:<span class="caret"></span>
-							</button>
-							<ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
-								<li role="menuitem" ng-click="changeOrderStatus(order, status)" ng-repeat="status in order.statusOptions"><a>{{ status }}</a></li>
-							</ul>
+<div class="row allOrders-row">
+		<div class="col-md-10">
+			<uib-accordion close-others="oneAtATime">
+				<uib-accordion-group heading="{{ order.date | date }}, {{ order.status }}" ng-repeat="order in orders | filter : { status : category }">
+					<div class="row">
+						<div class="col-lg-4">
+							<strong>User email: </strong> {{ order.orderedBy.email }}
+						</div>
+						<div class="col-lg-5">
+							<strong>Total: </strong> $ {{getTotal(order.items)}}
+						</div>
+						<div ng-if="order.statusOptions" class="col-lg-3">
+							<div class="btn-group pull-right" uib-dropdown>
+								<button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
+									Change Order Status <span class="caret"></span>
+								</button>
+								<ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
+									<li role="menuitem" ng-click="changeOrderStatus(order, status)" ng-repeat="status in order.statusOptions"><a>{{ status }}</a></li>
+								</ul>
+							</div>
 						</div>
 					</div>
-				</div>
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Price Per Animal</th>
-							<th>Conservation Status</th>
-							<th>Quantity</th>
-							<th>Subtotal</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="item in order.items">
-							<td>{{item.animal.name}}</td>
-							<td>{{item.animal.priceUSD}}</td>
-							<td>{{item.animal.conservationStatus}}</td>
-							<td>{{item.quantity}}</td>
-							<td>$ {{getSubtotal(item.animal.priceUSD, item.quantity)}}</td>
-						</tr>
-					</tbody>
-				</table>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Price Per Animal</th>
+								<th>Conservation Status</th>
+								<th>Quantity</th>
+								<th>Subtotal</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="item in order.items">
+								<td> <a ui-sref="animal({ id: item.animal._id })">{{item.animal.name}}</a></td>
+								<td>{{item.animal.priceUSD}}</td>
+								<td>{{item.animal.conservationStatus}}</td>
+								<td>{{item.quantity}}</td>
+								<td>$ {{getSubtotal(item.animal.priceUSD, item.quantity)}}</td>
+							</tr>
+						</tbody>
+					</table>
 
-			</uib-accordion-group>
-		</uib-accordion>
-	</div>
-	<div class="col-lg-2">
-		<div uib-dropdown is-open="status.isopen">
-			<button type="button" class="btn btn-primary btn-lg" uib-dropdown-toggle ng-disabled="disabled">
-				Sort by status <span class="caret"></span>
-			</button>
-			<ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
-				<li ng-repeat="category in Ordercategories" ng-click="chooseCategory(category)" role="menuitem"><a>{{ category }}</a></li>
-			</ul>
+				</uib-accordion-group>
+			</uib-accordion>
 		</div>
-	</div>
+		<div class="col-lg-2">
+			<div uib-dropdown is-open="status.isopen">
+				<button type="button" class="btn btn-primary btn-lg" uib-dropdown-toggle ng-disabled="disabled">
+					{{ label }} <span class="caret"></span>
+				</button>
+				<ul class="uib-dropdown-menu" role="menu" aria-labelledby="single-button">
+					<li ng-repeat="category in Ordercategories" ng-click="chooseCategory(category)" role="menuitem"><a>{{ category }}</a></li>
+				</ul>
+			</div>
+		</div>
 </div>
