@@ -19,26 +19,57 @@ function logIn(req, res, next) {
         }
 
         if(req.session.cart) {
-            Cart.update({ user: user._id })
-                .then(function (updatedCart) {
-                    req.session.cart = updatedCart;
-                    req.logIn(user, function (loginErr) {
-                        if (loginErr) return next(loginErr);
-                        // We respond with a response object that has user with _id and email.
-                        res.status(200).send({
-                            user: _.omit(user.toJSON(), ['password', 'salt'])
+            var cartIdToUse;
+            Cart.findOne({ user: user._id })
+            .then(function (fetchedCart) { // ==> See if this user already has a cart in db
+                if (!fetchedCart) { // ==> if he doesn't, then append user id on to the session cart
+                    cartIdToUse = req.session.cart._id;
+                    return Cart.update({ _id: req.session.cart._id },
+                        {
+                            user: user._id,
+                            items: req.session.cart.items
                         });
+                } else { // ==> if he already has a cart in db, then combine the session cart with the fetched cart
+                    cartIdToUse = fetchedCart._id;
+                    return Cart.update({ _id: fetchedCart._id },
+                        {
+                            $push: { items: { $each: req.session.cart.items } }
+                        })
+                        .then(function () {
+                            return Cart.remove({ _id: req.session.cart._id });
+                        })
+                }
+            })
+            .then(function () {
+                return Cart.findById(cartIdToUse).populate('items');
+            })
+            .then(function (updatedCart) {
+                req.logIn(user, function (loginErr) {
+                    if (loginErr) return next(loginErr);
+                    req.session.cart = updatedCart;
+                    // We respond with a response object that has user with _id and email.
+                    res.status(200).send({
+                        user: _.omit(user.toJSON(), ['password', 'salt'])
                     });
-                }, next);
-        } else {
-            // req.logIn will establish our session.
-            req.logIn(user, function (loginErr) {
-                if (loginErr) return next(loginErr);
-                // We respond with a response object that has user with _id and email.
-                res.status(200).send({
-                    user: _.omit(user.toJSON(), ['password', 'salt'])
                 });
-            });
+            }, next);
+        } else {
+            Cart.findOne({ user: user._id })
+            .then(function (cart) {
+                if (!cart) return  Cart.create({ user: user._id });
+                else return cart;
+            })
+            .then(function (fetchedCart) {
+                // req.logIn will establish our session.
+                req.logIn(user, function (loginErr) {
+                    if (loginErr) return next(loginErr);
+                    req.session.cart = fetchedCart;
+                    // We respond with a response object that has user with _id and email.
+                    res.status(200).send({
+                        user: _.omit(user.toJSON(), ['password', 'salt'])
+                    });
+                });
+            }, next);
         }
 
     };

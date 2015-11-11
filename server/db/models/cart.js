@@ -5,6 +5,8 @@ var mongoose = require('mongoose');
 var schema = new mongoose.Schema({
 	user: {
 		type: mongoose.Schema.Types.ObjectId,
+		unique: true,
+		sparse: true,
 		ref: 'User'
 	},
 	items: [{

@@ -1,4 +1,4 @@
-app.controller('AnimalCtrl', function ($scope, Review, Cart, animal, cart, Session, AuthService, recommendations, Animal) {
+app.controller('AnimalCtrl', function ($scope, Review, Cart, animal, cart, Session, AuthService, recommendations, Animal, DS) {
 
 	$scope.animal = animal;
     $scope.Auth = AuthService.isAuthenticated();
@@ -54,6 +54,7 @@ app.controller('AnimalCtrl', function ($scope, Review, Cart, animal, cart, Sessi
 				quantity: $scope.animalQuantity
 			})
 			.then(function (animal) {
+				DS.ejectAll('animals');
 				$scope.animal = animal;
 				$scope.animalQuantity = 0;
 			});
@@ -88,7 +89,6 @@ app.controller('AnimalCtrl', function ($scope, Review, Cart, animal, cart, Sessi
 	};
 
 	//recommendations
-
 
 	//sets caruosel interval for recommendations.
 	$scope.myInterval = 5000;

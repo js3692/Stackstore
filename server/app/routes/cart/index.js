@@ -12,41 +12,26 @@ var Animal = mongoose.model('Animal');
 // Current URL: '/api/cart'
 
 router.use(function (req, res, next) {
-	if (req.session.cart) {
-		console.log('in here!')
-		Cart.findById(req.session.cart._id).populate('items')
-			.then(function (cart) {
-				req.session.cart = cart;
+	if (!req.user) { // ==> if a user is not logged in
+		if (!req.session.cart) { // ==> if there is no cart, make new one
+			Cart.create({})
+			.then(function (newCart) {
+				req.session.cart = newCart;
 				next();
 			}).catch(next);
-	} else {
-		if (req.user) { // ==> if a user is logged in
-			Cart.find({
-					user: req.user._id
-				}).populate('items')
-				.then(function (cart) {
-					if (cart.length) { // Get the "personal" cart and attach it to req.session
-						req.session.cart = cart;
-						next();
-					} else { // Create a new cart and attach it to req.session
-						Cart.create({
-								user: req.user._id
-							})
-							.then(function (newUserCart) {
-								req.session.cart = newUserCart;
-								next();
-							}).catch(next);
-					}
-				});
-		} else { // ==> if a user is not logged in, i.e. guest
-			// Create a new cart and attach it to req.session
-			Cart.create({})
-				.then(function (newCart) {
-					console.log(req.session);
-					req.session.cart = newCart;
-					next();
-				}).catch(next);
+		} else { // ==> if there is a cart, good.
+			Cart.findById(req.session.cart._id).populate('items')
+			.then(function (populatedCart) {
+				req.session.cart = populatedCart;
+				next();
+			}).catch(next);
 		}
+	} else {
+		Cart.findById(req.session.cart._id).populate('items')
+			.then(function (populatedCart) {
+				req.session.cart = populatedCart;
+				next();
+			}).catch(next);
 	}
 });
 
@@ -57,7 +42,7 @@ router.get('/me', function (req, res) {
 });
 
 router.put('/me', function (req, res, next) {
-	var animal;
+	var animal, item;
 	Animal.findById(req.body.animal)
 		.then(function (animalToSave) {
 			animal = animalToSave;
@@ -67,9 +52,14 @@ router.put('/me', function (req, res, next) {
 			});
 		})
 		.then(function (createdItem) {
-			return req.session.cart.addItem(createdItem._id);
+			item = createdItem;
+			return Cart.findById(req.session.cart._id);
+		})
+		.then(function (fetchedCart) {
+			return fetchedCart.addItem(item._id);
 		})
 		.then(function (newCart) {
+			console.log(newCart);
 			req.session.cart = newCart;
 			return animal.decrInventory(req.body.quantity);
 		})
@@ -79,7 +69,10 @@ router.put('/me', function (req, res, next) {
 });
 
 router.delete('/me/:itemId', function (req, res, next) {
-	req.session.cart.deleteItem(req.params.itemId)
+	Cart.findById(req.session.cart._id)
+		.then(function (fetchedCart) {
+			return fetchedCart.deleteItem(req.params.itemId);
+		})
 		.then(function () {
 			return Item.findById(req.params.itemId);
 		})
