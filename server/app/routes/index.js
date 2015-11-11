@@ -10,9 +10,10 @@ router.use('/users', require('./users'));
 router.use('/order', require('./order'));
 router.use('/recommendations', require('./recommendations'));
 router.use('/reviews', require('./reviews'));
+router.use('/items', require('./items'));
 
 // Make sure this is after all of
 // the registered routes!
 router.use(function (req, res) {
-    res.status(404).end();
+	res.status(404).end();
 });
