@@ -1,4 +1,4 @@
-app.controller('AllOrdersCtrl', function ($scope, orders, users, Order, DS) {
+app.controller('AllOrdersCtrl', function ($scope, orders, users, Order) {
 	//newest orders listed first.
 	orders.reverse();
 
@@ -24,7 +24,7 @@ app.controller('AllOrdersCtrl', function ($scope, orders, users, Order, DS) {
 			})
 			.then(function () {
 				order.statusOptions = orderTransitionOptions[status.toLowerCase()];
-				DS.ejectAll('order')
+				//				DS.ejectAll('order')
 			});
 	};
 
