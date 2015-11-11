@@ -8,29 +8,32 @@
             </small>
         </h1>
 			</div>
-			<div class="well well-lg">
+			<div class="well well-lg" style="height: 480px;">
 				<div class="row">
 
-					<div class="col-lg-4">
-						<div class="panel panel-primary" style="min-height: 150px;">
+					<div class="col-lg-4 image-and-description">
+						<div class="imagebox" ng-style="{ background: 'url({{animal.imageUrl}}) center center no-repeat', 'background-size':'contain' }"></div>
+						<div class="panel panel-primary" style="height: 150px; margin-top: 30px;">
 							<div class="panel-body">
 								{{ animal.description }}
 							</div>
 						</div>
-						<div class="panel panel-primary">
+					</div>
+					<div class="col-lg-4">
+						<div class="panel panel-primary" style="height: 303px;">
 							<div class="panel-heading">
 								Details
 							</div>
-							<div class="panel-body">
+							<div class="panel-body details">
 								<div class="container-fluid">
 									<p><strong>Conservation Status: </strong>{{ animal.conservationStatus }}</p>
 									<p><strong>Price: </strong>$ {{ animal.priceUSD }}</p>
 									<p><strong>Left in stock: </strong>{{ animal.inventoryQuantity }}</p>
+									<h3 class="out-of-stock" ng-if="animal.inventoryQuantity === 0">Out of stock</h3>
+									<h3 class="out-of-stock" ng-if="animal.inventoryQuantity !== 0">Buy now!</h3>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-lg-4">
 						<div class="panel panel-primary shop">
 							<div class="panel-heading">
 								Add to cart
@@ -60,12 +63,12 @@
 										</div>
 									</div>
 								</div>
-								<div ng-if="animal.inventoryQuantity === 0">
-									<h3 class="out-of-stock">Out of stock.</h3>
-								</div>
 							</div>
 						</div>
-						<div class="panel panel-primary">
+					</div>
+
+          <div class="col-lg-4">
+          	<div class="panel panel-primary" style="height: 430px;">
 							<div class="panel-heading">
 								You might also like....
 							</div>
@@ -91,12 +94,8 @@
 								</div>
 							</div>
 						</div>
-					</div>
-
-          <div class="col-lg-4">
-            <div ng-style="{ background: 'url({{animal.imageUrl}}) center center no-repeat', 'background-size':'contain' }"></div>
-            <img class="pull-right" ng-src="{{animal.imageUrl}}">
           </div>
+
         </div>
       </div>
       <hr>
