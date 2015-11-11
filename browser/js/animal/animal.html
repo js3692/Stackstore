@@ -10,11 +10,13 @@
       </div>
       <div class="well well-lg">
         <div class="row">
-
+        <!-- ADDED HERE -->
+        <p1>{{animal.description}}</p1>
           <div class="col-lg-4">
             <div class="panel panel-primary" style="min-height: 150px;">
               <div class="panel-body">
-                {{ animal.description }}
+                <input contenteditable ng-show="Auth" ng-model="animal.description" ng-change="updatethatAnimal()" size="45">
+                  {{ animal.description }}
               </div>
             </div>
             <div class="panel panel-primary">

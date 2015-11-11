@@ -1,7 +1,23 @@
-app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Session, AuthService, recommendations) {
-    console.log('here are the recommendations!', recommendations);
+app.controller('AnimalCtrl', function($scope, Review, Cart, animal, cart, Session, AuthService, recommendations, Animal) {
+    // console.log('here are the recommendations!', recommendations);
     $scope.animal = animal;
-    
+    $scope.Auth = AuthService.isAuthenticated();
+    // $scope.Auth = function() {
+    //     return AuthService.isAuthenticated();
+    // }
+    console.log($scope.animal, 'this be da animal')
+    // $scope.$watch('animal', function () {
+    //     console.log('hello im watching you', $scope.animal.description);
+    //     // Animal.update($scope.animal._id, $scope.animal);
+    //     //second parameter is an object
+    // }, true);
+
+    //do we need to digest??
+//---------------------------
+    $scope.updatethatAnimal = function() {
+        Animal.update($scope.animal._id, $scope.animal);
+    }
+
     $scope.aggregateStars = function (reviews) {
         if (reviews) {
             var totalReviewsWithStars = 0;
