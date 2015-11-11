@@ -2,11 +2,10 @@
 	background-color: #2D2D2D;
 	padding-top: 30px;
 	min-height: calc(100vh - 92px);
-	#login-form {
-	    width: 60%;
-	    margin: 0 auto;
-	    label {
-	    	color: #eee;
-	    }
+	.inner-wrapper {
+		padding: 0 400px;
 	}
+  label {
+  	color: #eee;
+  }
 }
