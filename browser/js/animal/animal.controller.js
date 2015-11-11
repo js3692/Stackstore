@@ -1,8 +1,14 @@
-app.controller('AnimalCtrl', function ($scope, Review, Cart, animal, cart, Session, AuthService, recommendations) {
+app.controller('AnimalCtrl', function ($scope, Review, Cart, animal, cart, Session, AuthService, recommendations, Animal) {
 
 	$scope.animal = animal;
+    $scope.Auth = AuthService.isAuthenticated();
+	
+    $scope.updatethatAnimal = function(updateObj) {
+        Animal.update($scope.animal._id, updateObj);
+    }
 
-	$scope.aggregateStars = function (reviews) {
+
+    $scope.aggregateStars = function (reviews) {
 		if (reviews) {
 			var totalReviewsWithStars = 0;
 			var starTotal = reviews.reduce(function (sum, review) {

@@ -14,9 +14,10 @@
 					<div class="col-lg-4 image-and-description">
 						<div class="imagebox" ng-style="{ background: 'url({{animal.imageUrl}}) center center no-repeat', 'background-size':'contain' }"></div>
 						<div class="panel panel-primary" style="height: 150px; margin-top: 30px;">
-							<div class="panel-body">
-								{{ animal.description }}
-							</div>
+							<div class="panel-body" contenteditable ng-if="Auth" ng-model="$parent.animal.description" ng-change="updatethatAnimal({description: $parent.animal.description})">
+              </div>
+              <div class="panel-body" ng-if="!Auth">{{animal.description}}
+              </div>
 						</div>
 					</div>
 					<div class="col-lg-4">
@@ -26,9 +27,16 @@
 							</div>
 							<div class="panel-body details">
 								<div class="container-fluid">
-									<p><strong>Conservation Status: </strong>{{ animal.conservationStatus }}</p>
-									<p><strong>Price: </strong>$ {{ animal.priceUSD }}</p>
-									<p><strong>Left in stock: </strong>{{ animal.inventoryQuantity }}</p>
+									<p ng-if="Auth"><strong>Conservation Status: </strong><span contenteditable ng-model="$parent.animal.conservationStatus" ng-change="updatethatAnimal({conservationStatus: $parent.animal.conservationStatus})">{{ animal.conservationStatus }}</span></p>
+                  <p ng-if="!Auth"><strong>Conservation Status: </strong>{{ animal.conservationStatus }}</p>
+
+									<p ng-if="Auth"><strong>Price: </strong><span contenteditable ng-model="$parent.animal.priceUSD" ng-change="updatethatAnimal({price: (animal.priceUSD)})">{{ animal.priceUSD}}</span></p>
+                  <p ng-if="!Auth"><strong>Price: </strong>$ {{ animal.priceUSD}}</p>
+
+                  <p ng-if="Auth"><strong>Left in Stock: </strong><span contenteditable ng-model="$parent.animal.inventoryQuantity" ng-change="updatethatAnimal({inventoryQuantity: $parent.animal.inventoryQuantity})"> {{ animal.inventoryQuantity}}</span></p>
+									<p ng-if="!Auth"><strong>Left in stock: </strong>{{ animal.inventoryQuantity }}</p>
+
+
 									<h3 class="out-of-stock" ng-if="animal.inventoryQuantity === 0">Out of stock</h3>
 									<h3 class="out-of-stock" ng-if="animal.inventoryQuantity !== 0">Buy now!</h3>
 								</div>
@@ -66,7 +74,6 @@
 							</div>
 						</div>
 					</div>
-
           <div class="col-lg-4">
           	<div class="panel panel-primary" style="height: 430px;">
 							<div class="panel-heading">

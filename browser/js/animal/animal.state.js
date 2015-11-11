@@ -4,6 +4,7 @@ app.config(function ($stateProvider) {
         templateUrl: 'js/animal/animal.html',
         resolve: {
             animal: function(Animal, $stateParams) {
+                // DS.ejectAll('animals');
                 return Animal.find($stateParams.id);
             },
             reviews: function(Review) {
